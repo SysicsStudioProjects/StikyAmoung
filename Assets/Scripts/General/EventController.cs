@@ -12,5 +12,10 @@ public static class EventController
 
     public delegate void StartKillEvent();
     public static StartKillEvent startKillEvent;
-        
+
+    public delegate void EnnemieDown(EnnemiePatrol obj);
+    public static EnnemieDown ennemieDown;
+
+    public delegate void SendSettingData(float speed, float ennemydetect, bool autofocuse, bool vibration);
+    public static SendSettingData sendSettingData;
 }
