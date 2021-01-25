@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public PlayerEvents playerEvents;
     public CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -17,12 +18,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         EventController.canKill += ChangeTarget;
-
+        EventController.sendSettingData += GetSettingData;
     }
 
     private void OnDisable()
     {
         EventController.canKill -= ChangeTarget;
+        EventController.sendSettingData -= GetSettingData;
+
     }
 
     private void Start()
@@ -32,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-       
+        
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -44,6 +47,32 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(move * Time.deltaTime * playerSpeed);
 
         anim.SetFloat("speed", Mathf.Abs(move.magnitude * Time.deltaTime * playerSpeed));
+        if (move!=Vector3.zero)
+        {
+            if (move.magnitude>0.8)
+            {
+                anim.speed = 2;
+            }
+            if (move.magnitude<0.8&&move.magnitude>0.3)
+            {
+                anim.speed = 1;
+            }
+            if (move.magnitude<=0.3&&move.magnitude>0.1f)
+            {
+                anim.speed = 0.3f;
+            }
+            if (move.magnitude<=0.01)
+            {
+                anim.speed = 1;
+            }
+
+           // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
+        }
+        else
+        {
+            anim.speed = 1;
+        }
+
         if (move != Vector3.zero)
         {
             LockOnTarget(move);
@@ -77,10 +106,15 @@ public class PlayerMovement : MonoBehaviour
         {
             ennemiisTarget = false;
         }
-        else
+        else if(playerEvents.AutoFocuse == true)
         {
             ennemiisTarget = true;
         }
     }
     
+    void GetSettingData(float speed, float ennemydetect, bool autofocuse, bool vibration)
+    {
+        playerSpeed = speed;
+
+    }
 }

@@ -8,6 +8,6 @@ public class Pathe
 {
     public int idEnnemie;
     public List<Transform> Points;
-
+    public bool isAlive;
   
 }

@@ -33,6 +33,7 @@ public class MovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Application.targetFrameRate = 30;
         if (stopMvt == true)
         {
 
