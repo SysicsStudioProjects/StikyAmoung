@@ -18,4 +18,7 @@ public static class EventController
 
     public delegate void SendSettingData(float speed, float ennemydetect, bool autofocuse, bool vibration);
     public static SendSettingData sendSettingData;
+
+    public delegate void LevelBonuseFinished();
+    public static LevelBonuseFinished levelBonuseFinished;
 }

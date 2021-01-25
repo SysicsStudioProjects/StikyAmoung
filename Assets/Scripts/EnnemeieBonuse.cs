@@ -51,9 +51,13 @@ public class EnnemeieBonuse : MonoBehaviour
        
 
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
         Instantiate(money, transform.position, transform.rotation);
+    }
+    private void OnDestroy()
+    {
+       
         if (EventController.ennemieDown != null)
         {
             EventController.ennemieDown(null);
