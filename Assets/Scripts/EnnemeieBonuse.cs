@@ -11,14 +11,27 @@ public class EnnemeieBonuse : MonoBehaviour
     private NavMeshAgent agent;
     private float timer;
     public Animator anim;
-   
+
+    public SkinnedMeshRenderer BodyRendered;
+    public SkinnedMeshRenderer HandLeftRendere;
+    public SkinnedMeshRenderer HandRightRendere;
+    public Color MaterialColor;
     // Use this for initialization
     void OnEnable()
     {
+        SetupMaterial();
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer;
     }
 
+    void SetupMaterial()
+    {
+        var block = new MaterialPropertyBlock();
+        block.SetColor("_BaseColor", MaterialColor);
+        BodyRendered.materials[0].color = MaterialColor;
+        HandLeftRendere.SetPropertyBlock(block);
+        HandRightRendere.SetPropertyBlock(block);
+    }
     // Update is called once per frame
     void Update()
     {

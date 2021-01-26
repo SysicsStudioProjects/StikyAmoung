@@ -146,11 +146,13 @@ public class PlayerEvents : MonoBehaviour
             if (isBonuceLevel)
             {
 				GameObject obj = Instantiate(DeathBonucePlayer, target.position, transform.rotation);
+				obj.GetComponent<DeadEvent>().SetColor(target.GetComponent<EnnemeieBonuse>().MaterialColor);
 				Destroy(obj, 2);
 			}
             else
             {
 				GameObject obj = Instantiate(DeathPlayer, target.position, transform.rotation);
+				obj.GetComponent<DeadEvent>().SetColor(target.GetComponent<EnnemiePatrol>().MaterialColor);
 				Destroy(obj, 2);
 			}
 		

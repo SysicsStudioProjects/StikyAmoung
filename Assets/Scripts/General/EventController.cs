@@ -30,4 +30,7 @@ public static class EventController
 
     public delegate void IsBonuceLevel(bool b);
     public static IsBonuceLevel isBonuceLevel ;
+
+    public delegate void UseSkin(Skin s);
+    public static UseSkin useSkin;
 }
