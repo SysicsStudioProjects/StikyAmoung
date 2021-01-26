@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 111ec85d3d2549b4c8ed22e115433b33,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -237,6 +237,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 709511533, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Levels 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1542668731, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
       propertyPath: m_LocalPosition.y
       value: 21.87
@@ -275,15 +279,35 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 4192784653302957824, guid: 798cccfae76ba544b842f301f9c01b8c,
+        type: 3}
+      propertyPath: MoveJ
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4192784653302957824, guid: 798cccfae76ba544b842f301f9c01b8c,
+        type: 3}
+      propertyPath: moveK
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4192784653302957825, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4192784653665787020, guid: 798cccfae76ba544b842f301f9c01b8c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Levels 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4192784654603418408, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
       propertyPath: m_Name
       value: GameControl
+      objectReference: {fileID: 0}
+    - target: {fileID: 4192784654603418410, guid: 798cccfae76ba544b842f301f9c01b8c,
+        type: 3}
+      propertyPath: LevelIndex
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4192784654603418411, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
@@ -704,6 +728,18 @@ PrefabInstance:
       propertyPath: pathe.Points.Array.data[1]
       value: 
       objectReference: {fileID: 815248959}
+    - target: {fileID: 1986262557, guid: 61a56148022fb0e46884dbb23518ddfb, type: 3}
+      propertyPath: MaterialColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1986262557, guid: 61a56148022fb0e46884dbb23518ddfb, type: 3}
+      propertyPath: MaterialColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1986262557, guid: 61a56148022fb0e46884dbb23518ddfb, type: 3}
+      propertyPath: MaterialColor.g
+      value: 0.97576314
+      objectReference: {fileID: 0}
     - target: {fileID: 7803537578724190913, guid: 61a56148022fb0e46884dbb23518ddfb,
         type: 3}
       propertyPath: m_LocalPosition.x

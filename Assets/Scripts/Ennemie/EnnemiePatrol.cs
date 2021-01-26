@@ -23,9 +23,16 @@ public class EnnemiePatrol : MonoBehaviour
     public float timeTodetect;
 
     public Transform _DetectPlayer;
+
+    public SkinnedMeshRenderer BodyRendered;
+    public SkinnedMeshRenderer HandLeftRendere;
+    public SkinnedMeshRenderer HandRightRendere;
+
+    public Color MaterialColor;
     // Start is called before the first frame update
     private void OnEnable()
     {
+        SetupMaterial();
         if (PlayerPrefs.HasKey("detect"))
         {
             timeTodetect = PlayerPrefs.GetFloat("detect");
@@ -47,6 +54,14 @@ public class EnnemiePatrol : MonoBehaviour
         EventController.sendSettingData -= GetSettingData;
 
 
+    }
+    void SetupMaterial()
+    {
+        var block = new MaterialPropertyBlock();
+        block.SetColor("_BaseColor", MaterialColor);
+        BodyRendered.materials[0].color = MaterialColor;
+        HandLeftRendere.SetPropertyBlock(block);
+        HandRightRendere.SetPropertyBlock(block);
     }
     private void Start()
     {

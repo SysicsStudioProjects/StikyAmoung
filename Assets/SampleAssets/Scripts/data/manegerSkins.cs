@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class manegerSkins : MonoBehaviour
@@ -16,9 +17,10 @@ public class manegerSkins : MonoBehaviour
     public List<GameObject> p;
     public Sprite EnabledSprite;
     public Sprite DisabledSprite;
+    public Text CoinsText;
     private void Start()
     {
-        
+        CoinsText.text = Singleton._instance.coins.ToString();
     }
 
     public void skinStart()
@@ -121,6 +123,10 @@ public class manegerSkins : MonoBehaviour
                 }
             }
         }
+    }
+    public void LoadScene(string SceneName)
+    {
+        SceneManager.LoadScene(SceneName);
     }
 }
 

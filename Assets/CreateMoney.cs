@@ -9,10 +9,10 @@ public class CreateMoney : MonoBehaviour
     private void OnEnable()
     {
         
-            Instantiate(Money, transform.position+ new Vector3(1,0,1), transform.rotation);
-            Instantiate(Money, transform.position+ new Vector3(0,0,2), transform.rotation);
-            Instantiate(Money, transform.position+ new Vector3(-1,0,1), transform.rotation);
-            Instantiate(Money, transform.position+ new Vector3(0,0,-2), transform.rotation);
+            Instantiate(Money, transform.position+ new Vector3(4,0,4), transform.rotation);
+            Instantiate(Money, transform.position+ new Vector3(0,0,8), transform.rotation);
+            Instantiate(Money, transform.position+ new Vector3(-4,0,-4), transform.rotation);
+            Instantiate(Money, transform.position+ new Vector3(0,0,-8), transform.rotation);
         
        
     }

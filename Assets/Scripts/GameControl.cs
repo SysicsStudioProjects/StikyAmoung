@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class GameControl : MonoBehaviour
 {
 
@@ -22,6 +22,8 @@ public class GameControl : MonoBehaviour
     public Text CoinsWinText;
     public Text AllCoinsText;
     public int AllCoins;
+    public int LevelIndex;
+    public Text LevelTextIndex;
     private void OnEnable()
     {
         Time.timeScale = 1;
@@ -38,6 +40,7 @@ public class GameControl : MonoBehaviour
         EventController.gameLoose += GameLoose;
         AllennemieText.text = "/"+alleennemie.ToString();
         EnnemieDieText.text = NBkill.ToString();
+        InitCoin();
     }
     private void OnDisable()
     {
@@ -46,9 +49,15 @@ public class GameControl : MonoBehaviour
             EventController.levelBonuseFinished -= LevelBonuseFinished;
         }
         EventController.ennemieDown -= EnnemieDown;
+        EventController.gameLoose -= GameLoose;
     }
     // Start is called before the first frame update
-    
+    void InitCoin()
+    {
+        LevelTextIndex.text = "Level " + LevelIndex;
+        AllCoins = Singleton._instance.coins;
+       
+    }
 
     public void EnnemieDown(EnnemiePatrol ennemie)
     {
@@ -64,7 +73,7 @@ public class GameControl : MonoBehaviour
 
     void GameWin()
     {
-        
+        AllCoinsText.text = AllCoins.ToString();
         if (EventController.gameWin != null)
         {
             EventController.gameWin();
@@ -107,6 +116,8 @@ public class GameControl : MonoBehaviour
             
             if (CoinsWin<=0)
             {
+                Singleton._instance.coins = AllCoins;
+                Singleton._instance.save();
                 CoinsWinText.text = "0";
                 break;
             }
@@ -130,5 +141,9 @@ public class GameControl : MonoBehaviour
         LoosePanel.SetActive(true);
         yield return new WaitForSecondsRealtime(1);
        
+    }
+    public void LoadScene(string SceneName)
+    {
+        SceneManager.LoadScene(SceneName);
     }
 }
