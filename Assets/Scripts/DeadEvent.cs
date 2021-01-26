@@ -7,6 +7,7 @@ public class DeadEvent : MonoBehaviour
     bool isclicked;
     public Rigidbody rb;
     float speed;
+   
     private void Start()
     {
         speed = Random.Range(50, 100);

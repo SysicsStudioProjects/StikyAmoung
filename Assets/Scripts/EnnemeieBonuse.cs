@@ -11,7 +11,7 @@ public class EnnemeieBonuse : MonoBehaviour
     private NavMeshAgent agent;
     private float timer;
     public Animator anim;
-    public GameObject money;
+   
     // Use this for initialization
     void OnEnable()
     {
@@ -53,7 +53,7 @@ public class EnnemeieBonuse : MonoBehaviour
     }
     private void OnDisable()
     {
-        Instantiate(money, transform.position, transform.rotation);
+       
     }
     private void OnDestroy()
     {

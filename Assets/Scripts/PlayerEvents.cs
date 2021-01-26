@@ -11,13 +11,16 @@ public class PlayerEvents : MonoBehaviour
 	
 	public Animator anim;
 	public GameObject DeathPlayer;
+	public GameObject DeathBonucePlayer;
 	public bool AutoFocuse;
 	public bool vibration;
 
+	bool isBonuceLevel;
 	
     // Start is called before the first frame update
     private void OnEnable()
     {
+		EventController.isBonuceLevel += VerifeLevel;
 		if (PlayerPrefs.HasKey("auto"))
 		{
 			int a = PlayerPrefs.GetInt("auto");
@@ -50,6 +53,8 @@ public class PlayerEvents : MonoBehaviour
 
     private void OnDisable()
     {
+		EventController.isBonuceLevel -= VerifeLevel;
+
 		EventController.startKillEvent -= Kill;
 		EventController.sendSettingData -= GetSettingData;
 
@@ -137,9 +142,19 @@ public class PlayerEvents : MonoBehaviour
 			LookTotarget(1);
 
 			Destroy(target.gameObject, 0.2f);
-            
-			GameObject obj = Instantiate(DeathPlayer, target.position, transform.rotation);
-			Destroy(obj, 2);
+
+            if (isBonuceLevel)
+            {
+				GameObject obj = Instantiate(DeathBonucePlayer, target.position, transform.rotation);
+				Destroy(obj, 2);
+			}
+            else
+            {
+				GameObject obj = Instantiate(DeathPlayer, target.position, transform.rotation);
+				Destroy(obj, 2);
+			}
+		
+			
 		}
 		
 	}
@@ -172,4 +187,9 @@ public class PlayerEvents : MonoBehaviour
 		AutoFocuse = _autofocuse;
 		vibration = _vibration;
 	}
+
+	void VerifeLevel(bool b)
+    {
+		isBonuceLevel = b;
+    }
 }

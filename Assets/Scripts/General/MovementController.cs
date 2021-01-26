@@ -17,11 +17,13 @@ public class MovementController : MonoBehaviour
     {
         stopMvt = true;
         EventController.canKill += ChangeButtonBehavior;
+        EventController.gameWin += GameWin;
     }
 
     private void OnDisable()
     {
         EventController.canKill -= ChangeButtonBehavior;
+        EventController.gameWin -= GameWin;
 
     }
 
@@ -105,5 +107,12 @@ public class MovementController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         stopMvt = true;
 
+    }
+
+    void GameWin()
+    {
+        x = 0;
+        y = 0;
+        stopMvt = false;
     }
 }
