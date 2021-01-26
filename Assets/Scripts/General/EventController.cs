@@ -22,6 +22,12 @@ public static class EventController
     public delegate void LevelBonuseFinished();
     public static LevelBonuseFinished levelBonuseFinished;
 
+    public delegate void GameWin();
+    public static GameWin gameWin;
+
     public delegate void GameLoose();
     public static GameLoose gameLoose;
+
+    public delegate void IsBonuceLevel(bool b);
+    public static IsBonuceLevel isBonuceLevel ;
 }

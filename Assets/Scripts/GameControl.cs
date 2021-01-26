@@ -29,6 +29,10 @@ public class GameControl : MonoBehaviour
         {
             EventController.levelBonuseFinished += LevelBonuseFinished;
             coinsValue*=  2;
+            if (EventController.isBonuceLevel!=null)
+            {
+                EventController.isBonuceLevel(true);
+            }
         }
         EventController.ennemieDown += EnnemieDown;
         EventController.gameLoose += GameLoose;
@@ -60,11 +64,18 @@ public class GameControl : MonoBehaviour
 
     void GameWin()
     {
+        if (EventController.gameWin != null)
+        {
+            EventController.gameWin();
+        }
         StartCoroutine(LevelCompleted());
     }
     IEnumerator LevelCompleted()
     {
-
+        if (EventController.gameWin != null)
+        {
+            EventController.gameWin();
+        }
         yield return new WaitForSeconds(1);
         WinPanel.SetActive(true);
         CoinsWinText.text = CoinsWin.ToString();
@@ -74,24 +85,34 @@ public class GameControl : MonoBehaviour
     }
     void LevelBonuseFinished()
     {
+        if (EventController.gameWin != null)
+        {
+            EventController.gameWin();
+        }
         GameWin();
+       
     }
 
     IEnumerator SetupCoin()
     {
-        
+        if (EventController.gameWin != null)
+        {
+            EventController.gameWin();
+        }
+        int value = CoinsWin / 20;
         for (int i = 0; i < 1000; i++)
         {
-            yield return new WaitForSeconds(0.02f);
-            CoinsWin-=10;
-            CoinsWinText.text = CoinsWin.ToString();
-            AllCoins+=10;
-            AllCoinsText.text = AllCoins.ToString();
+            yield return new WaitForSeconds(0.04f);
+            
             if (CoinsWin<=0)
             {
                 CoinsWinText.text = "0";
                 break;
             }
+            CoinsWin -= value;
+            CoinsWinText.text = CoinsWin.ToString();
+            AllCoins += value;
+            AllCoinsText.text = AllCoins.ToString();
 
         }
     }
