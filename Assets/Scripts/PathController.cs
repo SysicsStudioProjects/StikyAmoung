@@ -48,10 +48,14 @@ public class PathController : MonoBehaviour
         {
             if (item.EnnemieId<0)
             {
-                item.EnnemieId = pathes[index].idEnnemie;
-                pathes[index].isAlive = true;
-                SetupEnnemiePath();
-                break;
+                if (index!=-1)
+                {
+                    item.EnnemieId = pathes[index].idEnnemie;
+                    pathes[index].isAlive = true;
+                    SetupEnnemiePath();
+                    break;
+                }
+                
             }
         }
     }

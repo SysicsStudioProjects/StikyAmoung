@@ -15,6 +15,7 @@ public class GameControl : MonoBehaviour
     public int alleennemie;
 
     public GameObject WinPanel;
+    public GameObject LoosePanel;
 
     public int CoinsWin;
     public int coinsValue;
@@ -23,13 +24,14 @@ public class GameControl : MonoBehaviour
     public int AllCoins;
     private void OnEnable()
     {
-      
+        Time.timeScale = 1;
         if (LevelBonuse)
         {
             EventController.levelBonuseFinished += LevelBonuseFinished;
             coinsValue*=  2;
         }
         EventController.ennemieDown += EnnemieDown;
+        EventController.gameLoose += GameLoose;
         AllennemieText.text = "/"+alleennemie.ToString();
         EnnemieDieText.text = NBkill.ToString();
     }
@@ -65,8 +67,9 @@ public class GameControl : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         WinPanel.SetActive(true);
+        CoinsWinText.text = CoinsWin.ToString();
         AllCoinsText.text = AllCoins.ToString();
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(3f);
         StartCoroutine(SetupCoin());
     }
     void LevelBonuseFinished()
@@ -77,7 +80,7 @@ public class GameControl : MonoBehaviour
     IEnumerator SetupCoin()
     {
         
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1000; i++)
         {
             yield return new WaitForSeconds(0.02f);
             CoinsWin-=10;
@@ -86,9 +89,24 @@ public class GameControl : MonoBehaviour
             AllCoinsText.text = AllCoins.ToString();
             if (CoinsWin<=0)
             {
+                CoinsWinText.text = "0";
                 break;
             }
 
         }
+    }
+
+    void GameLoose()
+    {
+        
+        StartCoroutine(LevelLoose());
+    }
+
+    IEnumerator LevelLoose()
+    {
+        Time.timeScale = 0;
+        LoosePanel.SetActive(true);
+        yield return new WaitForSecondsRealtime(1);
+       
     }
 }

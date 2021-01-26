@@ -7,6 +7,7 @@ public class CharacterAnimation : MonoBehaviour
     public GameObject Hands;
     public PlayerEvents playerEvents;
     public AudioSource audio;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -32,13 +33,21 @@ public class CharacterAnimation : MonoBehaviour
    public void Killevent()
     {
         Hands.SetActive(true);
+        if (playerEvents!=null)
+        {
+            playerEvents.KillEvent();
+        }
+      
        
-        playerEvents.KillEvent();
         
     }
     public void WalkSound()
     {
-        audio.Play();
+        if (audio!=null)
+        {
+            audio.Play();
+        }
+        
     }
 
 

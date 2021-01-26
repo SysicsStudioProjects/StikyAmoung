@@ -22,6 +22,7 @@ public class SettingCanvas : MonoBehaviour
 
     private void OnEnable()
     {
+       // PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("speed"))
         {
             PlayerPrefs.SetFloat("speed", PlayerSpeed);

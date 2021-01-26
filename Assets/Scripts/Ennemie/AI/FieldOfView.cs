@@ -80,6 +80,10 @@ public class FieldOfView : MonoBehaviour {
 				}
 			}
 		}
+        if (visibleTargets.Count<=0)
+        {
+			ennemieEvent.DetectPlayer(null);
+		}
 	}
 	void FindFellingTargets()
 	{
