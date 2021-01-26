@@ -92,6 +92,10 @@ public class SkinStart : MonoBehaviour
             manegerSkins.changeSkinStat(skin);
             setButton();
         }
+        if (EventController.useSkin!=null)
+        {
+            EventController.useSkin(skin);
+        }
         Singleton._instance.save();
     }
 

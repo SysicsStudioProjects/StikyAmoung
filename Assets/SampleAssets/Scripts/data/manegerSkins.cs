@@ -14,6 +14,8 @@ public class manegerSkins : MonoBehaviour
     public List<Button> buttons;
     public List<Button> buttonsBuy;
     public List<GameObject> p;
+    public Sprite EnabledSprite;
+    public Sprite DisabledSprite;
     private void Start()
     {
         
@@ -22,12 +24,14 @@ public class manegerSkins : MonoBehaviour
     public void skinStart()
     {
         listSkin("hat");
-        player.transform.position = posShop.position;
+        // player.transform.position = posShop.position;
+        player.SetActive(true);
     }
 
     public void skinEnd()
     {
-        player.transform.position = posStart.position;
+        //player.transform.position = posStart.position;
+        player.SetActive(false);
     }
 
     public void buyStart()
@@ -44,10 +48,10 @@ public class manegerSkins : MonoBehaviour
     {
         foreach (Button b in buttons)
         {
-            if(b.name==type+"Button")
-                b.gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f);
+            if (b.name == type + "Button")
+                b.gameObject.GetComponent<Image>().sprite = EnabledSprite;
             else
-                b.gameObject.GetComponent<Image>().color = Color.white;
+                b.gameObject.GetComponent<Image>().sprite = DisabledSprite;
         }
         posWatch();
         listVide();

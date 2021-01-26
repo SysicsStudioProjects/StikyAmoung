@@ -64,6 +64,7 @@ public class GameControl : MonoBehaviour
 
     void GameWin()
     {
+        
         if (EventController.gameWin != null)
         {
             EventController.gameWin();
@@ -76,11 +77,11 @@ public class GameControl : MonoBehaviour
         {
             EventController.gameWin();
         }
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSecondsRealtime(1);
         WinPanel.SetActive(true);
         CoinsWinText.text = CoinsWin.ToString();
         AllCoinsText.text = AllCoins.ToString();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSecondsRealtime(3f);
         StartCoroutine(SetupCoin());
     }
     void LevelBonuseFinished()
@@ -102,7 +103,7 @@ public class GameControl : MonoBehaviour
         int value = CoinsWin / 20;
         for (int i = 0; i < 1000; i++)
         {
-            yield return new WaitForSeconds(0.04f);
+            yield return new WaitForSecondsRealtime(0.04f);
             
             if (CoinsWin<=0)
             {

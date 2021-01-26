@@ -23,12 +23,18 @@ public class PlayerMovement : MonoBehaviour
         }
         EventController.canKill += ChangeTarget;
         EventController.sendSettingData += GetSettingData;
+        EventController.gameWin += GameWin;
+        EventController.gameLoose += GameLoose;
     }
 
     private void OnDisable()
     {
         EventController.canKill -= ChangeTarget;
         EventController.sendSettingData -= GetSettingData;
+        EventController.gameWin -= GameWin;
+        EventController.gameLoose -= GameLoose;
+
+
 
     }
 
@@ -120,5 +126,14 @@ public class PlayerMovement : MonoBehaviour
     {
         playerSpeed = speed;
 
+    }
+    void GameWin()
+    {
+        transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.z, transform.rotation.w);
+        this.enabled = false;
+    }
+    void GameLoose()
+    {
+        this.enabled = false;
     }
 }
