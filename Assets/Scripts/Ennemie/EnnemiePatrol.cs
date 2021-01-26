@@ -26,10 +26,15 @@ public class EnnemiePatrol : MonoBehaviour
     // Start is called before the first frame update
     private void OnEnable()
     {
+        if (PlayerPrefs.HasKey("detect"))
+        {
+            timeTodetect = PlayerPrefs.GetFloat("detect");
+        }
         //Get Patrol points
         EventController.sendPath += SetPoints;
         EventController.canKill += ChangeTarget;
-        if (EnnemieId < 0)
+        EventController.sendSettingData += GetSettingData;
+        if (EnnemieId < 0&&pathe.Points.Count>0)
         {
             ToNextPoint();
         }
@@ -39,7 +44,8 @@ public class EnnemiePatrol : MonoBehaviour
     {
         EventController.sendPath -= SetPoints;
         EventController.canKill -= ChangeTarget;
-       
+        EventController.sendSettingData -= GetSettingData;
+
 
     }
     private void Start()
@@ -154,7 +160,12 @@ public class EnnemiePatrol : MonoBehaviour
     public void DetectPlayer(Transform t)
     {
         _DetectPlayer = t;
-        if (startDetect==false)
+        if (t==null)
+        {
+            StopCoroutine("WaitingDiePlayer");
+            startDetect = false;
+        }
+        if (startDetect==false&&t!=null)
         {
            StartCoroutine( WaitingDiePlayer(timeTodetect));
         }
@@ -166,13 +177,22 @@ public class EnnemiePatrol : MonoBehaviour
         print("start die");
         startDetect = true;
         yield return new WaitForSeconds(time);
-        if (_DetectPlayer==player)
+        if (_DetectPlayer==player&&startDetect==true)
         {
             print("hummm i kill you");
+            if (EventController.gameLoose!=null)
+            {
+                EventController.gameLoose();
+            }
         }
         startDetect = false;
     }
 
+    void GetSettingData(float speed, float ennemydetect, bool autofocuse, bool vibration)
+    {
+        timeTodetect = ennemydetect;
+
+    }
 }
 
 

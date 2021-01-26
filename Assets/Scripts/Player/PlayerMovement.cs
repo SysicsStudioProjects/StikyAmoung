@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     public float speedRotation;
     private void OnEnable()
     {
+        if (PlayerPrefs.HasKey("speed"))
+        {
+            playerSpeed = PlayerPrefs.GetFloat("speed");
+        }
         EventController.canKill += ChangeTarget;
         EventController.sendSettingData += GetSettingData;
     }
@@ -35,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
+        Application.targetFrameRate = 30;
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {

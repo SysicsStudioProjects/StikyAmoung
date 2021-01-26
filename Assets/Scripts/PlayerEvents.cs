@@ -18,6 +18,32 @@ public class PlayerEvents : MonoBehaviour
     // Start is called before the first frame update
     private void OnEnable()
     {
+		if (PlayerPrefs.HasKey("auto"))
+		{
+			int a = PlayerPrefs.GetInt("auto");
+			if (a == -1)
+			{
+				AutoFocuse = false;
+
+			}
+			else
+			{
+				AutoFocuse = true;
+			}
+		}
+		if (PlayerPrefs.HasKey("vibration"))
+		{
+			int a = PlayerPrefs.GetInt("vibration");
+			if (a == -1)
+			{
+				vibration = false;
+
+			}
+			else
+			{
+				AutoFocuse = true;
+			}
+		}
 		EventController.startKillEvent += Kill;
 		EventController.sendSettingData += GetSettingData;
 	}
