@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class manegerSkins : MonoBehaviour
@@ -14,20 +15,25 @@ public class manegerSkins : MonoBehaviour
     public List<Button> buttons;
     public List<Button> buttonsBuy;
     public List<GameObject> p;
+    public Sprite EnabledSprite;
+    public Sprite DisabledSprite;
+    public Text CoinsText;
     private void Start()
     {
-        
+        CoinsText.text = Singleton._instance.coins.ToString();
     }
 
     public void skinStart()
     {
         listSkin("hat");
-        player.transform.position = posShop.position;
+        // player.transform.position = posShop.position;
+        player.SetActive(true);
     }
 
     public void skinEnd()
     {
-        player.transform.position = posStart.position;
+        //player.transform.position = posStart.position;
+        player.SetActive(false);
     }
 
     public void buyStart()
@@ -44,10 +50,10 @@ public class manegerSkins : MonoBehaviour
     {
         foreach (Button b in buttons)
         {
-            if(b.name==type+"Button")
-                b.gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f);
+            if (b.name == type + "Button")
+                b.gameObject.GetComponent<Image>().sprite = EnabledSprite;
             else
-                b.gameObject.GetComponent<Image>().color = Color.white;
+                b.gameObject.GetComponent<Image>().sprite = DisabledSprite;
         }
         posWatch();
         listVide();
@@ -117,6 +123,10 @@ public class manegerSkins : MonoBehaviour
                 }
             }
         }
+    }
+    public void LoadScene(string SceneName)
+    {
+        SceneManager.LoadScene(SceneName);
     }
 }
 

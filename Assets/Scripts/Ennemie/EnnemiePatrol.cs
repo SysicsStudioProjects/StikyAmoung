@@ -17,15 +17,22 @@ public class EnnemiePatrol : MonoBehaviour
     public Animator anim;
     Transform player;
     public GameObject ParticulePortal;
-    public GameObject DeathPlayer;
+    
     public bool focuseToPlayer;
     public Pathe pathe;
     public float timeTodetect;
 
     public Transform _DetectPlayer;
+
+    public SkinnedMeshRenderer BodyRendered;
+    public SkinnedMeshRenderer HandLeftRendere;
+    public SkinnedMeshRenderer HandRightRendere;
+
+    public Color MaterialColor;
     // Start is called before the first frame update
     private void OnEnable()
     {
+        SetupMaterial();
         if (PlayerPrefs.HasKey("detect"))
         {
             timeTodetect = PlayerPrefs.GetFloat("detect");
@@ -48,6 +55,14 @@ public class EnnemiePatrol : MonoBehaviour
 
 
     }
+    void SetupMaterial()
+    {
+        var block = new MaterialPropertyBlock();
+        block.SetColor("_BaseColor", MaterialColor);
+        BodyRendered.materials[0].color = MaterialColor;
+        HandLeftRendere.SetPropertyBlock(block);
+        HandRightRendere.SetPropertyBlock(block);
+    }
     private void Start()
     {
 
@@ -57,6 +72,16 @@ public class EnnemiePatrol : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (_DetectPlayer!=null)
+        {
+            agent.enabled = false;
+            return;
+
+        }
+        else
+        {
+            agent.enabled = true;
+        }
         if (focuseToPlayer&&targetPlayer==player.transform)
         {
             
@@ -162,11 +187,14 @@ public class EnnemiePatrol : MonoBehaviour
         _DetectPlayer = t;
         if (t==null)
         {
+            
+
             StopCoroutine("WaitingDiePlayer");
             startDetect = false;
         }
         if (startDetect==false&&t!=null)
         {
+          
            StartCoroutine( WaitingDiePlayer(timeTodetect));
         }
      
@@ -179,7 +207,7 @@ public class EnnemiePatrol : MonoBehaviour
         yield return new WaitForSeconds(time);
         if (_DetectPlayer==player&&startDetect==true)
         {
-            print("hummm i kill you");
+            anim.SetTrigger("angry");
             if (EventController.gameLoose!=null)
             {
                 EventController.gameLoose();

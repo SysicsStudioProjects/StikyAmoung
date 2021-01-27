@@ -35,4 +35,17 @@ public static class SaveLoad
             return null;
         }
     }
+
+    public static bool verifPath()
+    {
+        string path = Application.persistentDataPath + "/player.data";
+        if (File.Exists(path))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

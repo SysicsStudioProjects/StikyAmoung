@@ -7,7 +7,9 @@ public class DeadEvent : MonoBehaviour
     bool isclicked;
     public Rigidbody rb;
     float speed;
-   
+
+    public MeshRenderer UP;
+    public MeshRenderer Down;
     private void Start()
     {
         speed = Random.Range(50, 100);
@@ -54,5 +56,12 @@ public class DeadEvent : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         rb.isKinematic = true;
+    }
+
+    public void SetColor(Color c)
+    {
+        UP.materials[0].color = c;
+        Down.materials[1].color = c;
+
     }
 }

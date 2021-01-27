@@ -8,6 +8,7 @@ public class Singleton : MonoBehaviour
     #region data
     public int level;
     public int coins;
+    
     public bool sound;
     public Skins skins;
     #endregion
@@ -16,6 +17,7 @@ public class Singleton : MonoBehaviour
     public void save()
     {
         SaveLoad.save(this);
+        load();
     }
     public void load()
     {
@@ -40,7 +42,17 @@ public class Singleton : MonoBehaviour
     #endregion
     private void OnEnable()
     {
-        load();
+        bool verif = SaveLoad.verifPath();
+        if (verif)
+        {
+            load();
+
+        }
+        else
+        {
+            save();
+        }
+        
     }
 
     void Awake()
