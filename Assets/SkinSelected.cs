@@ -8,11 +8,19 @@ public class SkinSelected : MonoBehaviour
 
     public Skin GlassesSkin;
     public Skin HatSkin;
-
+    public Skin MaterialSkin;
     public List<GameObject> GlasesObject;
     public List<GameObject> HatObject;
+    public List<SkinnedMeshRenderer> SkinsObjetcs;
 
+    public List<Material> UsefulMaterial;
     public Skins skins;
+
+    public List<GameObject> Weopen;
+    public Skin WeopenSkin;
+
+    public List<GameObject> Pet;
+    public Skin PetSkin;
 
     private void OnEnable()
     {
@@ -44,8 +52,18 @@ public class SkinSelected : MonoBehaviour
                     }
                     break;
                 case SkinType.bette:
+                    if (item.state == SkinState.useIt)
+                    {
+                        PetSkin = item;
+                        SetupSkin(Pet, PetSkin);
+                    }
                     break;
                 case SkinType.skin:
+                    if (item.state==SkinState.useIt)
+                    {
+                        MaterialSkin = item;
+                        SetupMaterial();
+                    }
                     break;
                 case SkinType.glasse:
                     if (item.state==SkinState.useIt)
@@ -55,6 +73,11 @@ public class SkinSelected : MonoBehaviour
                     }
                     break;
                 case SkinType.wap:
+                    if (item.state == SkinState.useIt)
+                    {
+                        WeopenSkin = item;
+                        SetupSkin(Weopen, WeopenSkin);
+                    }
                     break;
                 default:
                     break;
@@ -68,6 +91,17 @@ public class SkinSelected : MonoBehaviour
         
     }
 
+    void SetupMaterial()
+    {
+        int index = UsefulMaterial.FindIndex(d => d.name == MaterialSkin.name);
+        foreach (var item in SkinsObjetcs)
+        {
+            if (index!=-1)
+            {
+                item.material = UsefulMaterial[index];
+            }
+        }
+    }
      void SetSkin(Skin s)
     {
         switch (s.type)
@@ -77,14 +111,22 @@ public class SkinSelected : MonoBehaviour
                 SetupSkin(HatObject,HatSkin);
                 break;
             case SkinType.bette:
+                PetSkin = s;
+                SetupSkin(Pet, PetSkin);
                 break;
             case SkinType.skin:
+                
+                    MaterialSkin = s;
+                    SetupMaterial();
+                
                 break;
             case SkinType.glasse:
                 GlassesSkin = s;
                 SetupSkin(GlasesObject,GlassesSkin);
                 break;
             case SkinType.wap:
+                WeopenSkin = s;
+                SetupSkin(Weopen, WeopenSkin);
                 break;
             default:
                 break;
