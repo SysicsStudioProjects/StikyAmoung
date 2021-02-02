@@ -22,6 +22,10 @@ public class SkinSelected : MonoBehaviour
     public List<GameObject> Pet;
     public Skin PetSkin;
 
+    public bool Isplaying;
+    public List<GameObject> PetPrefabs;
+
+    public Transform PetPos;
     private void OnEnable()
     {
         init();
@@ -55,7 +59,15 @@ public class SkinSelected : MonoBehaviour
                     if (item.state == SkinState.useIt)
                     {
                         PetSkin = item;
-                        SetupSkin(Pet, PetSkin);
+                        if (Isplaying)
+                        {
+                            SetupSkinPrefab(PetPrefabs, PetSkin);
+                        }
+                        else
+                        {
+                            SetupSkin(Pet, PetSkin);
+
+                        }
                     }
                     break;
                 case SkinType.skin:
@@ -134,12 +146,12 @@ public class SkinSelected : MonoBehaviour
         // GlassesSkin = s;
 
     }
-
+    
     void SetupSkin(List<GameObject> objects,Skin s)
     {
         foreach (var item in objects)
         {
-            if (item.name==s.name)
+            if (item.name == s.name)
             {
                 item.SetActive(true);
             }
@@ -148,6 +160,23 @@ public class SkinSelected : MonoBehaviour
                 item.SetActive(false);
             }
         }
+    }
+
+    void SetupSkinPrefab(List<GameObject> objects, Skin s)
+    {
+        foreach (var item in objects)
+        {
+            if (item.name == s.name)
+            {
+                GameObject obj = Instantiate(item, transform.position , Quaternion.identity);
+                obj.GetComponent<FollowPlayer>().Settarget(transform);
+            }
+            else
+            {
+                item.SetActive(false);
+            }
+        }
+       
     }
 
 }
