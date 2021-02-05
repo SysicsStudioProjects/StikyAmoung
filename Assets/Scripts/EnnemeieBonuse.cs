@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.AI;
 public class EnnemeieBonuse : MonoBehaviour
@@ -66,15 +65,15 @@ public class EnnemeieBonuse : MonoBehaviour
     }
     private void OnDisable()
     {
-       
-    }
-    private void OnDestroy()
-    {
-       
         if (EventController.ennemieDown != null)
         {
             EventController.ennemieDown(null);
         }
 
+    }
+    private void OnDestroy()
+    {
+       
+        
     }
 }

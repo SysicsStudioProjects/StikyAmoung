@@ -35,7 +35,7 @@ public class CameraShake : MonoBehaviour
     IEnumerator startShake()
     {
         cinemachineBasic.m_AmplitudeGain = LeanTween.linear(0, 1, 1f);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         cinemachineBasic.m_AmplitudeGain = LeanTween.linear(1, 0, 1f);
     }
 }

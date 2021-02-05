@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -24,23 +24,29 @@ public class GameControl : MonoBehaviour
     public int AllCoins;
     public int LevelIndex;
     public Text LevelTextIndex;
+    public GameObject AllCanvas;
     private void OnEnable()
     {
         Time.timeScale = 1;
-        if (LevelBonuse)
-        {
-            EventController.levelBonuseFinished += LevelBonuseFinished;
-            coinsValue*=  2;
-            if (EventController.isBonuceLevel!=null)
-            {
-                EventController.isBonuceLevel(true);
-            }
-        }
+        
         EventController.ennemieDown += EnnemieDown;
         EventController.gameLoose += GameLoose;
         AllennemieText.text = "/"+alleennemie.ToString();
         EnnemieDieText.text = NBkill.ToString();
         InitCoin();
+        EventController.gameStart += GameStart;
+    }
+    private void Start()
+    {
+        if (LevelBonuse)
+        {
+            EventController.levelBonuseFinished += LevelBonuseFinished;
+            coinsValue *= 2;
+            if (EventController.isBonuceLevel != null)
+            {
+                EventController.isBonuceLevel(true);
+            }
+        }
     }
     private void OnDisable()
     {
@@ -50,6 +56,7 @@ public class GameControl : MonoBehaviour
         }
         EventController.ennemieDown -= EnnemieDown;
         EventController.gameLoose -= GameLoose;
+        EventController.gameStart -= GameStart;
     }
     // Start is called before the first frame update
     void InitCoin()
@@ -131,19 +138,25 @@ public class GameControl : MonoBehaviour
 
     void GameLoose()
     {
-        
-        StartCoroutine(LevelLoose());
+        Time.timeScale = 0;
+        LoosePanel.SetActive(true);
+        //StartCoroutine(LevelLoose());
     }
 
     IEnumerator LevelLoose()
     {
-        Time.timeScale = 0;
-        LoosePanel.SetActive(true);
+       
         yield return new WaitForSecondsRealtime(1);
        
     }
     public void LoadScene(string SceneName)
     {
         SceneManager.LoadScene(SceneName);
+    }
+
+    void GameStart()
+    {
+        print("Game started");
+        AllCanvas.SetActive(true);
     }
 }

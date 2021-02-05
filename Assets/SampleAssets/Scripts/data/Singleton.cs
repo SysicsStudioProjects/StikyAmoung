@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
-
+using UnityEngine.Rendering;
 public class Singleton : MonoBehaviour
 {
     public static Singleton _instance;
@@ -57,7 +56,12 @@ public class Singleton : MonoBehaviour
 
     void Awake()
     {
-        
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+        // When the Menu starts, set the rendering to target 20fps
+        OnDemandRendering.renderFrameInterval = 3;
+
+
         if (_instance == null)
         {
 
@@ -75,9 +79,26 @@ public class Singleton : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+
+   
+
+    public void Update()
     {
-        
+       /* if (Input.GetMouseButton(0) || (Input.touchCount > 0))
+        {
+            
+            // If the mouse button or touch detected render at 60 FPS (every frame).
+            OnDemandRendering.renderFrameInterval = 1;
+            Application.targetFrameRate = 30;
+        }
+        else
+        {
+            // If there is no mouse and no touch input then we can go back to 20 FPS (every 3 frames).
+            OnDemandRendering.renderFrameInterval = 3;
+            Application.targetFrameRate = 30;
+
+        }*/
     }
+    // Update is called once per frame
+    
 }

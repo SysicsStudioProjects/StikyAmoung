@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnnemiePatrol : MonoBehaviour
 {
+    Renderer m_Renderer;
     public int indexPoint;
     public int EnnemieId;
     public NavMeshAgent agent;
@@ -27,11 +27,18 @@ public class EnnemiePatrol : MonoBehaviour
     public SkinnedMeshRenderer BodyRendered;
     public SkinnedMeshRenderer HandLeftRendere;
     public SkinnedMeshRenderer HandRightRendere;
+    public FieldOfView view;
+    [HideInInspector]
+    public bool IsGameStart;
+
+    public GameObject Field;
+    public GameObject PortalDown;
 
     public Color MaterialColor;
     // Start is called before the first frame update
     private void OnEnable()
     {
+       
         SetupMaterial();
         if (PlayerPrefs.HasKey("detect"))
         {
@@ -45,14 +52,25 @@ public class EnnemiePatrol : MonoBehaviour
         {
             ToNextPoint();
         }
+        EventController.setPlayer += GetPlayer;
+        EventController.gameStart += GameStart;
+
     }
 
     private void OnDisable()
     {
+        StopCoroutine("WaitingDiePlayer");
+        startDetect = false;
         EventController.sendPath -= SetPoints;
         EventController.canKill -= ChangeTarget;
         EventController.sendSettingData -= GetSettingData;
-
+        pathe.isAlive = false;
+        if (EventController.ennemieDown != null)
+        {
+            EventController.ennemieDown(this);
+        }
+        EventController.setPlayer -= GetPlayer;
+        EventController.gameStart -= GameStart;
 
     }
     void SetupMaterial()
@@ -72,6 +90,21 @@ public class EnnemiePatrol : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (IsGameStart==false)
+        {
+            return;
+        }
+        if (BodyRendered.isVisible)
+        {
+            anim.enabled = true;
+            view.enabled = true;
+        }
+        else
+        {
+            anim.enabled = false;
+            view.enabled = false;
+
+        }
         if (_DetectPlayer!=null)
         {
             agent.enabled = false;
@@ -80,11 +113,12 @@ public class EnnemiePatrol : MonoBehaviour
         }
         else
         {
+            startDetect = false;
             agent.enabled = true;
         }
         if (focuseToPlayer&&targetPlayer==player.transform)
         {
-            
+            print("we are here");
             agent.enabled = false;
             Vector3 dir = player.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(dir);
@@ -137,33 +171,34 @@ public class EnnemiePatrol : MonoBehaviour
     }
 
     bool startFocuseToPlayer;
-    void ChangeTarget(Transform t)
+    void ChangeTarget(Transform t,float f)
     {
 
         if (t==transform)
         {
             targetPlayer = player;
-            //startFocuseToPlayer = true;
+           // focuseToPlayer = true;
 
             ParticulePortal.SetActive(true);
-
+           //Here will make focuseToPlayer true with the timeline
 
         }
         else
         {
             targetPlayer = null;
+          
             agent.enabled = true;
-           /* if (EnnemieId!=-1)
-            {
+            /* if (EnnemieId!=-1)
+             {
 
-                if (target==player)
-                {
-                    target = points[indexPoint];
-                }
-            }*/
+                 if (target==player)
+                 {
+                     target = points[indexPoint];
+                 }
+             }*/
 
 
-            // startFocuseToPlayer = false;
+            focuseToPlayer = false;
             ParticulePortal.SetActive(false);
 
         }
@@ -171,14 +206,18 @@ public class EnnemiePatrol : MonoBehaviour
     }
 
 
-    private void OnDestroy()
+   IEnumerator RotateToplayer()
     {
-        pathe.isAlive = false;
-        if (EventController.ennemieDown != null)
+        yield return new WaitForSeconds(2);
+        if (targetPlayer==player)
         {
-            EventController.ennemieDown(this);
+            focuseToPlayer = true;
         }
-        
+        else
+        {
+            focuseToPlayer = false;
+        }
+    
     }
 
     bool startDetect;
@@ -192,26 +231,38 @@ public class EnnemiePatrol : MonoBehaviour
             StopCoroutine("WaitingDiePlayer");
             startDetect = false;
         }
-        if (startDetect==false&&t!=null)
+       else if (startDetect==false&&t!=null)
         {
           
            StartCoroutine( WaitingDiePlayer(timeTodetect));
+            startDetect = true;
         }
+        
      
     }
 
     IEnumerator WaitingDiePlayer(float time)
     {
         print("start die");
-        startDetect = true;
+        
         yield return new WaitForSeconds(time);
         if (_DetectPlayer==player&&startDetect==true)
         {
-            anim.SetTrigger("angry");
-            if (EventController.gameLoose!=null)
-            {
-                EventController.gameLoose();
-            }
+
+            ValidateDetected();
+        }
+        
+    }
+    void ValidateDetected()
+    {
+        if (_DetectPlayer==null||startDetect==false)
+        {
+            return;
+        }
+        anim.SetTrigger("angry");
+        if (EventController.gameLoose != null)
+        {
+            EventController.gameLoose();
         }
         startDetect = false;
     }
@@ -220,6 +271,21 @@ public class EnnemiePatrol : MonoBehaviour
     {
         timeTodetect = ennemydetect;
 
+    }
+
+    void GetPlayer(Transform p)
+    {
+        player = p;
+    }
+    void GameStart()
+    {
+        IsGameStart = true;
+        Field.SetActive(true);
+        PortalDown.SetActive(true);
+        if (EnnemieId < 0 && pathe.Points.Count > 0)
+        {
+            ToNextPoint();
+        }
     }
 }
 

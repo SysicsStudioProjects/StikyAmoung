@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -43,9 +42,9 @@ public class PlayerMovement : MonoBehaviour
       
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        Application.targetFrameRate = 30;
+        //Application.targetFrameRate = 30;
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -54,29 +53,32 @@ public class PlayerMovement : MonoBehaviour
 
         //mo= new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         Vector3 move = MovementController.Move();
-        controller.Move(move * Time.deltaTime * playerSpeed);
+       
 
         anim.SetFloat("speed", Mathf.Abs(move.magnitude * Time.deltaTime * playerSpeed));
         if (move!=Vector3.zero)
         {
             if (move.magnitude>0.8)
             {
-                anim.speed = 2;
+                anim.speed = 1.5f;
+                playerSpeed = 8;
             }
             if (move.magnitude<0.8&&move.magnitude>0.3)
             {
                 anim.speed = 1;
+                playerSpeed = 12;
             }
-            if (move.magnitude<=0.3&&move.magnitude>0.1f)
+            if (move.magnitude<=0.3&&move.magnitude>0.05f)
             {
-                anim.speed = 0.3f;
+                anim.speed = 0.8f;
+                playerSpeed =15;
             }
             if (move.magnitude<=0.01)
             {
                 anim.speed = 1;
             }
-
-           // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
+            controller.Move(move * Time.deltaTime * playerSpeed);
+            // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
         }
         else
         {
@@ -110,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
       
     }
 
-        void ChangeTarget(Transform t)
+        void ChangeTarget(Transform t,float raduis)
     {
         if (t==null)
         {

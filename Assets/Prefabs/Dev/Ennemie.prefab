@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &768491244
 Transform:
   m_ObjectHideFlags: 0
@@ -147,7 +147,7 @@ PlayableDirector:
   - key: {fileID: -6049951276038968396, guid: f5c8f102502784b498494c594fdc3595, type: 2}
     value: {fileID: 801220532}
   - key: {fileID: 3432799027526644105, guid: f5c8f102502784b498494c594fdc3595, type: 2}
-    value: {fileID: 657101132}
+    value: {fileID: 774274105043804955}
   m_ExposedReferences:
     m_References: []
 --- !u!95 &801220532
@@ -1404,10 +1404,9 @@ GameObject:
   - component: {fileID: 7803537578724190913}
   - component: {fileID: 1986262557}
   - component: {fileID: 1986262558}
-  - component: {fileID: 1986262560}
-  - component: {fileID: 657101132}
   - component: {fileID: 657101136}
   - component: {fileID: 6736583918725573499}
+  - component: {fileID: 774274105043804955}
   m_Layer: 0
   m_Name: Ennemie
   m_TagString: Ennemie
@@ -1461,6 +1460,10 @@ MonoBehaviour:
   BodyRendered: {fileID: 473333655389513102}
   HandLeftRendere: {fileID: 12757083426537565}
   HandRightRendere: {fileID: 1778524797078872194}
+  view: {fileID: 657101136}
+  IsGameStart: 0
+  Field: {fileID: 768491240}
+  PortalDown: {fileID: 8326260964664413026}
   MaterialColor: {r: 0, g: 1, b: 0.10293555, a: 1}
 --- !u!195 &1986262558
 NavMeshAgent:
@@ -1484,39 +1487,6 @@ NavMeshAgent:
   m_BaseOffset: 0.78
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!136 &1986262560
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7803537578724190914}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 1.2993644
-  m_Height: 2.598729
-  m_Direction: 1
-  m_Center: {x: -0.11421896, y: 0.14277124, z: -0.27741706}
---- !u!95 &657101132
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7803537578724190914}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &657101136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1558,6 +1528,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5082254, y: 1.5482388, z: 1.4270407}
   m_Center: {x: -0.019006252, y: 0.155056, z: -0.21352035}
+--- !u!95 &774274105043804955
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803537578724190914}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7950691610109159055
 GameObject:
   m_ObjectHideFlags: 0
@@ -6350,7 +6339,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8326260964664067492
 Transform:
   m_ObjectHideFlags: 0

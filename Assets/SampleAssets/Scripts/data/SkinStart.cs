@@ -46,7 +46,7 @@ public class SkinStart : MonoBehaviour
         {
             useButton.SetActive( false);
             watchButton.SetActive( true);
-            buyButton.SetActive( false);
+            buyButton.SetActive( true);
         }
         else if (skin.state == SkinState.none)
         {

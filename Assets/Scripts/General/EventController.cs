@@ -4,10 +4,13 @@ using UnityEngine;
 
 public static class EventController
 {
+    public delegate void GameStart();
+    public static GameStart gameStart;
+
     public delegate void SendPath(Pathe p);
     public static SendPath sendPath;
 
-    public delegate void CanKill(Transform t);
+    public delegate void CanKill(Transform t,float raduis);
     public static CanKill canKill;
 
     public delegate void StartKillEvent();
@@ -33,4 +36,7 @@ public static class EventController
 
     public delegate void UseSkin(Skin s);
     public static UseSkin useSkin;
+
+    public delegate void SetPlayer(Transform p);
+    public static SetPlayer setPlayer;
 }
