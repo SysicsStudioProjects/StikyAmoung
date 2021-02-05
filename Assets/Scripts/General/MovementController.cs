@@ -35,7 +35,7 @@ public class MovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Application.targetFrameRate = 30;
+       // Application.targetFrameRate = 30;
         if (stopMvt == true)
         {
 
@@ -68,7 +68,7 @@ public class MovementController : MonoBehaviour
         return _move;
     }
 
-    void ChangeButtonBehavior(Transform t)
+    void ChangeButtonBehavior(Transform t,float f)
     {
         if (t==null)
         {
@@ -76,7 +76,15 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            KillButton.interactable = true;
+            if (f<=2)
+            {
+                KillButton.interactable = true;
+            }
+            else
+            {
+                KillButton.interactable = false;
+            }
+           
         }
     }
 

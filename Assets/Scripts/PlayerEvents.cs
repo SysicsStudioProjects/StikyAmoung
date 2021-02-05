@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class PlayerEvents : MonoBehaviour
@@ -20,6 +20,11 @@ public class PlayerEvents : MonoBehaviour
     // Start is called before the first frame update
     private void OnEnable()
     {
+        if (EventController.setPlayer!=null)
+        {
+			EventController.setPlayer(transform);
+		}
+		
 		EventController.isBonuceLevel += VerifeLevel;
 		if (PlayerPrefs.HasKey("auto"))
 		{
@@ -102,7 +107,7 @@ public class PlayerEvents : MonoBehaviour
         {
 			if (EventController.canKill != null)
 			{
-				EventController.canKill(target);
+				EventController.canKill(target, shortestDistance);
 			}
 		}
         
@@ -132,7 +137,7 @@ public class PlayerEvents : MonoBehaviour
 			StartCoroutine(SlowTime());
 			if (EventController.canKill != null)
 			{
-				EventController.canKill(null);
+				EventController.canKill(null,0);
 			}
 			if (vibration)
             {
@@ -141,20 +146,19 @@ public class PlayerEvents : MonoBehaviour
 			
 			LookTotarget(1);
 
-			Destroy(target.gameObject, 0.2f);
+			//	StartCoroutine(DesactivateEnnemy(target.gameObject));
+			target.gameObject.SetActive(false);
 
-            if (isBonuceLevel)
-            {
-				GameObject obj = Instantiate(DeathBonucePlayer, target.position, transform.rotation);
-				obj.GetComponent<DeadEvent>().SetColor(target.GetComponent<EnnemeieBonuse>().MaterialColor);
-				Destroy(obj, 2);
+			 if (isBonuceLevel)
+			  {
+				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemeieBonuse>().MaterialColor, target);
 			}
-            else
-            {
-				GameObject obj = Instantiate(DeathPlayer, target.position, transform.rotation);
-				obj.GetComponent<DeadEvent>().SetColor(target.GetComponent<EnnemiePatrol>().MaterialColor);
-				Destroy(obj, 2);
+			  else
+			  {
+				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemiePatrol>().MaterialColor, target);
 			}
+
+			
 		
 			
 		}
@@ -193,5 +197,11 @@ public class PlayerEvents : MonoBehaviour
 	void VerifeLevel(bool b)
     {
 		isBonuceLevel = b;
+    }
+
+	IEnumerator DesactivateEnnemy(GameObject obj)
+    {
+		yield return new WaitForSeconds(0.2f);
+		obj.SetActive(false);
     }
 }

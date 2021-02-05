@@ -30,7 +30,7 @@ public class FieldOfView : MonoBehaviour {
 		viewMesh.name = "View Mesh";
 		viewMeshFilter.mesh = viewMesh;
 
-		StartCoroutine ("FindTargetsWithDelay", .2f);
+		StartCoroutine ("FindTargetsWithDelay", 0.02f);
 	}
 
 
@@ -43,7 +43,11 @@ public class FieldOfView : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		DrawFieldOfView ();
+        if (ennemieEvent.IsGameStart)
+        {
+			DrawFieldOfView();
+		}
+		
 	}
 
 	void FindVisibleTargets() {
@@ -55,6 +59,12 @@ public class FieldOfView : MonoBehaviour {
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
 			if (Vector3.Angle (transform.forward, dirToTarget) < viewAngle / 2) {
 				float dstToTarget = Vector3.Distance (transform.position, target.position);
+				
+                if (dstToTarget > viewRadius-1)
+                {
+					ennemieEvent.DetectPlayer(null);
+					return;
+                }
 				if (!Physics.Raycast (transform.position, dirToTarget, dstToTarget, obstacleMask)) {
 					visibleTargets.Add(target);
 					ennemieEvent.DetectPlayer(target);

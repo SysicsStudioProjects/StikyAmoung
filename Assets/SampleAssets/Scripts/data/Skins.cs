@@ -21,6 +21,7 @@ public class Skin
     public Sprite icon;
     public bool toWatch;
     public int nbWatch;
+    public bool inProgress;
 }
 
 [CreateAssetMenu(fileName ="skins",menuName ="skins")]

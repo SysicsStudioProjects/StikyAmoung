@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 using UnityEngine.UI;
 
 public class manegerSkins : MonoBehaviour
@@ -59,7 +59,7 @@ public class manegerSkins : MonoBehaviour
         listVide();
         foreach(Skin s in skins.allSkins)
         {
-            if (s.type.ToString() == type &&s.state!=SkinState.none)
+            if (s.type.ToString() == type )
             {
                 GameObject child = Instantiate(skinPrefab, parent);
                 if (s.toWatch) {
@@ -124,9 +124,14 @@ public class manegerSkins : MonoBehaviour
             }
         }
     }
-    public void LoadScene(string SceneName)
+    public void LoadScene()
     {
-        SceneManager.LoadScene(SceneName);
+        //  SceneManager.LoadScene(SceneName);
+        if (EventController.gameStart!=null)
+        {
+            EventController.gameStart();
+        }
+        this.gameObject.SetActive(false);
     }
 }
 
