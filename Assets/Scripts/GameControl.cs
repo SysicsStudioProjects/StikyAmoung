@@ -27,6 +27,7 @@ public class GameControl : MonoBehaviour
     public GameObject AllCanvas;
     private void OnEnable()
     {
+        
         Time.timeScale = 1;
         
         EventController.ennemieDown += EnnemieDown;
@@ -149,14 +150,34 @@ public class GameControl : MonoBehaviour
         yield return new WaitForSecondsRealtime(1);
        
     }
-    public void LoadScene(string SceneName)
+    public void LoadScene()
     {
-        SceneManager.LoadScene(SceneName);
+        Scene scene = SceneManager.GetActiveScene();
+        int buildIndex = scene.buildIndex;
+        
+        if (buildIndex==SceneManager.sceneCountInBuildSettings-1)
+        {
+            buildIndex = 0;
+            SceneManager.LoadScene(buildIndex);
+        }
+        else
+        {
+            SceneManager.LoadScene(buildIndex + 1);
+        }
+        
     }
 
     void GameStart()
     {
         print("Game started");
         AllCanvas.SetActive(true);
+    }
+
+    public void RestartScene()
+    {
+
+        Scene scene = SceneManager.GetActiveScene();
+        int buildIndex = scene.buildIndex;
+        SceneManager.LoadScene(buildIndex);
     }
 }

@@ -16,6 +16,8 @@ public class PlayerEvents : MonoBehaviour
 	public bool vibration;
 
 	bool isBonuceLevel;
+
+	public static WeopenType weopenType;
 	
     // Start is called before the first frame update
     private void OnEnable()
@@ -105,14 +107,20 @@ public class PlayerEvents : MonoBehaviour
 		}
         if (stopKilling==false)
         {
-			if (EventController.canKill != null)
-			{
-				EventController.canKill(target, shortestDistance);
+            if (switchTarget!=null)
+            {
+				if (EventController.canKill != null)
+				{
+					EventController.canKill(target, shortestDistance);
+				}
 			}
+			switchTarget = target;
+
+
 		}
         
 	}
-
+	Transform switchTarget;
 	void LookTotarget(float speedrotate)
     {
 		 Vector3 dir = target.position - transform.position;
@@ -124,12 +132,28 @@ public class PlayerEvents : MonoBehaviour
 
 	void Kill()
     {
-		anim.SetTrigger("attack");
+        switch (weopenType)
+        {
+            case WeopenType.none:
+				anim.SetTrigger("attack");
+				break;
+            case WeopenType.Knife:
+				anim.SetTrigger("attackknife");
+
+				break;
+            case WeopenType.Disc:
+				anim.SetTrigger("attackdisc");
+
+				break;
+            default:
+                break;
+        }
+        
 		
 
     }
 	bool stopKilling;
-	public void KillEvent()
+	public void KillEvent(Transform t)
     {
         if (target!=null)
         {
@@ -162,7 +186,32 @@ public class PlayerEvents : MonoBehaviour
 		
 			
 		}
-		
+        if (t!=null)
+        {
+			
+			if (EventController.canKill != null)
+			{
+				EventController.canKill(null, 0);
+			}
+			if (vibration)
+			{
+				Handheld.Vibrate();
+			}
+
+			
+
+			//	StartCoroutine(DesactivateEnnemy(target.gameObject));
+			t.gameObject.SetActive(false);
+
+			if (isBonuceLevel)
+			{
+				EnnemieDeathController._instance.ActivateEnnemie(t.GetComponent<EnnemeieBonuse>().MaterialColor, t);
+			}
+			else
+			{
+				EnnemieDeathController._instance.ActivateEnnemie(t.GetComponent<EnnemiePatrol>().MaterialColor, t);
+			}
+		}
 	}
 	IEnumerator SlowTime()
     {
@@ -205,3 +254,6 @@ public class PlayerEvents : MonoBehaviour
 		obj.SetActive(false);
     }
 }
+
+
+public enum WeopenType {none,Knife,Disc }

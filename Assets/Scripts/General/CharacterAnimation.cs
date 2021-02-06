@@ -7,7 +7,10 @@ public class CharacterAnimation : MonoBehaviour
     public GameObject Hands;
     public PlayerEvents playerEvents;
     public AudioSource audio;
-    
+
+    public GameObject DiscObject;
+
+    public GameObject DiscPrfab;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +25,11 @@ public class CharacterAnimation : MonoBehaviour
 
     public void DisableHands()
     {
-        Hands.SetActive(false);
+        if (PlayerEvents.weopenType==WeopenType.none)
+        {
+            Hands.SetActive(false);
+        }
+       
     }
     public void ActivateHands()
     {
@@ -35,11 +42,38 @@ public class CharacterAnimation : MonoBehaviour
         Hands.SetActive(true);
         if (playerEvents!=null)
         {
-            playerEvents.KillEvent();
+            playerEvents.KillEvent(null);
         }
       
        
         
+    }
+
+    public void KnifeKill()
+    {
+        if (playerEvents != null)
+        {
+            playerEvents.KillEvent(null);
+        }
+    }
+
+    public void DiscKill()
+    {
+        Transform Target = playerEvents.target;
+        DiscObject.SetActive(false);
+        StartCoroutine(ReturnShootbaleObj(DiscObject));
+        GameObject obj = Instantiate(DiscPrfab, DiscObject.transform.position, Quaternion.identity);
+        obj.GetComponent<ShootBale>().SetTarget(Target,transform.forward,playerEvents);
+        if (playerEvents != null)
+        {
+            playerEvents.KillEvent(null);
+        }
+    }
+
+    IEnumerator ReturnShootbaleObj(GameObject obj)
+    {
+        yield return new WaitForSeconds(0.3f);
+        obj.SetActive(true);
     }
     public void WalkSound()
     {

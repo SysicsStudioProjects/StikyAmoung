@@ -27,6 +27,7 @@ public class Singleton : MonoBehaviour
             coins = data.coins;
             sound = data.sound;
             //skins = data.skins;
+            
             if (data.nbWatch != null)
             {
                 for (int i = 0; i < data.nbWatch.Count; i++)
