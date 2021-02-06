@@ -14,6 +14,7 @@ public class SkinSelected : MonoBehaviour
     public List<SkinnedMeshRenderer> SkinsObjetcs;
 
     public List<Material> UsefulMaterial;
+    public Material DefaultSkin;
     public Skins skins;
 
     public List<GameObject> Weopen;
@@ -28,12 +29,24 @@ public class SkinSelected : MonoBehaviour
     public Transform PetPos;
     private void OnEnable()
     {
+        if (Isplaying)
+        {
+            InitRemove();
+        }
         init();
+       
         EventController.useSkin += SetSkin;
+        EventController.removeSkin += RemoveSKin;
     }
     private void OnDisable()
     {
         EventController.useSkin -= SetSkin;
+        EventController.removeSkin -= RemoveSKin;
+
+        if (PetFollow!=null)
+        {
+            Destroy(PetFollow);
+        }
 
     }
     // Start is called before the first frame update
@@ -88,8 +101,14 @@ public class SkinSelected : MonoBehaviour
                     if (item.state == SkinState.useIt)
                     {
                         WeopenSkin = item;
+                        Wepon(WeopenSkin);
                         SetupSkin(Weopen, WeopenSkin);
                     }
+                    if (item.name=="")
+                    {
+                        PlayerEvents.weopenType = WeopenType.none;
+                    }
+                    print(PlayerEvents.weopenType);
                     break;
                 default:
                     break;
@@ -97,10 +116,19 @@ public class SkinSelected : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+   void Wepon(Skin s)
     {
-        
+        switch (s.name)
+        {
+            case "Disc":
+                PlayerEvents.weopenType = WeopenType.Disc;
+                break;
+            case"Knife":
+                PlayerEvents.weopenType = WeopenType.Knife;
+                break;
+            default:
+                break;
+        }
     }
 
     void SetupMaterial()
@@ -162,13 +190,16 @@ public class SkinSelected : MonoBehaviour
         }
     }
 
+    GameObject PetFollow;
     void SetupSkinPrefab(List<GameObject> objects, Skin s)
     {
         foreach (var item in objects)
         {
             if (item.name == s.name)
             {
-                GameObject obj = Instantiate(item, transform.position , Quaternion.identity);
+                GameObject obj = Instantiate(item, PetPos.position , Quaternion.identity);
+                obj.SetActive(true);
+                PetFollow = obj;
                 obj.GetComponent<FollowPlayer>().Settarget(transform);
             }
             else
@@ -178,5 +209,94 @@ public class SkinSelected : MonoBehaviour
         }
        
     }
+    
+    void RemoveSKin(Skin s)
+    {
+        switch (s.type)
+        {
+            case SkinType.hat:
+                HatSkin = null;
+                SetupRemove(HatObject);
+                break;
 
+            case SkinType.bette:
+                PetSkin = null;
+                SetupRemove(Pet);
+
+
+                break;
+            case SkinType.skin:
+                MaterialSkin = null;
+                foreach (var item in SkinsObjetcs)
+                {
+                    
+                    
+                        item.material = DefaultSkin;
+                    
+                }
+                break;
+            case SkinType.glasse:
+                GlassesSkin = null;
+                SetupRemove(GlasesObject);
+                break;
+            case SkinType.wap:
+                WeopenSkin = null;
+                PlayerEvents.weopenType = WeopenType.none;
+                SetupRemove(Weopen);
+                break;
+            default:
+                break;
+        }
+      
+    }
+
+    void SetupRemove(List<GameObject> a)
+    {
+        foreach (var item in a)
+        {
+            item.SetActive(false);
+        }
+    }
+    void InitRemove()
+    {
+        if (GlassesSkin.state==SkinState.buyIt)
+        {
+            GlassesSkin = null;
+            SetupRemove(GlasesObject);
+        }
+        if (HatSkin.state== SkinState.buyIt)
+        {
+            HatSkin = null;
+            SetupRemove(HatObject);
+        }
+        if (PetSkin!=null)
+        {
+            if (PetSkin.state == SkinState.buyIt)
+            {
+                PetSkin = null;
+                Destroy(PetFollow);
+            }
+        }
+        else
+        {
+            Destroy(PetFollow);
+        }
+        
+        if (WeopenSkin.state==SkinState.buyIt)
+        {
+            WeopenSkin = null;
+            SetupRemove(Weopen);
+        }
+        if (MaterialSkin.state==SkinState.buyIt)
+        {
+            MaterialSkin = null;
+            foreach (var item in SkinsObjetcs)
+            {
+
+
+                item.material = DefaultSkin;
+
+            }
+        }
+    }
 }

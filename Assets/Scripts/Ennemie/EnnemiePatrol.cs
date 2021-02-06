@@ -42,7 +42,7 @@ public class EnnemiePatrol : MonoBehaviour
         SetupMaterial();
         if (PlayerPrefs.HasKey("detect"))
         {
-            timeTodetect = PlayerPrefs.GetFloat("detect");
+            //timeTodetect = PlayerPrefs.GetFloat("detect");
         }
         //Get Patrol points
         EventController.sendPath += SetPoints;

@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.UI;
+
+using UnityEngine.SceneManagement;
 public class ProgressManager : MonoBehaviour
 {
     public Skins skins;
@@ -63,13 +64,17 @@ public class ProgressManager : MonoBehaviour
         Skin a=null;
         foreach (var item in skins.allSkins)
         {
-            if (item.inProgress && item.nbWatch > 1)
+            if (item.state==SkinState.none)
             {
-                a = item;
-                a.nbWatch--;
-                return a;
-                
+                if (item.inProgress && item.nbWatch > 1)
+                {
+                    a = item;
+                    a.nbWatch--;
+                    return a;
+
+                }
             }
+           
         }
             
                 foreach (var s in skins.allSkins)
@@ -87,8 +92,27 @@ public class ProgressManager : MonoBehaviour
         
         if (a==null)
         {
+            LoadNextScene();
             this.gameObject.SetActive(false);
+            
         }
         return a;
     }
+
+    void LoadNextScene()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        int buildIndex = scene.buildIndex;
+        if (buildIndex == SceneManager.sceneCountInBuildSettings-1)
+        {
+            buildIndex = 0;
+            SceneManager.LoadScene(buildIndex);
+        }
+        else
+        {
+            SceneManager.LoadScene(buildIndex + 1);
+        }
+    }
+
+    
 }

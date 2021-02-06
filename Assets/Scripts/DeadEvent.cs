@@ -12,7 +12,7 @@ public class DeadEvent : MonoBehaviour
     public MeshRenderer Down;
     private void Start()
     {
-        speed = Random.Range(50, 100);
+        speed = Random.Range(20, 40);
         StartCoroutine(Retouche());
     }
   /*  #region UI

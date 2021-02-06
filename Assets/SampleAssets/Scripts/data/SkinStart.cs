@@ -7,7 +7,7 @@ public class SkinStart : MonoBehaviour
 {
     public Skin skin;
 
-    public GameObject useButton, watchButton, buyButton;
+    public GameObject useButton, watchButton, buyButton,removeButton;
     public Image image;
     public Text nbWatch;
 
@@ -47,6 +47,7 @@ public class SkinStart : MonoBehaviour
             useButton.SetActive( false);
             watchButton.SetActive( true);
             buyButton.SetActive( true);
+            removeButton.SetActive(false);
         }
         else if (skin.state == SkinState.none)
         {
@@ -54,6 +55,7 @@ public class SkinStart : MonoBehaviour
             useButton.SetActive (false);
             watchButton.SetActive( false);
             buyButton.SetActive( true);
+            removeButton.SetActive(false);
         }
         else if (skin.state == SkinState.useIt)
         {
@@ -61,6 +63,7 @@ public class SkinStart : MonoBehaviour
             useButton.SetActive( false);
             watchButton.SetActive( false);
             buyButton.SetActive( false);
+            removeButton.SetActive(true);
         }
         else if (skin.state == SkinState.buyIt)
         {
@@ -68,6 +71,7 @@ public class SkinStart : MonoBehaviour
             useButton.SetActive( true);
             watchButton.SetActive( false);
             buyButton.SetActive( false);
+            removeButton.SetActive(false);
         }
     }
     public void watch()
@@ -102,10 +106,27 @@ public class SkinStart : MonoBehaviour
     public void buy()
     {
         skin.state = SkinState.buyIt;
+        skin.toWatch = false;
         if (manegerSkins.changeSkinStat != null)
         {
             manegerSkins.changeSkinStat(skin);
             setButton();
+        }
+        Singleton._instance.save();
+    }
+
+    public void RemoveSkin()
+    {
+        skin.state = SkinState.buyIt;
+        if (manegerSkins.changeSkinStat != null)
+        {
+            manegerSkins.changeSkinStat(skin);
+            setButton();
+        }
+
+        if (EventController.removeSkin!=null)
+        {
+            EventController.removeSkin(skin);
         }
         Singleton._instance.save();
     }
@@ -123,6 +144,14 @@ public class SkinStart : MonoBehaviour
                 setButton();
             }
             
+        }
+    }
+
+    public void SwitchSkin()
+    {
+        if (EventController.switchKin!=null)
+        {
+            EventController.switchKin(skin);
         }
     }
 

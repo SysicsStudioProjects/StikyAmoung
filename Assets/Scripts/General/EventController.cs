@@ -37,6 +37,12 @@ public static class EventController
     public delegate void UseSkin(Skin s);
     public static UseSkin useSkin;
 
+    public delegate void RemoveSkin(Skin s);
+    public static RemoveSkin removeSkin;
+
     public delegate void SetPlayer(Transform p);
     public static SetPlayer setPlayer;
+
+    public delegate void SwitchKin(Skin s);
+    public static SwitchKin switchKin;
 }

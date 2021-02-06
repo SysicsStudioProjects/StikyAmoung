@@ -18,6 +18,12 @@ public class MovementController : MonoBehaviour
         stopMvt = true;
         EventController.canKill += ChangeButtonBehavior;
         EventController.gameWin += GameWin;
+        if (PlayerEvents.weopenType==WeopenType.Disc)
+        {
+            KillButton.interactable = true;
+        }
+
+        disableDiscButton = true;
     }
 
     private void OnDisable()
@@ -70,20 +76,50 @@ public class MovementController : MonoBehaviour
 
     void ChangeButtonBehavior(Transform t,float f)
     {
-        if (t==null)
+        if (t==null&&PlayerEvents.weopenType!=WeopenType.Disc)
         {
             KillButton.interactable = false;
+
         }
         else
         {
-            if (f<=2)
+            switch (PlayerEvents.weopenType)
             {
-                KillButton.interactable = true;
+                case WeopenType.none:
+                    if (f <= 2)
+                    {
+                        KillButton.interactable = true;
+                    }
+                    else
+                    {
+                        KillButton.interactable = false;
+                    }
+                    break;
+                case WeopenType.Knife:
+                    if (f <= 2.5f)
+                    {
+                        KillButton.interactable = true;
+                    }
+                    else
+                    {
+                        KillButton.interactable = false;
+                    }
+                    break;
+                case WeopenType.Disc:
+                    if (disableDiscButton==true)
+                    {
+                        KillButton.interactable = true;
+                    }
+                        
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                KillButton.interactable = false;
-            }
+
+
+           
+            
+            
            
         }
     }
@@ -103,16 +139,37 @@ public class MovementController : MonoBehaviour
         {
             EventController.startKillEvent();
         }
-        StartCoroutine(StartCaroutineKillEvent());
+        if (PlayerEvents.weopenType!=WeopenType.Disc)
+        {
+            StartCoroutine(StartCaroutineKillEvent(0.5f));
+        }
+        if (PlayerEvents.weopenType == WeopenType.Disc)
+        {
+            StartCoroutine(DisableButton());
+            StartCoroutine(StartCaroutineKillEvent(0.05f));
+            
+            
+        }
+       
     }
     #endregion
 
-    IEnumerator StartCaroutineKillEvent()
+    bool disableDiscButton;
+    IEnumerator DisableButton()
+    {
+        disableDiscButton = false;
+        KillButton.interactable = false;
+        yield return new WaitForSeconds(0.4f);
+        disableDiscButton = true;
+        KillButton.interactable = true;
+
+    }
+    IEnumerator StartCaroutineKillEvent(float time)
     {
         x = 0;
         y = 0;
         stopMvt = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(time);
         stopMvt = true;
 
     }
