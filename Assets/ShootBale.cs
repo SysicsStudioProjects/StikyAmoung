@@ -7,12 +7,13 @@ public class ShootBale : MonoBehaviour
     Transform target;
     public float speed;
     public Rigidbody rb;
-
+    public Animator anim;
+    public Collider collider;
     private void Update()
     {
         if (target==null)
         {
-            rb.velocity=(parent *Time.smoothDeltaTime*600);
+            rb.velocity=(parent *Time.smoothDeltaTime*800);
         }
         else
         {
@@ -49,7 +50,9 @@ public class ShootBale : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        print(collision.transform.name);
+        
+
+        
         if (collision.transform.tag=="Ennemie")
         {
             
@@ -58,7 +61,12 @@ public class ShootBale : MonoBehaviour
         }
         else
         {
+            // Destroy(gameObject);
+
+          
             Destroy(gameObject);
+
         }
+        
     }
 }

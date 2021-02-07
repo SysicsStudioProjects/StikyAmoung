@@ -35,6 +35,7 @@ public class EnnemiePatrol : MonoBehaviour
     public GameObject PortalDown;
 
     public Color MaterialColor;
+    public bool IsTask;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -156,6 +157,18 @@ public class EnnemiePatrol : MonoBehaviour
     }
     void ToNextPoint()
     {
+        if (IsTask)
+        {
+            if (startEneum==true)
+            {
+                return;
+            }
+            StartCoroutine(WaitingTask());
+        }
+        else
+        {
+
+       
         if (indexPoint >= pathe.Points.Count - 1)
         {
             indexPoint = 0;
@@ -167,7 +180,29 @@ public class EnnemiePatrol : MonoBehaviour
             target = pathe.Points[indexPoint];
 
         }
+        }
 
+    }
+
+    bool startEneum;
+    IEnumerator WaitingTask()
+    {
+        startEneum = true;
+        agent.enabled = false;
+        yield return new WaitForSeconds(3);
+        agent.enabled = true;
+        if (indexPoint >= pathe.Points.Count - 1)
+        {
+            indexPoint = 0;
+            target = pathe.Points[indexPoint];
+        }
+        else
+        {
+            indexPoint++;
+            target = pathe.Points[indexPoint];
+
+        }
+        startEneum = false;
     }
 
     bool startFocuseToPlayer;
