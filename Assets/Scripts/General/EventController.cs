@@ -45,4 +45,13 @@ public static class EventController
 
     public delegate void SwitchKin(Skin s);
     public static SwitchKin switchKin;
+
+    public delegate void TeleportCollision(bool b,Transform t);
+    public static TeleportCollision teleportCollision;
+
+    public delegate void EnterTeleport(Transform t);
+    public static EnterTeleport enterTeleport;
+
+    public delegate void LeftTeleport(Transform teleport,Transform pos);
+    public static LeftTeleport leftTeleport;
 }

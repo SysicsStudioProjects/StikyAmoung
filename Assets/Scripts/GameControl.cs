@@ -25,6 +25,11 @@ public class GameControl : MonoBehaviour
     public int LevelIndex;
     public Text LevelTextIndex;
     public GameObject AllCanvas;
+    public GameObject JoysticsObject;
+    public GameObject KillButon;
+    
+
+    public GameObject Player;
     private void OnEnable()
     {
         
@@ -36,6 +41,8 @@ public class GameControl : MonoBehaviour
         EnnemieDieText.text = NBkill.ToString();
         InitCoin();
         EventController.gameStart += GameStart;
+        EventController.enterTeleport += EnterTeleport;
+        EventController.leftTeleport += LeftTeleport;
     }
     private void Start()
     {
@@ -58,6 +65,10 @@ public class GameControl : MonoBehaviour
         EventController.ennemieDown -= EnnemieDown;
         EventController.gameLoose -= GameLoose;
         EventController.gameStart -= GameStart;
+        EventController.enterTeleport -= EnterTeleport;
+        EventController.leftTeleport -= LeftTeleport;
+
+
     }
     // Start is called before the first frame update
     void InitCoin()
@@ -179,5 +190,24 @@ public class GameControl : MonoBehaviour
         Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
         SceneManager.LoadScene(buildIndex);
+    }
+
+    //player will disepear
+    //Joystic Canvas will close
+     void EnterTeleport(Transform t)
+    {
+        Player.SetActive(false);
+        KillButon.SetActive(false);
+        JoysticsObject.SetActive(false);
+    }
+
+    void LeftTeleport(Transform t,Transform pos)
+    {
+        Player.transform.position = pos.position;
+        Player.transform.rotation = pos.rotation;
+        Player.SetActive(true);
+       
+        KillButon.SetActive(true);
+        JoysticsObject.SetActive(true);
     }
 }

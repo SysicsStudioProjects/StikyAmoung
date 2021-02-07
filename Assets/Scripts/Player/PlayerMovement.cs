@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat("speed", Mathf.Abs(move.magnitude * Time.deltaTime * playerSpeed));
         if (move!=Vector3.zero)
         {
-            if (move.magnitude>0.8)
+            /*if (move.magnitude>0.8)
             {
                 anim.speed = 1.5f;
                 playerSpeed = 8;
@@ -76,8 +76,10 @@ public class PlayerMovement : MonoBehaviour
             if (move.magnitude<=0.01)
             {
                 anim.speed = 1;
-            }
-            controller.Move(move * Time.deltaTime * playerSpeed);
+            }*/
+            playerSpeed = 9;
+            anim.speed = 2;
+            controller.Move(move.normalized * Time.smoothDeltaTime * playerSpeed);
             // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
         }
         else

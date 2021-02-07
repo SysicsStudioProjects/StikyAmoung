@@ -13,9 +13,11 @@ public class MovementController : MonoBehaviour
   static  float y;
     public Button KillButton;
     bool stopMvt;
+
+    public GameObject TeleportButton;
     private void OnEnable()
     {
-        stopMvt = true;
+        StartCoroutine(StartCaroutineKillEvent(0.5f));
         EventController.canKill += ChangeButtonBehavior;
         EventController.gameWin += GameWin;
         if (PlayerEvents.weopenType==WeopenType.Disc)
@@ -24,13 +26,17 @@ public class MovementController : MonoBehaviour
         }
 
         disableDiscButton = true;
+        EventController.teleportCollision += EnableTeleportButton;
     }
 
     private void OnDisable()
     {
         EventController.canKill -= ChangeButtonBehavior;
         EventController.gameWin -= GameWin;
-
+        EventController.teleportCollision -= EnableTeleportButton;
+        x = 0;
+        y = 0;
+        stopMvt = false;
     }
 
     void Start()
@@ -47,6 +53,7 @@ public class MovementController : MonoBehaviour
 
             if (MoveJ)
             {
+               
                 MoveJoystic(js.Horizontal, js.Vertical);
             }
             if (moveK)
@@ -146,7 +153,7 @@ public class MovementController : MonoBehaviour
         if (PlayerEvents.weopenType == WeopenType.Disc)
         {
             StartCoroutine(DisableButton());
-            StartCoroutine(StartCaroutineKillEvent(0.05f));
+            StartCoroutine(StartCaroutineKillEvent(0.01f));
             
             
         }
@@ -159,7 +166,7 @@ public class MovementController : MonoBehaviour
     {
         disableDiscButton = false;
         KillButton.interactable = false;
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.1f);
         disableDiscButton = true;
         KillButton.interactable = true;
 
@@ -180,4 +187,21 @@ public class MovementController : MonoBehaviour
         y = 0;
         stopMvt = false;
     }
+    void EnableTeleportButton(bool b,Transform t)
+    {
+        TeleportButton.SetActive(b);
+        Teleport = t;
+    }
+
+    Transform Teleport;
+    public void EnterToTeleport()
+    {
+        if (EventController.enterTeleport!=null)
+        {
+            EventController.enterTeleport(Teleport);
+        }
+        TeleportButton.SetActive(false);
+    }
+
+    
 }
