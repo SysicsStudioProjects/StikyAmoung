@@ -10,7 +10,7 @@ public static class EventController
     public delegate void SendPath(Pathe p);
     public static SendPath sendPath;
 
-    public delegate void CanKill(Transform t,float raduis);
+    public delegate void CanKill(Transform t, float raduis);
     public static CanKill canKill;
 
     public delegate void StartKillEvent();
@@ -32,7 +32,7 @@ public static class EventController
     public static GameLoose gameLoose;
 
     public delegate void IsBonuceLevel(bool b);
-    public static IsBonuceLevel isBonuceLevel ;
+    public static IsBonuceLevel isBonuceLevel;
 
     public delegate void UseSkin(Skin s);
     public static UseSkin useSkin;
@@ -46,21 +46,27 @@ public static class EventController
     public delegate void SwitchKin(Skin s);
     public static SwitchKin switchKin;
 
-    public delegate void TeleportCollision(bool b,Transform t);
+    public delegate void TeleportCollision(bool b, Transform t);
     public static TeleportCollision teleportCollision;
 
     public delegate void EnterTeleport(Transform t);
     public static EnterTeleport enterTeleport;
 
-    public delegate void LeftTeleport(Transform teleport,Transform pos);
+    public delegate void LeftTeleport(Transform teleport, Transform pos);
     public static LeftTeleport leftTeleport;
 
     public delegate void DeathWithLaser();
     public static DeathWithLaser deathWithLaser;
+
+    public delegate void DeathWithSpike();
+    public static DeathWithSpike deathWithSpike;
+        
 
     public delegate void CardRequired(bool b);
     public static CardRequired cardRequired;
 
     public delegate void HasACard(CardType card);
     public static HasACard hasACard;
+
+
 }

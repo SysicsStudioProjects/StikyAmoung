@@ -7,6 +7,7 @@ public class Singleton : MonoBehaviour
     #region data
     public int level;
     public int coins;
+
     
     public bool sound;
     public Skins skins;
@@ -42,6 +43,12 @@ public class Singleton : MonoBehaviour
     #endregion
     private void OnEnable()
     {
+        
+        
+    }
+
+    void Awake()
+    {
         bool verif = SaveLoad.verifPath();
         if (verif)
         {
@@ -52,11 +59,6 @@ public class Singleton : MonoBehaviour
         {
             save();
         }
-        
-    }
-
-    void Awake()
-    {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
         // When the Menu starts, set the rendering to target 20fps

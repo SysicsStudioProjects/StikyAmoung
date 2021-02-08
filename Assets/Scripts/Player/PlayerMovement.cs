@@ -44,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        
+
+        
         //Application.targetFrameRate = 30;
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
@@ -96,11 +99,37 @@ public class PlayerMovement : MonoBehaviour
         // Changes the height position of the player..
         if (Input.GetButtonDown("Jump") && groundedPlayer)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
         }
+        if (groundedPlayer==false)
+        {
+            playerVelocity.y = gravityValue * Time.deltaTime;
+            controller.Move(playerVelocity);
+        }
+        string x = (transform.localPosition.x).ToString();
+        string y = (transform.localPosition.y).ToString();
+        string z = (transform.localPosition.z).ToString();
+        string a = "";
+        string b = "";
+        string c = "";
+        for (int i = 0; i < 6; i++)
+        {
+            if (i <= x.Length - 1)
+            {
+                a += x[i];
+            }
+            if (i <= y.Length - 1)
+            {
+                b += y[i];
+            }
+            if (i <= z.Length - 1)
+            {
+                c += z[i];
+            }
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        }
+        transform.localPosition = new Vector3(float.Parse(a), float.Parse(b), float.Parse(c));
+
     }
 
     void LockOnTarget(Vector3 _target)

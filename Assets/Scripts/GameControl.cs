@@ -113,12 +113,17 @@ public class GameControl : MonoBehaviour
         {
             EventController.gameWin();
         }
+        Singleton._instance.level = LevelIndex;
+        Singleton._instance.save();
         yield return new WaitForSecondsRealtime(1);
         WinPanel.SetActive(true);
         CoinsWinText.text = CoinsWin.ToString();
         AllCoinsText.text = AllCoins.ToString();
         yield return new WaitForSecondsRealtime(3f);
         StartCoroutine(SetupCoin());
+        Singleton._instance.level = LevelIndex;
+        Singleton._instance.save();
+
     }
     void LevelBonuseFinished()
     {
@@ -126,6 +131,8 @@ public class GameControl : MonoBehaviour
         {
             EventController.gameWin();
         }
+        Singleton._instance.level = LevelIndex;
+        Singleton._instance.save();
         GameWin();
        
     }

@@ -8,7 +8,7 @@ public class manegerSkins : MonoBehaviour
 {
     public Skins skins;
     public GameObject player,skinPrefab;
-    public Transform parent,parentBuy,posShop,posStart;
+    public Transform parent, parentBuy;
     public delegate void ChangeSkinStat(Skin s);
     public static ChangeSkinStat changeSkinStat;
 
