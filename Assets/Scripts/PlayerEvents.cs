@@ -56,6 +56,7 @@ public class PlayerEvents : MonoBehaviour
 		}
 		EventController.startKillEvent += Kill;
 		EventController.sendSettingData += GetSettingData;
+		EventController.deathWithLaser += DeathWithLaser;
 	}
 
     private void OnDisable()
@@ -64,6 +65,8 @@ public class PlayerEvents : MonoBehaviour
 
 		EventController.startKillEvent -= Kill;
 		EventController.sendSettingData -= GetSettingData;
+		EventController.deathWithLaser -= DeathWithLaser;
+
 
 	}
 
@@ -253,6 +256,19 @@ public class PlayerEvents : MonoBehaviour
 		yield return new WaitForSeconds(0.2f);
 		obj.SetActive(false);
     }
+
+
+	public GameObject LazerParticle;
+	void DeathWithLaser()
+    {
+		LazerParticle.SetActive(true);
+        if (EventController.gameLoose!=null)
+        {
+			EventController.gameLoose();
+
+		}
+
+	}
 }
 
 

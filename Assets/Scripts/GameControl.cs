@@ -30,6 +30,9 @@ public class GameControl : MonoBehaviour
     
 
     public GameObject Player;
+
+    public CardImages[] cardImages;
+    public GameObject TextRequired;
     private void OnEnable()
     {
         
@@ -43,6 +46,8 @@ public class GameControl : MonoBehaviour
         EventController.gameStart += GameStart;
         EventController.enterTeleport += EnterTeleport;
         EventController.leftTeleport += LeftTeleport;
+        EventController.hasACard += GetCard;
+        EventController.cardRequired += CardRequired;
     }
     private void Start()
     {
@@ -67,6 +72,9 @@ public class GameControl : MonoBehaviour
         EventController.gameStart -= GameStart;
         EventController.enterTeleport -= EnterTeleport;
         EventController.leftTeleport -= LeftTeleport;
+        EventController.hasACard -= GetCard;
+        EventController.cardRequired -= CardRequired;
+
 
 
     }
@@ -210,4 +218,29 @@ public class GameControl : MonoBehaviour
         KillButon.SetActive(true);
         JoysticsObject.SetActive(true);
     }
+
+    void GetCard(CardType type)
+    {
+        for (int i = 0; i < cardImages.Length; i++)
+        {
+            if (type==cardImages[i].cardType)
+            {
+                cardImages[i].Card.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    void CardRequired(bool b)
+    {
+        print("we are here");
+        TextRequired.SetActive(b);
+    }
+}
+
+
+[System.Serializable]
+public class CardImages
+{
+    public Image Card;
+    public CardType cardType;
 }
