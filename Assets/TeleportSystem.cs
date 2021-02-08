@@ -14,6 +14,7 @@ public class TeleportSystem : MonoBehaviour
     public GameObject Camera;
     public CinemachineBrain cinemachineBrain;
     public TeleportSystem nextTeleport;
+    public TeleportSystem backTeleport;
     private void OnEnable()
     {
         EventController.enterTeleport += PlayerEnter;
@@ -81,6 +82,15 @@ public class TeleportSystem : MonoBehaviour
         Camera.SetActive(false);
         nextTeleport.Camera.SetActive(true);
         nextTeleport.TeleportCanvas.SetActive(true);
+        TeleportCanvas.SetActive(false);
+    }
+
+    public void BackTeleport()
+    {
+        cinemachineBrain.m_DefaultBlend.m_Time = 0f;
+        Camera.SetActive(false);
+        backTeleport.Camera.SetActive(true);
+        backTeleport.TeleportCanvas.SetActive(true);
         TeleportCanvas.SetActive(false);
     }
 }
