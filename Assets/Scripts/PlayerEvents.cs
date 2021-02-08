@@ -17,6 +17,8 @@ public class PlayerEvents : MonoBehaviour
 
 	bool isBonuceLevel;
 
+	public GameObject BloodObj;
+
 	public static WeopenType weopenType;
 	
     // Start is called before the first frame update
@@ -57,6 +59,7 @@ public class PlayerEvents : MonoBehaviour
 		EventController.startKillEvent += Kill;
 		EventController.sendSettingData += GetSettingData;
 		EventController.deathWithLaser += DeathWithLaser;
+		EventController.deathWithSpike += DeathWithSpike;
 	}
 
     private void OnDisable()
@@ -66,6 +69,8 @@ public class PlayerEvents : MonoBehaviour
 		EventController.startKillEvent -= Kill;
 		EventController.sendSettingData -= GetSettingData;
 		EventController.deathWithLaser -= DeathWithLaser;
+		EventController.deathWithSpike -= DeathWithSpike;
+
 
 
 	}
@@ -268,6 +273,22 @@ public class PlayerEvents : MonoBehaviour
 
 		}
 
+	}
+	void DeathWithSpike()
+	{
+		BloodObj.SetActive(true);
+
+		StartCoroutine(ActivateBlood());
+	}
+
+	IEnumerator ActivateBlood()
+    {
+		yield return new WaitForSeconds(0.1f);
+		if (EventController.gameLoose != null)
+		{
+			EventController.gameLoose();
+
+		}
 	}
 }
 

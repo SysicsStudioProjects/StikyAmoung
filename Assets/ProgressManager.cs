@@ -103,6 +103,7 @@ public class ProgressManager : MonoBehaviour
     {
         Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
+
         if (buildIndex == SceneManager.sceneCountInBuildSettings-1)
         {
             buildIndex = 0;
@@ -110,7 +111,10 @@ public class ProgressManager : MonoBehaviour
         }
         else
         {
+            Singleton._instance.level = buildIndex + 1;
+            Singleton._instance.save();
             SceneManager.LoadScene(buildIndex + 1);
+            
         }
     }
 

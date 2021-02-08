@@ -8,6 +8,6 @@ public class levelManagment : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneManager.LoadSceneAsync("MainMenu");
+        SceneManager.LoadSceneAsync(Singleton._instance.level);
     }
 }
