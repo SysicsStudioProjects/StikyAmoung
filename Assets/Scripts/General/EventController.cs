@@ -54,4 +54,13 @@ public static class EventController
 
     public delegate void LeftTeleport(Transform teleport,Transform pos);
     public static LeftTeleport leftTeleport;
+
+    public delegate void DeathWithLaser();
+    public static DeathWithLaser deathWithLaser;
+
+    public delegate void CardRequired(bool b);
+    public static CardRequired cardRequired;
+
+    public delegate void HasACard(CardType card);
+    public static HasACard hasACard;
 }
