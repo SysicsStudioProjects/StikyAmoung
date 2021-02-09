@@ -18,6 +18,10 @@ public class manegerSkins : MonoBehaviour
     public Sprite EnabledSprite;
     public Sprite DisabledSprite;
     public Text CoinsText;
+
+
+    public List<ImageModel> imageModels;
+    
     private void Start()
     {
         CoinsText.text = Singleton._instance.coins.ToString();
@@ -48,23 +52,36 @@ public class manegerSkins : MonoBehaviour
     }
     public void listSkin(string type)
     {
-        foreach (Button b in buttons)
+        /* foreach (Button b in buttons)
+         {
+             if (b.name == type + "Button")
+                 b.gameObject.GetComponent<Image>().sprite = EnabledSprite;
+             else
+                 b.gameObject.GetComponent<Image>().sprite = DisabledSprite;
+         }*/
+
+        foreach (var item in buttons)
         {
-            if (b.name == type + "Button")
-                b.gameObject.GetComponent<Image>().sprite = EnabledSprite;
-            else
-                b.gameObject.GetComponent<Image>().sprite = DisabledSprite;
+            int index = imageModels.FindIndex(d => d.type == item.name );
+            item.GetComponent<Image>().sprite = imageModels[index].DisableImage;
+            if (item.name== type + "Button")
+
+            {
+                item.GetComponent<Image>().sprite = imageModels[index].enableImage;
+            }
+            
         }
-        posWatch();
+
+      //  posWatch();
         listVide();
         foreach(Skin s in skins.allSkins)
         {
             if (s.type.ToString() == type )
             {
                 GameObject child = Instantiate(skinPrefab, parent);
-                if (s.toWatch) {
+                /*if (s.toWatch) {
                     child.transform.SetAsFirstSibling();
-                }
+                }*/
                 child.GetComponent<SkinStart>().setSkin(s);
                 
             }
@@ -91,13 +108,24 @@ public class manegerSkins : MonoBehaviour
         }
 
         listVideBuy();
-        foreach (Skin s in skins.allSkins)
+        /*foreach (Skin s in skins.allSkins)
         {
             if (s.type.ToString() == type && s.state == SkinState.none)
             {
                 GameObject child = Instantiate(skinPrefab, parentBuy);
                 
                 child.GetComponent<SkinStart>().setSkin(s);
+
+            }
+        }*/
+        for (int i = 0; i < skins.allSkins.Count; i++)
+        {
+            print(i);
+            if (skins.allSkins[i].type.ToString() == type )
+            {
+                GameObject child = Instantiate(skinPrefab, parentBuy);
+
+                child.GetComponent<SkinStart>().setSkin(skins.allSkins[i]);
 
             }
         }
@@ -113,7 +141,7 @@ public class manegerSkins : MonoBehaviour
 
     public void posWatch()
     {
-        foreach (Skin s in skins.allSkins)
+        /*foreach (Skin s in skins.allSkins)
         {
             if (s.toWatch)
             {
@@ -122,7 +150,7 @@ public class manegerSkins : MonoBehaviour
                     g.SetActive(g.name == s.type.ToString());
                 }
             }
-        }
+        }*/
     }
     public void LoadScene()
     {
@@ -135,3 +163,10 @@ public class manegerSkins : MonoBehaviour
     }
 }
 
+[System.Serializable]
+public class ImageModel
+{
+    public string type;
+    public Sprite enableImage;
+    public Sprite DisableImage;
+}
