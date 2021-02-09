@@ -83,8 +83,9 @@ public class MovementController : MonoBehaviour
 
     void ChangeButtonBehavior(Transform t,float f)
     {
-        if (t==null&&PlayerEvents.weopenType!=WeopenType.Disc)
+        if (t==null&&(PlayerEvents.weopenType!=WeopenType.Disc))
         {
+            
             KillButton.interactable = false;
 
         }
@@ -112,6 +113,16 @@ public class MovementController : MonoBehaviour
                         KillButton.interactable = false;
                     }
                     break;
+                case WeopenType.Butcher:
+                    if (f <= 4f)
+                    {
+                        KillButton.interactable = true;
+                    }
+                    else
+                    {
+                        KillButton.interactable = false;
+                    }
+                    break;
                 case WeopenType.Disc:
                     if (disableDiscButton==true)
                     {
@@ -119,6 +130,8 @@ public class MovementController : MonoBehaviour
                     }
                         
                     break;
+
+                
                 default:
                     break;
             }

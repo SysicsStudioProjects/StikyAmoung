@@ -11,6 +11,10 @@ public class CharacterAnimation : MonoBehaviour
     public GameObject DiscObject;
 
     public GameObject DiscPrfab;
+
+    public GameObject BusherObject;
+
+    public GameObject BusherPrfab;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +68,19 @@ public class CharacterAnimation : MonoBehaviour
         StartCoroutine(ReturnShootbaleObj(DiscObject));
         GameObject obj = Instantiate(DiscPrfab, DiscObject.transform.position, Quaternion.identity);
         obj.GetComponent<ShootBale>().SetTarget(Target,transform.forward,playerEvents);
+        if (playerEvents != null)
+        {
+            playerEvents.KillEvent(null);
+        }
+    }
+
+    public void BucherShoot()
+    {
+        Transform Target = playerEvents.target;
+        BusherObject.SetActive(false);
+        StartCoroutine(ReturnShootbaleObj(BusherObject));
+        GameObject obj = Instantiate(BusherPrfab, BusherObject.transform.position, Quaternion.identity);
+        obj.GetComponent<ShootBale>().SetTarget(Target, transform.forward, playerEvents);
         if (playerEvents != null)
         {
             playerEvents.KillEvent(null);
