@@ -10,12 +10,14 @@ public class SkinStart : MonoBehaviour
     public GameObject useButton, watchButton, buyButton,removeButton;
     public Image image;
     public Text nbWatch;
+    public Text Price;
 
     public void setSkin(Skin s) {
         skin = s;
         
         image.sprite = s.icon;
         nbWatch.text = s.nbWatch + "";
+        Price.text = s.price.ToString();
         setButton();
     }
     private void OnEnable()
