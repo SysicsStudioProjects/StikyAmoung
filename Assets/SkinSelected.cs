@@ -120,11 +120,23 @@ public class SkinSelected : MonoBehaviour
     {
         switch (s.name)
         {
-            case "Disc":
+            case "Disc1":
                 PlayerEvents.weopenType = WeopenType.Disc;
                 break;
-            case"Knife":
+            case "Disc2":
+                PlayerEvents.weopenType = WeopenType.Disc;
+                break;
+            case "Knife1":
                 PlayerEvents.weopenType = WeopenType.Knife;
+                break;
+            case "Knife2":
+                PlayerEvents.weopenType = WeopenType.Knife;
+                break;
+            case "Butcher_knife1":
+                PlayerEvents.weopenType = WeopenType.Butcher;
+                break;
+            case "Butcher_knife2":
+                PlayerEvents.weopenType = WeopenType.Butcher;
                 break;
             default:
                 break;

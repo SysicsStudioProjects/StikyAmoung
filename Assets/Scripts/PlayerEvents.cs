@@ -153,6 +153,9 @@ public class PlayerEvents : MonoBehaviour
 				anim.SetTrigger("attackdisc");
 
 				break;
+			case WeopenType.Butcher:
+				anim.SetTrigger("attackButcher");
+				break;
             default:
                 break;
         }
@@ -293,4 +296,4 @@ public class PlayerEvents : MonoBehaviour
 }
 
 
-public enum WeopenType {none,Knife,Disc }
+public enum WeopenType {none,Knife,Disc,Butcher }

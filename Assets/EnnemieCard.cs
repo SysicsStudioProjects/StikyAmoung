@@ -6,6 +6,8 @@ public class EnnemieCard : MonoBehaviour
 {
     public CardType cardtype;
 
+   
+    
     private void OnDisable()
     {
         if (EventController.hasACard!=null)
