@@ -166,7 +166,7 @@ public class MovementController : MonoBehaviour
         if (PlayerEvents.weopenType == WeopenType.Disc)
         {
             StartCoroutine(DisableButton());
-            StartCoroutine(StartCaroutineKillEvent(0.01f));
+           // StartCoroutine(StartCaroutineKillEvent(0.02f));
             
             
         }

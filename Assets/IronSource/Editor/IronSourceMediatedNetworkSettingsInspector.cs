@@ -2,7 +2,7 @@
 using UnityEditor;
 
 [CustomEditor(typeof(IronSourceMediatedNetworkSettings))]
-public class IronSourceMediatedNetworkSettingsInspector : Editor
+public class IronSourceMediatedNetworkSettingsInspector : UnityEditor.Editor
 {
     private static IronSourceMediatedNetworkSettings ironSourceMediatedNetworkSettings;
     public static IronSourceMediatedNetworkSettings IronSourceMediatedNetworkSettings

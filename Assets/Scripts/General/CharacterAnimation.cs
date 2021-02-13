@@ -16,16 +16,21 @@ public class CharacterAnimation : MonoBehaviour
 
     public GameObject BusherPrfab;
     // Start is called before the first frame update
-    void Start()
+   void OnEnable(){
+       EventController.gameWin+=GameWin;
+   }
+    private void OnDisable()
     {
+       EventController.gameWin-=GameWin;
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void GameWin(){
+        audio.Stop();
+        audio.enabled=false;
     }
+    // Update is called once per frame
+    
 
     public void DisableHands()
     {
@@ -94,7 +99,7 @@ public class CharacterAnimation : MonoBehaviour
     }
     public void WalkSound()
     {
-        if (audio!=null)
+        if (audio!=null&&audio.enabled==true)
         {
             audio.Play();
         }

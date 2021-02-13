@@ -6,13 +6,31 @@ public class EnnemieCard : MonoBehaviour
 {
     public CardType cardtype;
 
+
+
+    private void OnEnable()
+    {
+        EventController.gameStart+=GameStart;
+    }
    
     
     private void OnDisable()
     {
-        if (EventController.hasACard!=null)
+        EventController.gameStart-=GameStart;
+
+        if(IsGameStarted){
+            if (EventController.hasACard!=null)
         {
             EventController.hasACard(cardtype);
         }
+        }
+        
+    }
+
+
+    bool IsGameStarted;
+
+    void GameStart(bool b){
+        IsGameStarted=b;
     }
 }

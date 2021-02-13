@@ -7,18 +7,26 @@ using UnityEngine.SceneManagement;
 
 public class Spin : MonoBehaviour
 {
-    public static Spin s;
+    
     bool tour=true;
-    int choix,nbAds;
+    int choix;
     public int nbChoix;
     
     public Text date;
     DateTime clicked, dateWait;
 
+    private void OnEnable()
+    {
+        Ads.tourads += spinTourne;
+    }
+    private void OnDisable()
+    {
+        Ads.tourads -= spinTourne;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        s = this;
+       
         dateWait = new DateTime(2000, 1, 1, 4, 0, 0);
         if (clicked.Year != 1)
         {
@@ -39,11 +47,11 @@ public class Spin : MonoBehaviour
     {
         if (tour)
         {
-            Ads.ins_ads.nbvideo = 1;
+            //Ads.ins_ads.nbvideo = 1;
             spinTourne();
             tour = false;
             clicked = DateTime.Now;
-            StartCoroutine(timer());
+          
         }
     }
 
@@ -62,7 +70,9 @@ public class Spin : MonoBehaviour
             transform.Rotate(new Vector3(0,0,1),360.0f/(nbChoix*5));
             yield return new WaitForSeconds(0.05f);
         }
-        
+        print(choix);
+        StartCoroutine(timer());
+
     }
     private IEnumerator timer()
     {
@@ -94,5 +104,11 @@ public class Spin : MonoBehaviour
         //ads.text = nbAds+"tour";
         
     }
-    
+    public void videoDeffaut()
+    {
+        Ads.ins_ads.showReward();
+        
+
+    }
+
 }

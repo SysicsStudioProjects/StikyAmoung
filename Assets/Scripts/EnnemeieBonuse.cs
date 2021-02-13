@@ -21,6 +21,7 @@ public class EnnemeieBonuse : MonoBehaviour
         SetupMaterial();
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer;
+        EventController.gameStart+=GameStart;
     }
 
     void SetupMaterial()
@@ -32,8 +33,17 @@ public class EnnemeieBonuse : MonoBehaviour
         HandRightRendere.SetPropertyBlock(block);
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (BodyRendered.isVisible)
+        {
+            anim.enabled = true;
+            
+        }
+        else{
+             anim.enabled = false;
+        }
+        if(isgameStart){
         timer += Time.deltaTime;
 
         if (timer >= wanderTimer)
@@ -43,6 +53,7 @@ public class EnnemeieBonuse : MonoBehaviour
             timer = 0;
         }
         anim.SetFloat("speed", agent.velocity.magnitude);
+        }
     }
 
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
@@ -65,9 +76,13 @@ public class EnnemeieBonuse : MonoBehaviour
     }
     private void OnDisable()
     {
+        EventController.gameStart-=GameStart;
+
+        if (isgameStart){
         if (EventController.ennemieDown != null)
         {
             EventController.ennemieDown(null);
+        }
         }
 
     }
@@ -75,5 +90,9 @@ public class EnnemeieBonuse : MonoBehaviour
     {
        
         
+    }
+     bool isgameStart;
+    void GameStart(bool b){
+        isgameStart=b;
     }
 }

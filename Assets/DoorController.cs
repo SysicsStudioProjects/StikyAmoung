@@ -9,6 +9,8 @@ public class DoorController : MonoBehaviour
     public Animator anim;
     public float raduis;
     public Collider collider;
+
+    int IndexDoor;
   
     void Start()
     {
@@ -18,6 +20,7 @@ public class DoorController : MonoBehaviour
     private void OnEnable()
     {
         EventController.hasACard += SetCard;
+        StartCoroutine(FindObj());
     }
 
     private void OnDisable()
@@ -29,14 +32,8 @@ public class DoorController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (HasAcard)
-        {
-            GetObjs(transform.position,raduis);
-        }
-        else
-        {
-            GetObjsError(transform.position, raduis);
-        }
+       
+       
        
     }
     void GetObjs(Vector3 center, float radius)
@@ -84,19 +81,27 @@ public class DoorController : MonoBehaviour
 
         if (objs.Count > 0)
         {
-            
+            if(IndexDoor==0){
+                IndexDoor=1;
             //You need Card 
             if (EventController.cardRequired!=null)
             {
                 EventController.cardRequired(true);
             }
+
+            }
+            
         }
         else
         {
-            if (EventController.cardRequired != null)
+            if (IndexDoor==1){
+                if (EventController.cardRequired != null)
             {
                 EventController.cardRequired(false);
             }
+            IndexDoor=0;
+            }
+            
         }
         
     }
@@ -107,6 +112,24 @@ public class DoorController : MonoBehaviour
         {
             HasAcard = true;
         }
+    }
+
+    IEnumerator FindObj(){
+
+         if (HasAcard)
+        {
+            GetObjs(transform.position,raduis);
+            yield return new WaitForSeconds(0.5f);
+        }
+  
+         else
+        {
+            GetObjsError(transform.position, raduis);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+      StartCoroutine(FindObj());
+
     }
 }
 

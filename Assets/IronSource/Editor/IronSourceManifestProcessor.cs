@@ -31,63 +31,66 @@ public class IronSourceManifestProcessor : IPreprocessBuild
     public void OnPreprocessBuild(BuildTarget target, string path)
 #endif
     {
-        string appId = IronSourceMediatedNetworkSettingsInspector.IronSourceMediatedNetworkSettings.AdmobAndroidAppId;
-
-        if (IronSourceMediatedNetworkSettingsInspector.IronSourceMediatedNetworkSettings.EnableAdmob)
+        if (File.Exists(IronSourceMediatedNetworkSettings.MEDIATION_SETTINGS_ASSET_PATH))
         {
-            string manifestPath = Path.Combine(
-                    Application.dataPath, "IronSource/Plugins/Android/IronSource.plugin/AndroidManifest.xml");
+            string appId = IronSourceMediatedNetworkSettingsInspector.IronSourceMediatedNetworkSettings.AdmobAndroidAppId;
 
-            XDocument manifest = null;
-            try
+            if (IronSourceMediatedNetworkSettingsInspector.IronSourceMediatedNetworkSettings.EnableAdmob)
             {
-                manifest = XDocument.Load(manifestPath);
-            }
+                string manifestPath = Path.Combine(
+                        Application.dataPath, "IronSource/Plugins/Android/IronSource.plugin/AndroidManifest.xml");
+
+                XDocument manifest = null;
+                try
+                {
+                    manifest = XDocument.Load(manifestPath);
+                }
 #pragma warning disable 0168
-            catch (IOException e)
+                catch (IOException e)
 #pragma warning restore 0168
-            {
-                StopBuildWithMessage("AndroidManifest.xml is missing. Try re-importing the plugin.");
-            }
+                {
+                    StopBuildWithMessage("AndroidManifest.xml is missing. Try re-importing the plugin.");
+                }
 
-            XElement elemManifest = manifest.Element("manifest");
-            if (elemManifest == null)
-            {
-                StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
-            }
+                XElement elemManifest = manifest.Element("manifest");
+                if (elemManifest == null)
+                {
+                    StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
+                }
 
-            XElement elemApplication = elemManifest.Element("application");
-            if (elemApplication == null)
-            {
-                StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
-            }
+                XElement elemApplication = elemManifest.Element("application");
+                if (elemApplication == null)
+                {
+                    StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
+                }
 
-            IEnumerable<XElement> metas = elemApplication.Descendants()
-                    .Where(elem => elem.Name.LocalName.Equals("meta-data"));
+                IEnumerable<XElement> metas = elemApplication.Descendants()
+                        .Where(elem => elem.Name.LocalName.Equals("meta-data"));
 
-            XElement elemAdMobEnabled = GetMetaElement(metas, META_APPLICATION_ID);
+                XElement elemAdMobEnabled = GetMetaElement(metas, META_APPLICATION_ID);
 
-            if (appId.Length == 0)
-            {
-                StopBuildWithMessage(
-                    "Android AdMob app ID is empty. Please enter your app ID to run ads properly");
-            }
-            else if (!Regex.IsMatch(appId, "^[a-zA-Z0-9-~]*$"))
-            {
-                StopBuildWithMessage(
-                    "Android AdMob app ID is not valid. Please enter a valid app ID to run ads properly");
-            }
+                if (appId.Length == 0)
+                {
+                    StopBuildWithMessage(
+                        "Android AdMob app ID is empty. Please enter your app ID to run ads properly");
+                }
+                else if (!Regex.IsMatch(appId, "^[a-zA-Z0-9-~]*$"))
+                {
+                    StopBuildWithMessage(
+                        "Android AdMob app ID is not valid. Please enter a valid app ID to run ads properly");
+                }
 
-            else if (elemAdMobEnabled == null)
-            {
-                elemApplication.Add(CreateMetaElement(META_APPLICATION_ID, appId));
-            }
-            else
-            {
-                elemAdMobEnabled.SetAttributeValue(ns + "value", appId);
-            }
+                else if (elemAdMobEnabled == null)
+                {
+                    elemApplication.Add(CreateMetaElement(META_APPLICATION_ID, appId));
+                }
+                else
+                {
+                    elemAdMobEnabled.SetAttributeValue(ns + "value", appId);
+                }
 
-            elemManifest.Save(manifestPath);
+                elemManifest.Save(manifestPath);
+            }
         }
     }
 

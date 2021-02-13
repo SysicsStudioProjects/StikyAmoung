@@ -41,15 +41,11 @@ public class EnnemiePatrol : MonoBehaviour
     {
        
         SetupMaterial();
-        if (PlayerPrefs.HasKey("detect"))
-        {
-            //timeTodetect = PlayerPrefs.GetFloat("detect");
-        }
-        //Get Patrol points
+       
         EventController.sendPath += SetPoints;
         EventController.canKill += ChangeTarget;
         EventController.sendSettingData += GetSettingData;
-        if (EnnemieId < 0&&pathe.Points.Count>0)
+        if (EnnemieId < 0&&pathe.Points.Count>0&&IsGameStart)
         {
             ToNextPoint();
         }
@@ -65,10 +61,13 @@ public class EnnemiePatrol : MonoBehaviour
         EventController.sendPath -= SetPoints;
         EventController.canKill -= ChangeTarget;
         EventController.sendSettingData -= GetSettingData;
-        pathe.isAlive = false;
+       
+        if (IsGameStart){
         if (EventController.ennemieDown != null)
         {
             EventController.ennemieDown(this);
+             pathe.isAlive = false;
+        }
         }
         EventController.setPlayer -= GetPlayer;
         EventController.gameStart -= GameStart;
@@ -85,7 +84,7 @@ public class EnnemiePatrol : MonoBehaviour
     private void Start()
     {
 
-        player = GameObject.FindGameObjectWithTag("PLayer").transform;
+       // player = GameObject.FindGameObjectWithTag("PLayer").transform;
     }
 
     // Update is called once per frame
@@ -312,9 +311,9 @@ public class EnnemiePatrol : MonoBehaviour
     {
         player = p;
     }
-    void GameStart()
+    void GameStart(bool b)
     {
-        IsGameStart = true;
+        IsGameStart = b;
         Field.SetActive(true);
         PortalDown.SetActive(true);
         if (EnnemieId < 0 && pathe.Points.Count > 0)

@@ -50,8 +50,8 @@ public class ShootBale : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        
 
+      
         
         if (collision.transform.tag=="Ennemie")
         {
@@ -59,7 +59,8 @@ public class ShootBale : MonoBehaviour
             playerEvents.KillEvent(collision.transform);
             Destroy(gameObject);
         }
-        else
+        else if (collision.transform.tag!="PLayer")
+        
         {
             // Destroy(gameObject);
 

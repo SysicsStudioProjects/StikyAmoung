@@ -8,8 +8,8 @@ public class ScrollManual : MonoBehaviour
     public GameObject obj;
 
     public Transform content;
-  
-    
+
+    public float hight;
 
     public  float DistanceToRecalcVisibility = 400.0f;
     public  float DistanceMarginForLoad = 600.0f;
@@ -52,7 +52,7 @@ public class ScrollManual : MonoBehaviour
 
     private void OnEnable()
     {
-        scrollRect.normalizedPosition = new Vector2(1, 0);
+        scrollRect.normalizedPosition = new Vector2(1, hight);
         StartCoroutine(makeItsmoth());
     }
 
@@ -73,8 +73,8 @@ public class ScrollManual : MonoBehaviour
         for (int i = 11; i > 0; i--)
         {
             a -= 0.1f;
-            yield return new WaitForSeconds(0.02f);
-            scrollRect.normalizedPosition = new Vector2(a, 0);
+            yield return new WaitForSeconds(0.03f);
+            scrollRect.normalizedPosition = new Vector2(a, hight);
         }
         
     }

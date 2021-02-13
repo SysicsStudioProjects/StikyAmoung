@@ -41,8 +41,18 @@ public class PathController : MonoBehaviour
     }
     IEnumerator ChangeEnnemieBehavior()
     {
-        int index = pathes.FindIndex(e => e.isAlive == false);
-        print(index);
+        //int index = pathes.FindIndex(e => e.isAlive == false);
+        //print(index);
+         yield return new WaitForSeconds(0.2f);
+        int index=-1;
+        for (int i = 0; i < pathes.Count; i++)
+        {
+            if(pathes[i].isAlive==false){
+                index=i;
+                print(index);
+                break;
+            }
+        }
         yield return new WaitForSeconds(0.5f);
         foreach (var item in ennemeis)
         {
