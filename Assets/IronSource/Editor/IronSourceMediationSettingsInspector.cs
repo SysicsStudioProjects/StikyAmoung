@@ -2,7 +2,7 @@
 using UnityEditor;
 
 [CustomEditor(typeof(IronSourceMediationSettings))]
-public class IronSourceMediationSettingsInspector : Editor
+public class IronSourceMediationSettingsInspector : UnityEditor.Editor
 {
     private static IronSourceMediationSettings ironSourceMediationSettings;
     public static IronSourceMediationSettings IronSourceMediationSettings

@@ -44,7 +44,7 @@ public class FollowPlayer : MonoBehaviour
         anim.enabled = false;
 
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
-        transform.LookAt(target);
+        //transform.LookAt(target);
 
     }
 

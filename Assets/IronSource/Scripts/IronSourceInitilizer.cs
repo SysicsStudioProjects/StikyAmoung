@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class IronSourceInitilizer
 {
@@ -8,15 +6,14 @@ public class IronSourceInitilizer
     [RuntimeInitializeOnLoadMethod]
     static void Initilize()
     {
-
         var developerSettings = Resources.Load<IronSourceMediationSettings>(IronSourceConstants.IRONSOURCE_MEDIATION_SETTING_NAME);
+        if (developerSettings != null)
+        {
 #if UNITY_ANDROID
-        string appKey = developerSettings.AndroidAppKey;
+            string appKey = developerSettings.AndroidAppKey;
 #elif UNITY_IOS
         string appKey = developerSettings.IOSAppKey;
 #endif
-        if (developerSettings != null)
-        {
             if (developerSettings.EnableIronsourceSDKInitAPI == true)
             {
                 if (appKey.Equals(string.Empty))

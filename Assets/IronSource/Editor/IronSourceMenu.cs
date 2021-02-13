@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class IronSourceMenu : Editor
+public class IronSourceMenu : UnityEditor.Editor
 {
 
    [MenuItem("IronSource/Documentation", false, 0)]

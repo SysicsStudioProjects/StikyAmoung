@@ -12,6 +12,8 @@ public class SkinStart : MonoBehaviour
     public Text nbWatch;
     public Text Price;
 
+    public Button _watchButton;
+
     public void setSkin(Skin s) {
         skin = s;
         
@@ -22,12 +24,16 @@ public class SkinStart : MonoBehaviour
     }
     private void OnEnable()
     {
+        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         manegerSkins.changeSkinStat += setUpStat;
-
+        EventController.videoRewarded += VideoBonuseRewarded;
+        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
     }
     private void OnDisable()
     {
+        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         manegerSkins.changeSkinStat -= setUpStat;
+        EventController.videoRewarded -= VideoBonuseRewarded;
     }
     // Start is called before the first frame update
     void Start()
@@ -78,15 +84,8 @@ public class SkinStart : MonoBehaviour
     }
     public void watch()
     {
-        skin.nbWatch -= 1;
-        nbWatch.text = skin.nbWatch+"";
-        if(skin.nbWatch==0)
-        {
-            skin.state = SkinState.buyIt;
-            skin.toWatch = false;
-            setButton();
-        }
-        Singleton._instance.save();
+        ShowVideo();
+        
     }
 
     public void use()
@@ -155,6 +154,43 @@ public class SkinStart : MonoBehaviour
         {
             EventController.switchKin(skin);
         }
+    }
+
+    public void ChangeRewardStatut(bool b)
+    {
+        _watchButton.interactable = b;
+    }
+
+    bool IsWatched;
+    void ShowVideo()
+    {
+        IsWatched = true;
+        AdsManager._instance.ShowRewardVideo();
+    }
+
+    void VideoBonuseRewarded(bool b)
+    {
+        if (b == false)
+        {
+            IsWatched = false;
+            return;
+        }
+        if (IsWatched)
+        {
+            skin.nbWatch -= 1;
+            nbWatch.text = skin.nbWatch + "";
+            if (skin.nbWatch == 0)
+            {
+                skin.state = SkinState.buyIt;
+                skin.toWatch = false;
+                skin.inProgress = false;
+                setButton();
+            }
+            Singleton._instance.save();
+
+        }
+        IsWatched = false;
+
     }
 
 }

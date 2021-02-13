@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class EventController
 {
-    public delegate void GameStart();
+    public delegate void GameStart(bool b);
     public static GameStart gameStart;
 
     public delegate void SendPath(Pathe p);
@@ -67,6 +67,14 @@ public static class EventController
 
     public delegate void HasACard(CardType card);
     public static HasACard hasACard;
+
+    //Ads System
+    public delegate void VideoRewarded(bool Isrewarded);
+    public static VideoRewarded videoRewarded;
+
+    public delegate void ChnageButtonRewardRequest(bool b);
+    public static ChnageButtonRewardRequest chnageButtonRewardRequest;
+
 
 
 }

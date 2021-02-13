@@ -82,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
             }*/
             playerSpeed = 9;
             anim.speed = 2;
+            move.y=0;
             controller.Move(move.normalized * Time.smoothDeltaTime * playerSpeed);
             // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
         }
@@ -106,13 +107,16 @@ public class PlayerMovement : MonoBehaviour
             playerVelocity.y = gravityValue * Time.deltaTime;
             controller.Move(playerVelocity);
         }
-        string x = (transform.localPosition.x).ToString();
+        /*string x = (transform.localPosition.x).ToString();
         string y = (transform.localPosition.y).ToString();
         string z = (transform.localPosition.z).ToString();
-        string a = "";
+        
+        if (x.Length>5||y.Length>5||z.Length>5){
+
+            string a = "";
         string b = "";
         string c = "";
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (i <= x.Length - 1)
             {
@@ -129,6 +133,9 @@ public class PlayerMovement : MonoBehaviour
 
         }
         transform.localPosition = new Vector3(float.Parse(a), float.Parse(b), float.Parse(c));
+        }*/
+        
+        
 
     }
 

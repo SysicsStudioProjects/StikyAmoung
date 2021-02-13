@@ -10,19 +10,31 @@ public class ProgressManager : MonoBehaviour
     public Image ItemSkin;
     public Image SlideItemSkin;
     public Text NbVideo;
-
+    public Button _watchButton;
+    Skin cUrrentProgres;
+    public Button UseButton;
     private void OnEnable()
     {
         ShowItem();
+        EventController.videoRewarded += VideoBonuseRewarded;
+        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+    }
+    private void OnDisable()
+    {
+        EventController.videoRewarded += VideoBonuseRewarded;
+        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
     }
 
     void ShowItem()
     {
         SetupItem();
+       
     }
     void SetupItem()
     {
-        Skin cUrrentProgres = SetSkin();
+         cUrrentProgres = SetSkin();
         if (cUrrentProgres!=null)
         {
             ItemSkin.sprite = cUrrentProgres.icon;
@@ -56,7 +68,7 @@ public class ProgressManager : MonoBehaviour
 
     public void WatchVideo()
     {
-
+        ShowVideo();
     }
 
     Skin SetSkin()
@@ -70,6 +82,7 @@ public class ProgressManager : MonoBehaviour
                 {
                     a = item;
                     a.nbWatch--;
+                    Singleton._instance.save();
                     return a;
 
                 }
@@ -83,6 +96,7 @@ public class ProgressManager : MonoBehaviour
                     {
                         a = s;
                         s.inProgress = true;
+                        Singleton._instance.save();
                         return a;
                     }
                 }
@@ -117,6 +131,48 @@ public class ProgressManager : MonoBehaviour
             
         }
     }
+    bool IsWatched;
+    void ShowVideo()
+    {
+        IsWatched = true;
+        AdsManager._instance.ShowRewardVideo();
+    }
 
-    
+    void VideoBonuseRewarded(bool b)
+    {
+        if (b == false)
+        {
+            IsWatched = false;
+            return;
+        }
+        if (IsWatched)
+        {
+            cUrrentProgres.nbWatch -= 1;
+            NbVideo.text = cUrrentProgres.nbWatch + "";
+            if (cUrrentProgres.nbWatch == 0)
+            {
+                cUrrentProgres.state = SkinState.buyIt;
+                cUrrentProgres.toWatch = false;
+                cUrrentProgres.inProgress = false;
+                UseButton.gameObject.SetActive(true);
+                _watchButton.gameObject.SetActive(false);
+                //setButton();
+            }
+            Singleton._instance.save();
+
+        }
+        IsWatched = false;
+
+    }
+    public void ChangeRewardStatut(bool b)
+    {
+        _watchButton.interactable = b;
+    }
+
+    public void UseSKin()
+    {
+        cUrrentProgres.state = SkinState.useIt;
+        Singleton._instance.save();
+
+    }
 }

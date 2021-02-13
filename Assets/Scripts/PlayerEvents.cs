@@ -30,32 +30,8 @@ public class PlayerEvents : MonoBehaviour
 		}
 		
 		EventController.isBonuceLevel += VerifeLevel;
-		if (PlayerPrefs.HasKey("auto"))
-		{
-			int a = PlayerPrefs.GetInt("auto");
-			if (a == -1)
-			{
-				AutoFocuse = false;
-
-			}
-			else
-			{
-				AutoFocuse = true;
-			}
-		}
-		if (PlayerPrefs.HasKey("vibration"))
-		{
-			int a = PlayerPrefs.GetInt("vibration");
-			if (a == -1)
-			{
-				vibration = false;
-
-			}
-			else
-			{
-				AutoFocuse = true;
-			}
-		}
+		
+		
 		EventController.startKillEvent += Kill;
 		EventController.sendSettingData += GetSettingData;
 		EventController.deathWithLaser += DeathWithLaser;
@@ -189,8 +165,15 @@ public class PlayerEvents : MonoBehaviour
 				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemeieBonuse>().MaterialColor, target);
 			}
 			  else
-			  {
+			{
+				if(target.GetComponent<EnnemiePatrol>()!=null){
 				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemiePatrol>().MaterialColor, target);
+				}
+				else if(target.GetComponent<EnnemeieBonuse>()!=null){
+				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemeieBonuse>().MaterialColor, target);
+
+
+				}
 			}
 
 			
@@ -220,7 +203,14 @@ public class PlayerEvents : MonoBehaviour
 			}
 			else
 			{
+				if(t.GetComponent<EnnemiePatrol>()!=null){
 				EnnemieDeathController._instance.ActivateEnnemie(t.GetComponent<EnnemiePatrol>().MaterialColor, t);
+				}
+				else if(t.GetComponent<EnnemeieBonuse>()!=null){
+				EnnemieDeathController._instance.ActivateEnnemie(t.GetComponent<EnnemeieBonuse>().MaterialColor, t);
+
+
+				}
 			}
 		}
 	}

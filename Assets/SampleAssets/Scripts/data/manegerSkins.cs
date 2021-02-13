@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class manegerSkins : MonoBehaviour
 {
     public Skins skins;
@@ -19,19 +19,28 @@ public class manegerSkins : MonoBehaviour
     public Sprite DisabledSprite;
     public Text CoinsText;
 
+    public Scrollbar bar;
 
+    public GameObject EndSkinScene;
     public List<ImageModel> imageModels;
     
     private void Start()
     {
+        
         CoinsText.text = Singleton._instance.coins.ToString();
+       
+    }
+
+    private void OnEnable()
+    {
+        listSkin("hat");
     }
 
     public void skinStart()
     {
         listSkin("hat");
         // player.transform.position = posShop.position;
-        player.SetActive(true);
+        //player.SetActive(true);
     }
 
     public void skinEnd()
@@ -43,15 +52,16 @@ public class manegerSkins : MonoBehaviour
     public void buyStart()
     {
         listBuy("hat");
-        player.SetActive(false);
+        //player.SetActive(false);
     }
 
     public void buyEnd()
     {
-        player.SetActive(true);
+        //player.SetActive(true);
     }
     public void listSkin(string type)
     {
+        bar.value = 0;
         /* foreach (Button b in buttons)
          {
              if (b.name == type + "Button")
@@ -152,14 +162,23 @@ public class manegerSkins : MonoBehaviour
             }
         }*/
     }
+    bool gamestarted;
     public void LoadScene()
     {
+        gamestarted=true;
         //  SceneManager.LoadScene(SceneName);
         if (EventController.gameStart!=null)
         {
-            EventController.gameStart();
+            EventController.gameStart(gamestarted);
         }
         this.gameObject.SetActive(false);
+    }
+
+   
+
+    public void LoadPlayScene(){
+        Singleton._instance.LoadPlayScene();
+        EndSkinScene.SetActive(true);
     }
 }
 

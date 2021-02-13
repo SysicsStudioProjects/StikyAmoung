@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class Ads : MonoBehaviour
 {
+    public delegate void tourAds();
+    public static event tourAds tourads;
     public Text t;
     public static Ads ins_ads;
     int r;
@@ -64,7 +66,7 @@ public class Ads : MonoBehaviour
         {
             if (nbvideo == 1)
             {
-                Spin.s.spinTourne();
+                tourads();
                 nbvideo = 2;
             }
             else

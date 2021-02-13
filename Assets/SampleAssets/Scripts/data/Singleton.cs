@@ -1,18 +1,21 @@
 ﻿
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
+using System.Collections;
 public class Singleton : MonoBehaviour
 {
     public static Singleton _instance;
     #region data
     public int level;
     public int coins;
-
+    
     
     public bool sound;
     public Skins skins;
     #endregion
 
+    static int currentsceneIndex;
     #region save&load
     public void save()
     {
@@ -49,20 +52,11 @@ public class Singleton : MonoBehaviour
 
     void Awake()
     {
-        bool verif = SaveLoad.verifPath();
-        if (verif)
-        {
-            load();
-
-        }
-        else
-        {
-            save();
-        }
+        
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 40;
         // When the Menu starts, set the rendering to target 20fps
-       // OnDemandRendering.renderFrameInterval = 3;
+        //OnDemandRendering.renderFrameInterval = 3;
 
 
         if (_instance == null)
@@ -77,30 +71,54 @@ public class Singleton : MonoBehaviour
         else
         {
             
-            Destroy(this);
+            Destroy(gameObject);
         }
-        
-    }
-
-
-   
-
-    public void Update()
-    {
-       /* if (Input.GetMouseButton(0) || (Input.touchCount > 0))
+        bool verif = SaveLoad.verifPath();
+        if (verif)
         {
-            
-            // If the mouse button or touch detected render at 60 FPS (every frame).
-            OnDemandRendering.renderFrameInterval = 1;
-            Application.targetFrameRate = 30;
+            load();
+
         }
         else
         {
-            // If there is no mouse and no touch input then we can go back to 20 FPS (every 3 frames).
-            OnDemandRendering.renderFrameInterval = 3;
-            Application.targetFrameRate = 30;
+            save();
+        }
 
-        }*/
+    }
+
+    public void LoadSkinSelectedMenu(int indexCurrentScene,int indexSkinScene){
+        currentsceneIndex=indexCurrentScene;
+        print(currentsceneIndex);
+        LoadScene(indexSkinScene);
+    }
+
+    public void LoadPlayScene(){
+        
+       StartCoroutine(LoadYourAsyncScene(currentsceneIndex));
+        print(currentsceneIndex);
+
+    }
+   
+   void LoadScene(int index){
+      
+       StartCoroutine(LoadYourAsyncScene(index));
+   }
+
+    
+  IEnumerator LoadYourAsyncScene(int index)
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
+        // a sceneBuildIndex of 1 as shown in Build Settings.
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(index);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
     // Update is called once per frame
     

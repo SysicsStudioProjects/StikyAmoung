@@ -33,6 +33,12 @@ public class GameControl : MonoBehaviour
 
     public CardImages[] cardImages;
     public GameObject TextRequired;
+
+    //Win Button +Bonuse
+    int CoinsBonuse;
+    public Text CoinsBonusText;
+    public Button AddBonuse;
+    public GameObject BonusePanel;
     private void OnEnable()
     {
         
@@ -48,6 +54,18 @@ public class GameControl : MonoBehaviour
         EventController.leftTeleport += LeftTeleport;
         EventController.hasACard += GetCard;
         EventController.cardRequired += CardRequired;
+        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+        if (LevelBonuse)
+        {
+            EventController.levelBonuseFinished += LevelBonuseFinished;
+            coinsValue *= 2;
+            if (EventController.isBonuceLevel != null)
+            {
+                EventController.isBonuceLevel(true);
+            }
+        }
+        EventController.videoRewarded += VideoBonuseRewarded;
+
     }
     private void Start()
     {
@@ -74,6 +92,8 @@ public class GameControl : MonoBehaviour
         EventController.leftTeleport -= LeftTeleport;
         EventController.hasACard -= GetCard;
         EventController.cardRequired -= CardRequired;
+        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+        EventController.videoRewarded -= VideoBonuseRewarded;
 
 
 
@@ -83,7 +103,8 @@ public class GameControl : MonoBehaviour
     {
         LevelTextIndex.text = "Level " + LevelIndex;
         AllCoins = Singleton._instance.coins;
-       
+        
+
     }
 
     public void EnnemieDown(EnnemiePatrol ennemie)
@@ -94,21 +115,32 @@ public class GameControl : MonoBehaviour
         if (NBkill==alleennemie)
         {
             GameWin();
+            AdsManager._instance.DestroyBanner();
             TmeRcanvas.SetActive(false);
         }
     }
 
     void GameWin()
     {
+        AdsManager._instance.DestroyBanner();
+
+
         AllCoinsText.text = AllCoins.ToString();
+        CoinsBonuse = coinsValue * alleennemie;
+        CoinsBonusText.text = "+" + CoinsBonuse;
         if (EventController.gameWin != null)
         {
             EventController.gameWin();
         }
         StartCoroutine(LevelCompleted());
+       
+            AddBonuse.interactable = IronSource.Agent.isRewardedVideoAvailable();
+       
     }
     IEnumerator LevelCompleted()
     {
+        AdsManager._instance.DestroyBanner();
+
         if (EventController.gameWin != null)
         {
             EventController.gameWin();
@@ -127,6 +159,8 @@ public class GameControl : MonoBehaviour
     }
     void LevelBonuseFinished()
     {
+        AdsManager._instance.DestroyBanner();
+
         if (EventController.gameWin != null)
         {
             EventController.gameWin();
@@ -165,6 +199,8 @@ public class GameControl : MonoBehaviour
 
     void GameLoose()
     {
+        AdsManager._instance.DestroyBanner();
+
         Time.timeScale = 0;
         LoosePanel.SetActive(true);
         //StartCoroutine(LevelLoose());
@@ -192,11 +228,14 @@ public class GameControl : MonoBehaviour
         }
         
     }
-
-    void GameStart()
+     bool IsGameStarted;
+    void GameStart(bool b)
     {
+        IsGameStarted=b;
         print("Game started");
         AllCanvas.SetActive(true);
+
+        AdsManager._instance.ShowBanner();
     }
 
     public void RestartScene()
@@ -239,8 +278,51 @@ public class GameControl : MonoBehaviour
 
     void CardRequired(bool b)
     {
-        print("we are here");
+
+        print(b);
         TextRequired.SetActive(b);
+    }
+
+    bool IsBonuseReward;
+    public void GetBonuse()
+    {
+        AdsManager._instance.ShowRewardVideo();
+        IsBonuseReward = true;
+    }
+
+    void ChangeRewardStatut(bool b)
+    {
+        AddBonuse.interactable = b;
+    }
+
+
+    void VideoBonuseRewarded(bool b)
+    {
+        if (b==false)
+        {
+            return;
+        }
+        if (IsBonuseReward)
+        {
+            BonusePanel.SetActive(true);
+            BonusePanel.GetComponent<BonuseController>().InitCoins(CoinsBonuse);
+        }
+       
+    }
+
+    public void ContiniueWithoutBonuseReward()
+    {
+        AdsManager._instance.ShowIntertiate();
+        if (IsBonuseReward==false)
+        {
+            int random = Random.Range(0, 2);
+            print(random);
+            if (random==0)
+            {
+                print("we show video");
+                
+            }
+        }
     }
 }
 

@@ -30,9 +30,15 @@ public class FieldOfView : MonoBehaviour {
 		viewMesh.name = "View Mesh";
 		viewMeshFilter.mesh = viewMesh;
 
+		
+	}
+	void OnEnable(){
 		StartCoroutine ("FindTargetsWithDelay", 0.02f);
 	}
-
+	private void OnDisable()
+	{
+		 StopCoroutine("FindTargetsWithDelay");
+	}
 
 	IEnumerator FindTargetsWithDelay(float delay) {
 		while (true) {
