@@ -3,12 +3,16 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System;
 public class Singleton : MonoBehaviour
 {
     public static Singleton _instance;
     #region data
     public int level;
     public int coins;
+    public int AdsSpinVideo;
+    public DateTime AdsspinDate;
+    public string spinDate;
     
     
     public bool sound;
@@ -30,6 +34,9 @@ public class Singleton : MonoBehaviour
             level = data.level;
             coins = data.coins;
             sound = data.sound;
+            spinDate = data.spinDate;
+            AdsSpinVideo = data.AdsSpinVideo;
+            AdsspinDate = data.AdsspinDate;
             //skins = data.skins;
             
             if (data.nbWatch != null)
