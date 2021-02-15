@@ -77,9 +77,13 @@ public class EnnemiePatrol : MonoBehaviour
     {
         var block = new MaterialPropertyBlock();
         block.SetColor("_BaseColor", MaterialColor);
-        BodyRendered.materials[0].color = MaterialColor;
-        HandLeftRendere.SetPropertyBlock(block);
-        HandRightRendere.SetPropertyBlock(block);
+        if (BodyRendered.gameObject.activeInHierarchy)
+        {
+            BodyRendered.materials[0].color = MaterialColor;
+            HandLeftRendere.SetPropertyBlock(block);
+            HandRightRendere.SetPropertyBlock(block);
+        }
+      
     }
     private void Start()
     {
@@ -94,17 +98,21 @@ public class EnnemiePatrol : MonoBehaviour
         {
             return;
         }
-        if (BodyRendered.isVisible)
+        if (BodyRendered.gameObject.activeInHierarchy)
         {
-            anim.enabled = true;
-            view.enabled = true;
-        }
-        else
-        {
-            anim.enabled = false;
-            view.enabled = false;
+            if (BodyRendered.isVisible)
+            {
+                anim.enabled = true;
+                view.enabled = true;
+            }
+            else
+            {
+                anim.enabled = false;
+                view.enabled = false;
 
+            }
         }
+       
         if (_DetectPlayer!=null)
         {
             agent.enabled = false;
@@ -211,9 +219,11 @@ public class EnnemiePatrol : MonoBehaviour
         if (t==transform)
         {
             targetPlayer = player;
-           // focuseToPlayer = true;
-
-            ParticulePortal.SetActive(true);
+            // focuseToPlayer = true;
+            if (BodyRendered.gameObject.activeInHierarchy)
+            {
+                ParticulePortal.SetActive(true);
+            }
            //Here will make focuseToPlayer true with the timeline
 
         }
@@ -315,7 +325,11 @@ public class EnnemiePatrol : MonoBehaviour
     {
         IsGameStart = b;
         Field.SetActive(true);
-        PortalDown.SetActive(true);
+        if (BodyRendered.gameObject.activeInHierarchy)
+        {
+            PortalDown.SetActive(true);
+        }
+        
         if (EnnemieId < 0 && pathe.Points.Count > 0)
         {
             ToNextPoint();

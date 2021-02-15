@@ -60,7 +60,7 @@ public class TeleportSystem : MonoBehaviour
         }
       
         Left.SetActive(false);
-        cinemachineBrain.m_DefaultBlend.m_Time = 2.0f;
+        //cinemachineBrain.m_DefaultBlend.m_Time = 2.0f;
     }
 
     public void PlayerLeft()
