@@ -65,6 +65,7 @@ public class GameControl : MonoBehaviour
             }
         }
         EventController.videoRewarded += VideoBonuseRewarded;
+        EventController.onchangeItems += InitCoin;
 
     }
     private void Start()
@@ -94,6 +95,7 @@ public class GameControl : MonoBehaviour
         EventController.cardRequired -= CardRequired;
         EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         EventController.videoRewarded -= VideoBonuseRewarded;
+        EventController.onchangeItems -= InitCoin;
 
 
 

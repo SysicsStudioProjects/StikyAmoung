@@ -10,10 +10,18 @@ public class LevelManager : MonoBehaviour
     public CinemachineBrain cinemachineBrain;
     void Awake(){
        
+      
+    }
+    private void Start()
+    {
+       
+    }
+    private void OnEnable()
+    {
+        Time.timeScale = 1;
         SkinMenu.SetActive(false);
         StartCoroutine(EnablePlayer());
     }
-
 
     IEnumerator EnablePlayer(){
         yield return new WaitForSeconds(0.2f);

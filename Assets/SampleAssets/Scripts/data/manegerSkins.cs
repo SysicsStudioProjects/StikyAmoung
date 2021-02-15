@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class manegerSkins : MonoBehaviour
@@ -23,19 +23,61 @@ public class manegerSkins : MonoBehaviour
 
     public GameObject EndSkinScene;
     public List<ImageModel> imageModels;
+
+    public AudioSource audio;
     
     private void Start()
     {
         
-        CoinsText.text = Singleton._instance.coins.ToString();
+        
        
     }
 
     private void OnEnable()
     {
+        InitCoins();
+        EventController.onchangeItems += setupC;
         listSkin("hat");
     }
+    private void OnDisable()
+    {
+        EventController.onchangeItems -= setupC;
 
+    }
+    void InitCoins()
+    {
+        CoinsText.text = Singleton._instance.coins.ToString();
+    }
+
+    void setupC()
+    {
+        StartCoroutine(SetupCoin());
+    }
+    IEnumerator SetupCoin()
+    {
+        int AllCoins = int.Parse(CoinsText.text);
+        int CoinsValue =AllCoins-Singleton._instance.coins;
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        audio.Play();
+        int value = CoinsValue / 20;
+        for (int i = 0; i < 1000; i++)
+        {
+            yield return new WaitForSecondsRealtime(0.04f);
+
+            if (CoinsValue <= 0)
+            {
+                CoinsValue = 0;
+                break;
+            }
+            CoinsValue -= value;
+            AllCoins -= value;
+            CoinsText.text = AllCoins.ToString();
+
+        }
+        audio.Stop();
+        
+    }
     public void skinStart()
     {
         listSkin("hat");

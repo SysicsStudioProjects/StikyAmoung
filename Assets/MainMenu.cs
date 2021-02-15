@@ -10,16 +10,18 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
-      
+        InitCoins();
+        EventController.onchangeItems += InitCoins;
     }
 
     private void OnDisable()
     {
-        
+        EventController.onchangeItems -= InitCoins;
+
     }
-    
+
     void Start(){
-          CoinsText.text=Singleton._instance.coins.ToString();
+       
     }
 
     public void SatrtGame(){
@@ -34,5 +36,10 @@ public class MainMenu : MonoBehaviour
         Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
           Singleton._instance.LoadSkinSelectedMenu(buildIndex,1);
+    }
+
+    void InitCoins()
+    {
+        CoinsText.text = Singleton._instance.coins.ToString();
     }
 }
