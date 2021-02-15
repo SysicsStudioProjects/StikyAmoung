@@ -6147,8 +6147,10 @@ MonoBehaviour:
   audio: {fileID: 0}
   DiscObject: {fileID: 0}
   DiscPrfab: {fileID: 0}
+  DiscPrefab2: {fileID: 0}
   BusherObject: {fileID: 0}
   BusherPrfab: {fileID: 0}
+  BusherPrfab2: {fileID: 0}
 --- !u!1 &3400505882870862039
 GameObject:
   m_ObjectHideFlags: 0
@@ -8007,6 +8009,7 @@ MonoBehaviour:
   nbWatch: {fileID: 0}
   Price: {fileID: 0}
   _watchButton: {fileID: 0}
+  playableDirector: {fileID: 0}
 --- !u!1 &4946870707962406266
 GameObject:
   m_ObjectHideFlags: 0
@@ -8422,8 +8425,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000017642975, y: 0}
-  m_SizeDelta: {x: -658.00006, y: 300}
+  m_AnchoredPosition: {x: 0.000034332275, y: 0}
+  m_SizeDelta: {x: -618.57587, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4946870708011024036
 MonoBehaviour:
@@ -8877,7 +8880,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4946870708084673523}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: CloseSkinMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &4946870708084673525
 Animator:
   serializedVersion: 3
@@ -9478,6 +9492,7 @@ GameObject:
   - component: {fileID: 4946870708404916285}
   - component: {fileID: 4946870708404916281}
   - component: {fileID: 1865302929291898135}
+  - component: {fileID: 13851408}
   m_Layer: 5
   m_Name: SkinMenuCanvas
   m_TagString: Untagged
@@ -9624,6 +9639,7 @@ MonoBehaviour:
   - type: wapButton
     enableImage: {fileID: 21300000, guid: 353848fd01819054abf76c40af71eea4, type: 3}
     DisableImage: {fileID: 21300000, guid: d47dac1a4aab9a144ad4c2a1331eed75, type: 3}
+  audio: {fileID: 13851408}
 --- !u!95 &1865302929291898135
 Animator:
   serializedVersion: 3
@@ -9643,6 +9659,102 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!82 &13851408
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4946870708404916284}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d06e90b26171ae84e96d00095de12b42, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4946870708408657495
 GameObject:
   m_ObjectHideFlags: 0
@@ -17265,7 +17377,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 39.3
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -17336,7 +17448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 27.87, z: -26}
+  m_FollowOffset: {x: 0, y: 26.71601, z: -24.569996}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -17504,7 +17616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: -2}
+  m_AnchoredPosition: {x: -0.000030517578, y: -2}
   m_SizeDelta: {x: 443.50104, y: 74}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2493203165100612968
@@ -18852,7 +18964,7 @@ RectTransform:
   m_Father: {fileID: 1494853340856632381}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.00000005667145, y: 0}
   m_AnchorMax: {x: 0.58820695, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}

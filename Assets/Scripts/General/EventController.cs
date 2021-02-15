@@ -76,5 +76,8 @@ public static class EventController
     public static ChnageButtonRewardRequest chnageButtonRewardRequest;
 
 
+    public delegate void OnchangeItems();
+    public static OnchangeItems onchangeItems;
+
 
 }

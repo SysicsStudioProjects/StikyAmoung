@@ -25,6 +25,10 @@ public class Singleton : MonoBehaviour
     {
         SaveLoad.save(this);
         load();
+        if (EventController.onchangeItems!=null)
+        {
+            EventController.onchangeItems();
+        }
     }
     public void load()
     {

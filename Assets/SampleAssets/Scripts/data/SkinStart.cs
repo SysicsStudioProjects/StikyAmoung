@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.Playables;
 public class SkinStart : MonoBehaviour
 {
     public Skin skin;
@@ -11,8 +11,10 @@ public class SkinStart : MonoBehaviour
     public Image image;
     public Text nbWatch;
     public Text Price;
-
+    int pric;
     public Button _watchButton;
+
+    public PlayableDirector playableDirector;
 
     public void setSkin(Skin s) {
         skin = s;
@@ -20,6 +22,7 @@ public class SkinStart : MonoBehaviour
         image.sprite = s.icon;
         nbWatch.text = s.nbWatch + "";
         Price.text = s.price.ToString();
+        pric = s.price;
         setButton();
     }
     private void OnEnable()
@@ -106,13 +109,21 @@ public class SkinStart : MonoBehaviour
 
     public void buy()
     {
+        if (pric>Singleton._instance.coins)
+        {
+            playableDirector.Play();
+            return;
+        }
+        Singleton._instance.coins -= pric;
         skin.state = SkinState.buyIt;
         skin.toWatch = false;
-        if (manegerSkins.changeSkinStat != null)
+        skin.inProgress = false;
+        setButton();
+       /* if (manegerSkins.changeSkinStat != null)
         {
             manegerSkins.changeSkinStat(skin);
-            setButton();
-        }
+           
+        }*/
         Singleton._instance.save();
     }
 
