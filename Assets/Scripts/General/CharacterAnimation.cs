@@ -28,6 +28,10 @@ public class CharacterAnimation : MonoBehaviour
     }
 
     void GameWin(){
+        if (audio==null)
+        {
+            return;
+        }
         audio.Stop();
         audio.enabled=false;
     }
