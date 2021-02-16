@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         EventController.gameWin -= GameWin;
         EventController.gameLoose -= GameLoose;
 
-
+        
 
     }
 
@@ -150,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
       
     }
 
+    
         void ChangeTarget(Transform t,float raduis)
     {
         if (t==null)

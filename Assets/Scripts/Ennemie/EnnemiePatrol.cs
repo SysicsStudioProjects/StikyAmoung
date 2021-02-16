@@ -58,6 +58,10 @@ public class EnnemiePatrol : MonoBehaviour
     {
         StopCoroutine("WaitingDiePlayer");
         startDetect = false;
+        if (EventController.canKill!=null)
+        {
+            EventController.canKill(null, 0);
+        }
         EventController.sendPath -= SetPoints;
         EventController.canKill -= ChangeTarget;
         EventController.sendSettingData -= GetSettingData;

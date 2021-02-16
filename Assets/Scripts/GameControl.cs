@@ -70,15 +70,7 @@ public class GameControl : MonoBehaviour
     }
     private void Start()
     {
-        if (LevelBonuse)
-        {
-            EventController.levelBonuseFinished += LevelBonuseFinished;
-            coinsValue *= 2;
-            if (EventController.isBonuceLevel != null)
-            {
-                EventController.isBonuceLevel(true);
-            }
-        }
+        
     }
     private void OnDisable()
     {
