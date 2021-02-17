@@ -9,6 +9,7 @@ public class RotatorVelocity : MonoBehaviour
     PlayerMovement p;
     CharacterController ch;
     Vector3 forward;
+    public AudioSource audio;
     void Start()
     {
         
@@ -38,7 +39,9 @@ public class RotatorVelocity : MonoBehaviour
             forward = transform.forward;
             target = collision.transform;
             p=target.GetComponent<PlayerMovement>();
+            p.PlayBrawling();
             ch = target.GetComponent<CharacterController>();
+            audio.Play();
             StartCoroutine(MovePlayer());
         }
     }
@@ -47,7 +50,7 @@ public class RotatorVelocity : MonoBehaviour
     {
         p.enabled = false;
         yield return new WaitForSeconds(0.7f);
-
+        audio.Stop();
         p.enabled = true;
         target = null;
         ch = null;

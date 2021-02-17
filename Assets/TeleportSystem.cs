@@ -15,6 +15,7 @@ public class TeleportSystem : MonoBehaviour
     public CinemachineBrain cinemachineBrain;
     public TeleportSystem nextTeleport;
     public TeleportSystem backTeleport;
+    public GameObject Fleshe;
     private void OnEnable()
     {
         EventController.enterTeleport += PlayerEnter;
@@ -53,7 +54,10 @@ public class TeleportSystem : MonoBehaviour
     {
         if (t==transform)
         {
-
+            if (Fleshe!=null)
+            {
+                Fleshe.SetActive(false);
+            }
             Open.SetActive(true);
             Camera.SetActive(true);
             TeleportCanvas.SetActive(true);
@@ -65,7 +69,9 @@ public class TeleportSystem : MonoBehaviour
 
     public void PlayerLeft()
     {
-        cinemachineBrain.m_DefaultBlend.m_Time = 2.0f;
+
+        // cinemachineBrain.m_DefaultBlend.m_Time = 2.0f;
+        StartCoroutine(RebackCinemachine());
         if (EventController.leftTeleport!=null)
         {
             EventController.leftTeleport(transform, TeleportPos);
@@ -74,6 +80,12 @@ public class TeleportSystem : MonoBehaviour
         Left.SetActive(true);
         Open.SetActive(false);
         Camera.SetActive(false);
+    }
+
+    IEnumerator RebackCinemachine()
+    {
+        yield return new WaitForSeconds(0.2f);
+        cinemachineBrain.m_DefaultBlend.m_Time = 2.0f;
     }
 
     public void NextTeleport()

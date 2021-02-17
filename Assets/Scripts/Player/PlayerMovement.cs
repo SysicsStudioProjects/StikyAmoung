@@ -1,6 +1,6 @@
 ﻿
 using UnityEngine;
-
+using UnityEngine.Playables;
 public class PlayerMovement : MonoBehaviour
 {
     public PlayerEvents playerEvents;
@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private float gravityValue = -9.81f;
     public Animator anim;
     bool ennemiisTarget;
+    public PlayableDirector Brawling;
     
     public float speedRotation;
     private void OnEnable()
@@ -44,8 +45,15 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        
-
+        if (isWin==true)
+        {
+            transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.z, transform.rotation.w);
+            return;
+        }
+        if (switchTarget==null||!switchTarget.gameObject.activeInHierarchy)
+        {
+            ennemiisTarget = false;
+        }
         
         //Application.targetFrameRate = 30;
         groundedPlayer = controller.isGrounded;
@@ -150,12 +158,14 @@ public class PlayerMovement : MonoBehaviour
       
     }
 
-    
+    Transform switchTarget;
         void ChangeTarget(Transform t,float raduis)
     {
+        switchTarget = t;
         if (t==null)
         {
             ennemiisTarget = false;
+
         }
         else if(playerEvents.AutoFocuse == true)
         {
@@ -168,13 +178,18 @@ public class PlayerMovement : MonoBehaviour
         playerSpeed = speed;
 
     }
+    bool isWin;
     void GameWin()
     {
-        transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.z, transform.rotation.w);
+        isWin = true;
         this.enabled = false;
     }
     void GameLoose()
     {
         this.enabled = false;
+    }
+    public void PlayBrawling()
+    {
+        Brawling.Play();
     }
 }

@@ -7,9 +7,12 @@ public class MainMenu : MonoBehaviour
 {
 
     public Text CoinsText;
+    public Text LevelText;
+    public GameControl gameControl;
 
     private void OnEnable()
     {
+        LevelText.text ="Level "+gameControl.LevelIndex;
         InitCoins();
         EventController.onchangeItems += InitCoins;
     }

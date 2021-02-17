@@ -13,6 +13,7 @@ public class ProgressManager : MonoBehaviour
     public Button _watchButton;
     Skin cUrrentProgres;
     public Button UseButton;
+    public GameControl gameControl;
     private void OnEnable()
     {
         ShowItem();
@@ -74,6 +75,8 @@ public class ProgressManager : MonoBehaviour
     Skin SetSkin()
     {
         Skin a=null;
+        Singleton._instance.level = gameControl.LevelIndex + 1;
+        Singleton._instance.save();
         foreach (var item in skins.allSkins)
         {
             if (item.state==SkinState.none)
@@ -125,8 +128,7 @@ public class ProgressManager : MonoBehaviour
         }
         else
         {
-            Singleton._instance.level = buildIndex + 1;
-            Singleton._instance.save();
+         
             SceneManager.LoadScene(buildIndex + 1);
             
         }
