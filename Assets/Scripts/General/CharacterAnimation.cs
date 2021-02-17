@@ -155,6 +155,13 @@ public class CharacterAnimation : MonoBehaviour
         }
         
     }
+    private void FixedUpdate()
+    {
+        if (transform.rotation!=new Quaternion(0,0,0,0))
+        {
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+        }
+    }
 
 
 }

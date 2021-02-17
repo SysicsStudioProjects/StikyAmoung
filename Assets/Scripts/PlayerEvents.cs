@@ -36,9 +36,11 @@ public class PlayerEvents : MonoBehaviour
 		EventController.sendSettingData += GetSettingData;
 		EventController.deathWithLaser += DeathWithLaser;
 		EventController.deathWithSpike += DeathWithSpike;
+		EventController.gameWin += GameWin;
+
 	}
 
-    private void OnDisable()
+	private void OnDisable()
     {
 		EventController.isBonuceLevel -= VerifeLevel;
 
@@ -46,6 +48,8 @@ public class PlayerEvents : MonoBehaviour
 		EventController.sendSettingData -= GetSettingData;
 		EventController.deathWithLaser -= DeathWithLaser;
 		EventController.deathWithSpike -= DeathWithSpike;
+		EventController.gameWin -= GameWin;
+
 
 
 
@@ -282,6 +286,11 @@ public class PlayerEvents : MonoBehaviour
 			EventController.gameLoose();
 
 		}
+	}
+	void GameWin()
+    {
+		transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.z, transform.rotation.w);
+
 	}
 }
 
