@@ -24,6 +24,10 @@ public class Spin : MonoBehaviour
     bool isStartRotate;
     string type;
     public Button _watchButton;
+    public Text _watchButtonText;
+    public Text CoinsText;
+    int CoinsValue;
+    int AllCoins;
     private void OnEnable()
     {
         inits();
@@ -35,7 +39,7 @@ public class Spin : MonoBehaviour
     }
     private void OnDisable()
     {
-        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+       EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         
         EventController.videoRewarded -= VideoBonuseRewarded;
         //Ads.tourads -= spinTourne;
@@ -48,6 +52,9 @@ public class Spin : MonoBehaviour
 
     void inits()
     {
+        AllCoins = Singleton._instance.coins;
+        CoinsText.text = AllCoins.ToString();
+
         if (Singleton._instance.AdsspinDate == null)
         {
             Singleton._instance.AdsspinDate = DateTime.Now;
@@ -102,7 +109,7 @@ public class Spin : MonoBehaviour
                 FreeSpinButton.interactable = false;
             }
         }
-        if (isStartRotate==false && Singleton._instance.AdsSpinVideo>0&& IronSource.Agent.isRewardedVideoAvailable())
+        if (isStartRotate==false && Singleton._instance.AdsSpinVideo>0 && IronSource.Agent.isRewardedVideoAvailable())
         {
             DailyButton.interactable = true;
         }
@@ -110,7 +117,32 @@ public class Spin : MonoBehaviour
         {
             DailyButton.interactable = false;
         }
-       
+        switch (Singleton._instance.AdsSpinVideo)
+        {
+            case 5:
+                _watchButtonText.text = "5 DAILY SPIN";
+                break;
+
+            case 4:
+                _watchButtonText.text = "4 DAILY SPIN";
+                break;
+            case 3:
+                _watchButtonText.text = "3 DAILY SPIN";
+                break;
+            case 2:
+                _watchButtonText.text = "2 DAILY SPIN";
+                break;
+            case 1:
+                _watchButtonText.text = "1 DAILY SPIN";
+                break;
+            case 0:
+                _watchButtonText.text = "TRY AGAIN TOMORROW";
+                break;
+
+            default:
+                break;
+        }
+
     }
     public void click()
     {
@@ -143,7 +175,11 @@ public class Spin : MonoBehaviour
         for (int i=0; i < (choix+nbChoix*3)*10  ; i++)
         {
             transform.Rotate(new Vector3(0,0,1),360.0f/(nbChoix*10));
-            if (i> (choix + nbChoix * 3) * 10-10)
+            if (i > (choix + nbChoix * 3) * 10 - 30)
+            {
+                yield return new WaitForSeconds(0.02f);
+            }
+           else if (i> (choix + nbChoix * 3) * 10-10)
             {
                 yield return new WaitForSeconds(0.02f*3.0f);
             }
@@ -153,7 +189,8 @@ public class Spin : MonoBehaviour
             }
             else
             {
-                yield return new WaitForSeconds(0.02f);
+                // yield return new WaitForSeconds(0.02f);
+                yield return new WaitForFixedUpdate();
             }
            
         }
@@ -164,63 +201,93 @@ public class Spin : MonoBehaviour
             case 0:
                 //you win 200
                 CoinsWin.text = "+" + 200;
-             
+                CoinsValue = 200;
+
                 break;
             case 1:
                 //you win 400
                 CoinsWin.text = "+" + 400;
-               
+                CoinsValue = 400;
+
 
 
                 break;
             case 2:
                 //you win 600
                 CoinsWin.text = "+" + 600;
-           
+                CoinsValue = 600;
+
 
 
                 break;
             case 3:
                 //you win 500
                 CoinsWin.text = "+" + 500;
-               
+                CoinsValue = 500;
+
+
 
 
                 break;
             case 4:
                 //you win 600
                 CoinsWin.text = "+" + 600;
-               
+                CoinsValue = 600;
+
+
 
 
                 break;
             case 5:
                 //you win 300
                 CoinsWin.text = "+" + 300;
-                
+                CoinsValue = 300;
+
 
 
                 break;
             case 6:
                 //you win 800
                 CoinsWin.text = "+" + 800;
-               
+                CoinsValue = 800;
+
 
 
                 break;
             case 7:
                 //you win 1200
                 CoinsWin.text = "+" + 1200;
-               
+                CoinsValue = 1200;
+
 
                 break;
             default:
                 break;
         }
 
-
+        StartCoroutine(SetupCoin());
     }
-    private IEnumerator timer()
+
+    IEnumerator SetupCoin()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        int value = CoinsValue / 20;
+        for (int i = 0; i < 1000; i++)
+        {
+            yield return new WaitForSecondsRealtime(0.04f);
+
+            if (CoinsValue <= 0)
+            {
+                CoinsValue = 0;
+                break;
+            }
+            CoinsValue -= value;
+            AllCoins += value;
+            CoinsText.text = AllCoins.ToString();
+
+        }
+    }
+        private IEnumerator timer()
     {
         Timeobj.SetActive(true);
         dateWait -= new TimeSpan(0, 0, 1);
@@ -416,6 +483,7 @@ public class Spin : MonoBehaviour
         IsWatched = false;
     }
        
+    
 
     }
 

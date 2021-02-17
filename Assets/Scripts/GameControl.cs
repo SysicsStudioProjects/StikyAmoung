@@ -65,19 +65,12 @@ public class GameControl : MonoBehaviour
             }
         }
         EventController.videoRewarded += VideoBonuseRewarded;
+        EventController.onchangeItems += InitCoin;
 
     }
     private void Start()
     {
-        if (LevelBonuse)
-        {
-            EventController.levelBonuseFinished += LevelBonuseFinished;
-            coinsValue *= 2;
-            if (EventController.isBonuceLevel != null)
-            {
-                EventController.isBonuceLevel(true);
-            }
-        }
+        
     }
     private void OnDisable()
     {
@@ -94,6 +87,7 @@ public class GameControl : MonoBehaviour
         EventController.cardRequired -= CardRequired;
         EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         EventController.videoRewarded -= VideoBonuseRewarded;
+        EventController.onchangeItems -= InitCoin;
 
 
 

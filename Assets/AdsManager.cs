@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using AppsFlyerSDK;
 public class AdsManager : MonoBehaviour
 {
   
@@ -12,7 +13,14 @@ public class AdsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        IronSource.Agent.shouldTrackNetworkState (true);
+        /*IronSource.Agent.setUserId(AppsFlyer.getAppsFlyerId());
+#if UNITY_ANDROID && !UNITY_EDITOR
+AppsFlyerAndroid.validateAndSendInAppPurchase( "Gio8zFFVzAZJGr9sbHXoVb",  "signature",  "purchaseData",  "price",  "currency",  null,  this);
+#endif
+*/
+
+        // AppsFlyer.validateReceipt();
+IronSource.Agent.shouldTrackNetworkState (true);
         #if UNITY_ANDROID
         string appKey = "85460dcd";
 #elif UNITY_IPHONE
@@ -23,6 +31,7 @@ public class AdsManager : MonoBehaviour
 
   IronSource.Agent.validateIntegration();
   IronSource.Agent.init(appKey);
+        
     }
     private void Awake()
     {
@@ -40,6 +49,7 @@ public class AdsManager : MonoBehaviour
             
             Destroy(gameObject);
         }
+
     }
 
     private void OnEnable()

@@ -11,10 +11,12 @@ public class CharacterAnimation : MonoBehaviour
     public GameObject DiscObject;
 
     public GameObject DiscPrfab;
+    public GameObject DiscPrefab2;
 
     public GameObject BusherObject;
 
     public GameObject BusherPrfab;
+    public GameObject BusherPrfab2;
     // Start is called before the first frame update
    void OnEnable(){
        EventController.gameWin+=GameWin;
@@ -26,6 +28,10 @@ public class CharacterAnimation : MonoBehaviour
     }
 
     void GameWin(){
+        if (audio==null)
+        {
+            return;
+        }
         audio.Stop();
         audio.enabled=false;
     }
@@ -68,10 +74,32 @@ public class CharacterAnimation : MonoBehaviour
 
     public void DiscKill()
     {
+        string name = "";
+        for (int i = 0; i < DiscObject.transform.childCount; i++)
+        {
+            if (DiscObject.transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                name = DiscObject.transform.GetChild(i).gameObject.name;
+            }
+        }
+        GameObject objSpawn=new GameObject();
+        switch (name)
+        {
+            case "Disc1":
+                objSpawn = DiscPrfab;
+                break;
+            case "Disc2":
+                objSpawn = DiscPrefab2;
+
+
+                break;
+            default:
+                break;
+        }
         Transform Target = playerEvents.target;
         DiscObject.SetActive(false);
         StartCoroutine(ReturnShootbaleObj(DiscObject));
-        GameObject obj = Instantiate(DiscPrfab, DiscObject.transform.position, Quaternion.identity);
+        GameObject obj = Instantiate(objSpawn, DiscObject.transform.position, Quaternion.identity);
         obj.GetComponent<ShootBale>().SetTarget(Target,transform.forward,playerEvents);
         if (playerEvents != null)
         {
@@ -81,11 +109,33 @@ public class CharacterAnimation : MonoBehaviour
 
     public void BucherShoot()
     {
+       /* string name = "";
+        for (int i = 0; i < BusherObject.transform.childCount; i++)
+        {
+            if (BusherObject.transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                name = BusherObject.transform.GetChild(i).gameObject.name;
+            }
+        }
+        GameObject objSpawn = new GameObject();
+        switch (name)
+        {
+            case "Butcher_knife1":
+                objSpawn = BusherPrfab;
+                break;
+            case "Butcher_knife2":
+                objSpawn = BusherPrfab2;
+
+
+                break;
+            default:
+                break;
+        }
         Transform Target = playerEvents.target;
         BusherObject.SetActive(false);
         StartCoroutine(ReturnShootbaleObj(BusherObject));
-        GameObject obj = Instantiate(BusherPrfab, BusherObject.transform.position, Quaternion.identity);
-        obj.GetComponent<ShootBale>().SetTarget(Target, transform.forward, playerEvents);
+        GameObject obj = Instantiate(objSpawn, BusherObject.transform.position, Quaternion.identity);
+        obj.GetComponent<ShootBale>().SetTarget(Target, transform.forward, playerEvents);*/
         if (playerEvents != null)
         {
             playerEvents.KillEvent(null);
