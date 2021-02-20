@@ -22,7 +22,7 @@ public class RotatorVelocity : MonoBehaviour
 
         if (target!=null)
         {
-            ch.Move(-forward * 25 * Time.deltaTime);
+            ch.Move((-forward-Vector3.up) * 25 * Time.deltaTime);
         }
 
         // rb.angularVelocity = transform.up * 10;
@@ -49,7 +49,7 @@ public class RotatorVelocity : MonoBehaviour
     IEnumerator MovePlayer()
     {
         p.enabled = false;
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(2f);
         audio.Stop();
         p.enabled = true;
         target = null;

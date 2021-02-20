@@ -101,10 +101,10 @@ public class CharacterAnimation : MonoBehaviour
         StartCoroutine(ReturnShootbaleObj(DiscObject));
         GameObject obj = Instantiate(objSpawn, DiscObject.transform.position, Quaternion.identity);
         obj.GetComponent<ShootBale>().SetTarget(Target,transform.forward,playerEvents);
-        if (playerEvents != null)
+       /* if (playerEvents != null)
         {
             playerEvents.KillEvent(null);
-        }
+        }*/
     }
 
     public void BucherShoot()

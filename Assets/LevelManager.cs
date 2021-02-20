@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 1;
         SkinMenu.SetActive(false);
         StartCoroutine(EnablePlayer());
+        IronSource.Agent.loadInterstitial();
     }
 
     IEnumerator EnablePlayer(){

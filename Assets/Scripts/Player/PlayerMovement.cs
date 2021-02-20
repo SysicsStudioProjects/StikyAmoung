@@ -48,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
         if (isWin==true)
         {
             transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.z, transform.rotation.w);
+           
+            anim.SetFloat("speed", 0);
+
             return;
         }
         if (switchTarget==null||!switchTarget.gameObject.activeInHierarchy)
@@ -182,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
     void GameWin()
     {
         isWin = true;
-        this.enabled = false;
+       // this.enabled = false;
     }
     void GameLoose()
     {

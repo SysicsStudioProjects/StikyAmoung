@@ -6,17 +6,19 @@ public class ShootBale : MonoBehaviour
 {
     Transform target;
     public float speed;
-    public Rigidbody rb;
+    //public Rigidbody rb;
     public Animator anim;
-    public Collider collider;
-    private void Update()
+    //public Collider collider;
+    private void FixedUpdate()
     {
-        if (target==null)
+        /*if (target==null)
         {
             rb.velocity=(parent *Time.smoothDeltaTime*800);
-        }
-        else
+        }*/
+        if (target==null||!target.gameObject.activeInHierarchy)
         {
+            gameObject.SetActive(false);
+        }
             speed += 0.02f;
             Vector3 dir = target.position - transform.position;
             float distanceThisFrame = speed * Time.deltaTime;
@@ -29,13 +31,13 @@ public class ShootBale : MonoBehaviour
 
             transform.Translate(dir.normalized * distanceThisFrame, Space.World);
             transform.LookAt(target);
-        }
+        
         
     }
 
     void HitTarget()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     // Update is called once per frame
 

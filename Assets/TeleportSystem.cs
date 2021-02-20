@@ -52,6 +52,7 @@ public class TeleportSystem : MonoBehaviour
 
     void PlayerEnter(Transform t)
     {
+        cinemachineBrain.m_DefaultBlend.m_Time = 0.0f;
         if (t==transform)
         {
             if (Fleshe!=null)
