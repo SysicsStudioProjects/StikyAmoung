@@ -9,9 +9,10 @@ public class DoorController : MonoBehaviour
     public Animator anim;
     public float raduis;
     public Collider collider;
-
+    public List<ParticuleCard> cards;
     int IndexDoor;
-  
+    int cardIndex;
+    public AudioSource audio;
     void Start()
     {
         
@@ -21,6 +22,8 @@ public class DoorController : MonoBehaviour
     {
         EventController.hasACard += SetCard;
         StartCoroutine(FindObj());
+        cardIndex = cards.FindIndex(d => d.cardType == cardType);
+       
     }
 
     private void OnDisable()
@@ -30,12 +33,7 @@ public class DoorController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
-       
-       
-       
-    }
+   
     void GetObjs(Vector3 center, float radius)
     {
         Collider[] hitColliders = Physics.OverlapSphere(center, radius);
@@ -54,6 +52,7 @@ public class DoorController : MonoBehaviour
             if (anim.GetBool("Isopen")==false)
             {
                 anim.SetBool("Isopen", true);
+                audio.Play();
             }
             
         }
@@ -88,6 +87,10 @@ public class DoorController : MonoBehaviour
             {
                 EventController.cardRequired(true);
             }
+                if (cardIndex != -1)
+                {
+                    cards[cardIndex].ThisCardobj.SetActive(true);
+                }
 
             }
             
@@ -99,7 +102,11 @@ public class DoorController : MonoBehaviour
             {
                 EventController.cardRequired(false);
             }
-            IndexDoor=0;
+                if (cardIndex != -1)
+                {
+                    cards[cardIndex].ThisCardobj.SetActive(false);
+                }
+                IndexDoor =0;
             }
             
         }
@@ -111,6 +118,10 @@ public class DoorController : MonoBehaviour
         if (cardType==_cardType)
         {
             HasAcard = true;
+            if (cardIndex != -1)
+            {
+                cards[cardIndex].ThisCardobj.SetActive(false);
+            }
         }
     }
 
@@ -134,3 +145,10 @@ public class DoorController : MonoBehaviour
 }
 
 public enum CardType { red,blue,white }
+
+[System.Serializable]
+public class ParticuleCard
+{
+    public CardType cardType;
+    public GameObject ThisCardobj;
+}

@@ -8,7 +8,7 @@ public class PlayerEvents : MonoBehaviour
 	public string enemyTag;
 	public float range;
 	public Transform target;
-	
+
 	public Animator anim;
 	public GameObject DeathPlayer;
 	public GameObject DeathBonucePlayer;
@@ -20,28 +20,58 @@ public class PlayerEvents : MonoBehaviour
 	public GameObject BloodObj;
 
 	public static WeopenType weopenType;
-	
-    // Start is called before the first frame update
-    private void OnEnable()
-    {
-        if (EventController.setPlayer!=null)
-        {
+	WeopenType weopen;
+	public float RangeWeopen;
+	public LayerMask obstacleMask;
+	public PlayerMovement playerMovement;
+	// Start is called before the first frame update
+	private void OnEnable()
+	{
+		if (EventController.setPlayer != null)
+		{
 			EventController.setPlayer(transform);
 		}
-		
+
 		EventController.isBonuceLevel += VerifeLevel;
-		
-		
+
+
 		EventController.startKillEvent += Kill;
 		EventController.sendSettingData += GetSettingData;
 		EventController.deathWithLaser += DeathWithLaser;
 		EventController.deathWithSpike += DeathWithSpike;
 		EventController.gameWin += GameWin;
+		EventController.ennemieDown += EnnemieDown;
+		StartCoroutine(CaroutineTarget());
 
+		switch (weopenType)
+		{
+			case WeopenType.none:
+				RangeWeopen = 3.5f;
+
+				break;
+			case WeopenType.Knife:
+				RangeWeopen = 2.5f;
+
+				break;
+			case WeopenType.Disc:
+				range = 8;
+				RangeWeopen = 8;
+				break;
+			case WeopenType.Butcher:
+				RangeWeopen = 2.5f;
+
+				break;
+			default:
+				break;
+		}
+		stopKilling = false;
+		target = null;
+		switchTarget = null;
 	}
 
 	private void OnDisable()
-    {
+	{
+		StopAllCoroutines();
 		EventController.isBonuceLevel -= VerifeLevel;
 
 		EventController.startKillEvent -= Kill;
@@ -49,28 +79,89 @@ public class PlayerEvents : MonoBehaviour
 		EventController.deathWithLaser -= DeathWithLaser;
 		EventController.deathWithSpike -= DeathWithSpike;
 		EventController.gameWin -= GameWin;
+		EventController.ennemieDown -= EnnemieDown;
 
 
 
 
 	}
+	private void Start()
+	{
+		switch (weopenType)
+		{
+			case WeopenType.none:
+				RangeWeopen = 3;
+
+				break;
+			case WeopenType.Knife:
+				RangeWeopen = 2.5f;
+
+				break;
+			case WeopenType.Disc:
+				range = 8;
+				RangeWeopen = 8;
+				break;
+			case WeopenType.Butcher:
+				RangeWeopen = 3;
+
+				break;
+			default:
+				break;
+		}
+	}
 
 	// Update is called once per frame
-	void Update()
-    {
-		UpdateTarget();
-        if (target!=null&&AutoFocuse)
+	void FixedUpdate()
+	{
+        if (playerMovement.enabled==false)
         {
-			LookTotarget(0.3f);
-            
+			target = null;
+			switchTarget = null;
+			stopKilling = false;
+			return;
+        }
+        if (weopen!=weopenType)
+        {
+			switch (weopenType)
+			{
+				case WeopenType.none:
+					RangeWeopen = 2.5f;
+
+					break;
+				case WeopenType.Knife:
+					RangeWeopen = 2.5f;
+
+					break;
+				case WeopenType.Disc:
+					range = 8;
+					RangeWeopen = 8;
+					break;
+				case WeopenType.Butcher:
+					RangeWeopen = 3;
+
+					break;
+				default:
+					break;
+			}
+			weopen = weopenType;
+		}
+		if (target != null && AutoFocuse&&target.gameObject.activeInHierarchy)
+		{
+			LookTotarget(0.5f);
+
+
 		}
 
-        
+
 
 	}
 
 	void UpdateTarget()
 	{
+        if (playerMovement.enabled==false)
+        {
+			return;
+        }
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 		float shortestDistance = Mathf.Infinity;
 		GameObject nearestEnemy = null;
@@ -92,134 +183,191 @@ public class PlayerEvents : MonoBehaviour
 		else
 		{
 			target = null;
-		}
-        if (stopKilling==false)
-        {
-            if (switchTarget!=null)
-            {
-				if (EventController.canKill != null)
-				{
-					EventController.canKill(target, shortestDistance);
-				}
+			print("heyy");
+			if (EventController.canKill != null)
+			{
+				EventController.canKill(null, 0);
 			}
+
+		}
+		if (stopKilling == false)
+		{
+			if (switchTarget != null)
+			{
+                if (RangeWeopen<4)
+                {
+					if (EventController.canKill != null)
+					{
+						EventController.canKill(target, shortestDistance);
+					}
+				}
+				
+
+
+				if (shortestDistance <= RangeWeopen)
+				{
+					
+					
+					if (RangeWeopen > 4)
+					{
+						Vector3 dirToTarget = (target.position - transform.position).normalized;
+						if (!Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
+						{
+							Kill();
+							StartCoroutine(SlowTime());
+						}
+                        else
+                        {
+							StartCoroutine(SlowTime());
+						}
+					}
+                    else
+                    {
+						Kill();
+					}
+					stopKilling = true;
+				}
+
+				//target = null;
+			}
+
 			switchTarget = target;
 
 
 		}
-        
+
+	}
+
+
+	IEnumerator CaroutineTarget()
+	{
+		yield return new WaitForSeconds(0.1f);
+		/*if (canKill == false)
+		{
+			target = null;
+			switchTarget = null;
+			if (EventController.canKill != null)
+			{
+				EventController.canKill(null, 0);
+			}
+		}*/
+		if (stopKilling == false)
+		{
+			UpdateTarget();
+		}
+
+		StartCoroutine(CaroutineTarget());
 	}
 	Transform switchTarget;
 	void LookTotarget(float speedrotate)
-    {
-		 Vector3 dir = target.position - transform.position;
-		 Quaternion lookRotation = Quaternion.LookRotation(dir);
-		 Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, speedrotate).eulerAngles;
+	{
+		Vector3 dir = target.position - transform.position;
+		Quaternion lookRotation = Quaternion.LookRotation(dir);
+		Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, speedrotate).eulerAngles;
 		// LeanTween.rotate(transform, new Vector3(0,dir.y,0), 0.3f);
-		 transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+		transform.rotation = Quaternion.Euler(0, rotation.y, 0);
 	}
 
 	void Kill()
-    {
-        switch (weopenType)
-        {
-            case WeopenType.none:
+	{
+		switch (weopenType)
+		{
+			case WeopenType.none:
 				anim.SetTrigger("attack");
 				break;
-            case WeopenType.Knife:
+			case WeopenType.Knife:
 				anim.SetTrigger("attackknife");
 
 				break;
-            case WeopenType.Disc:
+			case WeopenType.Disc:
 				anim.SetTrigger("attackdisc");
+				StartCoroutine(SlowTime());
 
 				break;
 			case WeopenType.Butcher:
 				anim.SetTrigger("attackButcher");
 				break;
-            default:
-                break;
-        }
-        
+			default:
+				break;
+		}
 		
 
-    }
+
+
+	}
 	bool stopKilling;
 	public void KillEvent(Transform t)
-    {
-        if (target!=null)
-        {
-			stopKilling = true;
+	{
+
+		stopKilling = true;
+		if (target != null&&t==null)
+		{
+
 			StartCoroutine(SlowTime());
-			if (EventController.canKill != null)
+			/*if (EventController.canKill != null)
 			{
 				EventController.canKill(null,0);
-			}
+			}*/
 			if (vibration)
-            {
+			{
 				Handheld.Vibrate();
 			}
-			
+
 			LookTotarget(1);
-
-			//	StartCoroutine(DesactivateEnnemy(target.gameObject));
-			target.gameObject.SetActive(false);
-
-			 if (isBonuceLevel)
-			  {
-				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemeieBonuse>().MaterialColor, target);
-			}
-			  else
-			{
-				if(target.GetComponent<EnnemiePatrol>()!=null){
-				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemiePatrol>().MaterialColor, target);
-				}
-				else if(target.GetComponent<EnnemeieBonuse>()!=null){
-				EnnemieDeathController._instance.ActivateEnnemie(target.GetComponent<EnnemeieBonuse>().MaterialColor, target);
-
-
-				}
-			}
+            
+            
+		//	target.gameObject.SetActive(false);
 
 			
-		
-			
+
+
+
+
 		}
-        if (t!=null)
-        {
-			
-			if (EventController.canKill != null)
+		if (t != null)
+		{
+			target = t;
+
+			/*if (EventController.canKill != null)
 			{
 				EventController.canKill(null, 0);
-			}
+			}*/
 			if (vibration)
 			{
 				Handheld.Vibrate();
 			}
 
+
+
+				//StartCoroutine(DesactivateEnnemy(target.gameObject,0.1f));
+			//t.gameObject.SetActive(false);
+
 			
-
-			//	StartCoroutine(DesactivateEnnemy(target.gameObject));
-			t.gameObject.SetActive(false);
-
-			if (isBonuceLevel)
+		}
+        if (target!=null)
+        {
+			switch (weopenType)
 			{
-				EnnemieDeathController._instance.ActivateEnnemie(t.GetComponent<EnnemeieBonuse>().MaterialColor, t);
-			}
-			else
-			{
-				if(t.GetComponent<EnnemiePatrol>()!=null){
-				EnnemieDeathController._instance.ActivateEnnemie(t.GetComponent<EnnemiePatrol>().MaterialColor, t);
-				}
-				else if(t.GetComponent<EnnemeieBonuse>()!=null){
-				EnnemieDeathController._instance.ActivateEnnemie(t.GetComponent<EnnemeieBonuse>().MaterialColor, t);
-
-
-				}
+				case WeopenType.none:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.4f));
+					break;
+				case WeopenType.Knife:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.3f));
+					break;
+				case WeopenType.Disc:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
+					break;
+				case WeopenType.Butcher:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.3f));
+					break;
+				default:
+					break;
 			}
 		}
+		
 	}
 	IEnumerator SlowTime()
-    {
+	{
 		/*Time.timeScale = 0.5f;
 		for (int i = 0; i < 100; i++)
         {
@@ -232,15 +380,20 @@ public class PlayerEvents : MonoBehaviour
             {
 				Time.timeScale +=  Time.deltaTime*i/10;
 			}*/
-		yield return new WaitForSeconds(1f);
+		print("hey hey");
+		yield return new WaitForSeconds(0.5f);
 		stopKilling = false;
+		target = null;
+		switchTarget = null;
+
+
 
 
 	}
-		
-		
-		
-	
+
+
+
+
 	void GetSettingData(float speed, float ennemydetect, bool _autofocuse, bool _vibration)
 	{
 
@@ -249,23 +402,52 @@ public class PlayerEvents : MonoBehaviour
 	}
 
 	void VerifeLevel(bool b)
-    {
+	{
 		isBonuceLevel = b;
-    }
+	}
 
-	IEnumerator DesactivateEnnemy(GameObject obj)
-    {
-		yield return new WaitForSeconds(0.2f);
+	IEnumerator DesactivateEnnemy(GameObject obj,float t)
+	{
+		float a = 0;
+        if (t>0.1f)
+        {
+			a = 0.3f;
+        }
+        else
+        {
+			a = 0.1f;
+        }
+		yield return new WaitForSeconds(a);
+		if (isBonuceLevel)
+		{
+			EnnemieDeathController._instance.ActivateEnnemie(obj.GetComponent<EnnemeieBonuse>().MaterialColor, obj.transform);
+		}
+		else
+		{
+			if (obj.GetComponent<EnnemiePatrol>() != null)
+			{
+				EnnemieDeathController._instance.ActivateEnnemie(obj.GetComponent<EnnemiePatrol>().MaterialColor, obj.transform);
+			}
+			else if (obj.GetComponent<EnnemeieBonuse>() != null)
+			{
+				EnnemieDeathController._instance.ActivateEnnemie(obj.GetComponent<EnnemeieBonuse>().MaterialColor, obj.transform);
+
+
+			}
+		}
+		
+		yield return new WaitForSeconds(t-0.1f);
+		
 		obj.SetActive(false);
-    }
+	}
 
 
 	public GameObject LazerParticle;
 	void DeathWithLaser()
-    {
+	{
 		LazerParticle.SetActive(true);
-        if (EventController.gameLoose!=null)
-        {
+		if (EventController.gameLoose != null)
+		{
 			EventController.gameLoose();
 
 		}
@@ -279,7 +461,7 @@ public class PlayerEvents : MonoBehaviour
 	}
 
 	IEnumerator ActivateBlood()
-    {
+	{
 		yield return new WaitForSeconds(0.1f);
 		if (EventController.gameLoose != null)
 		{
@@ -288,11 +470,31 @@ public class PlayerEvents : MonoBehaviour
 		}
 	}
 	void GameWin()
-    {
+	{
 		transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.z, transform.rotation.w);
 
 	}
-}
+	//bool canKill;
+	/*void OnControllerColliderHit(ControllerColliderHit hit)
+	{
+		if (hit.transform.tag != enemyTag && hit.transform.tag != "Ground")
+		{
+			canKill = false;
 
+		}
+		else
+		{
+			canKill = true;
+		}
+	}*/
+
+	void EnnemieDown(EnnemiePatrol obj)
+    {
+		target = null;
+		switchTarget = null;
+		stopKilling = false;
+
+	}
+}
 
 public enum WeopenType {none,Knife,Disc,Butcher }

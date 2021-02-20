@@ -65,9 +65,9 @@ public class Singleton : MonoBehaviour
     {
         
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 40;
+      Application.targetFrameRate = 55;
         // When the Menu starts, set the rendering to target 20fps
-        //OnDemandRendering.renderFrameInterval = 3;
+        OnDemandRendering.renderFrameInterval = 3;
 
 
         if (_instance == null)
@@ -95,6 +95,13 @@ public class Singleton : MonoBehaviour
             save();
         }
 
+    }
+    void Update()
+    {
+        if (Application.targetFrameRate != 55)
+        {
+            Application.targetFrameRate = 55;
+        }
     }
 
     public void LoadSkinSelectedMenu(int indexCurrentScene,int indexSkinScene){

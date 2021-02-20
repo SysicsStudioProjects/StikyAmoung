@@ -108,12 +108,17 @@ public class GameControl : MonoBehaviour
         CoinsWin += coinsValue;
         if (NBkill==alleennemie)
         {
-            GameWin();
+            StartCoroutine(YielTowin());
             AdsManager._instance.DestroyBanner();
             TmeRcanvas.SetActive(false);
         }
     }
 
+    IEnumerator YielTowin()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GameWin();
+    }
     void GameWin()
     {
         AdsManager._instance.DestroyBanner();
@@ -245,7 +250,7 @@ public class GameControl : MonoBehaviour
      void EnterTeleport(Transform t)
     {
         Player.SetActive(false);
-        KillButon.SetActive(false);
+        //KillButon.SetActive(false);
         JoysticsObject.SetActive(false);
     }
 
@@ -255,7 +260,7 @@ public class GameControl : MonoBehaviour
         Player.transform.rotation = pos.rotation;
         Player.SetActive(true);
        
-        KillButon.SetActive(true);
+      //  KillButon.SetActive(true);
         JoysticsObject.SetActive(true);
     }
 
@@ -266,6 +271,7 @@ public class GameControl : MonoBehaviour
             if (type==cardImages[i].cardType)
             {
                 cardImages[i].Card.gameObject.SetActive(true);
+                CardRequired(false);
             }
         }
     }
@@ -306,13 +312,14 @@ public class GameControl : MonoBehaviour
 
     public void ContiniueWithoutBonuseReward()
     {
-        AdsManager._instance.ShowIntertiate();
+        
         if (IsBonuseReward==false)
         {
             int random = Random.Range(0, 2);
             print(random);
             if (random==0)
             {
+                AdsManager._instance.ShowIntertiate();
                 print("we show video");
                 
             }

@@ -6,8 +6,9 @@ using AppsFlyerSDK;
 public class AdsManager : MonoBehaviour
 {
   
-   public static AdsManager _instance;
+  public static AdsManager _instance;
   public string AdsState;
+
 
   
     // Start is called before the first frame update
@@ -22,7 +23,7 @@ AppsFlyerAndroid.validateAndSendInAppPurchase( "Gio8zFFVzAZJGr9sbHXoVb",  "signa
         // AppsFlyer.validateReceipt();
 IronSource.Agent.shouldTrackNetworkState (true);
         #if UNITY_ANDROID
-        string appKey = "85460dcd";
+        string appKey = "e87f5639";
 #elif UNITY_IPHONE
         string appKey = "8545d445";
 #else
@@ -49,7 +50,7 @@ IronSource.Agent.shouldTrackNetworkState (true);
             
             Destroy(gameObject);
         }
-
+        //StartCoroutine(LoadInter());
     }
 
     private void OnEnable()
@@ -335,4 +336,13 @@ IronSource.Agent.shouldTrackNetworkState (true);
     }
     #endregion
 
+
+    IEnumerator LoadInter()
+    {
+        
+        yield return new WaitForSeconds(1);
+        print("that's so good");
+             IronSource.Agent.loadInterstitial();
+    }
+    
 }

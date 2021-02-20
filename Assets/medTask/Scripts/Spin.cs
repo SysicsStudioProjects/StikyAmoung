@@ -28,6 +28,7 @@ public class Spin : MonoBehaviour
     public Text CoinsText;
     int CoinsValue;
     int AllCoins;
+    public AudioSource audio;
     private void OnEnable()
     {
         inits();
@@ -44,6 +45,8 @@ public class Spin : MonoBehaviour
         EventController.videoRewarded -= VideoBonuseRewarded;
         //Ads.tourads -= spinTourne;
     }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -172,8 +175,10 @@ public class Spin : MonoBehaviour
     private IEnumerator Tourne()
     {
         isStartRotate = true;
+        audio.Play();
         for (int i=0; i < (choix+nbChoix*3)*10  ; i++)
         {
+            
             transform.Rotate(new Vector3(0,0,1),360.0f/(nbChoix*10));
             if (i > (choix + nbChoix * 3) * 10 - 30)
             {
@@ -195,6 +200,7 @@ public class Spin : MonoBehaviour
            
         }
         print(choix);
+        audio.Stop();
         AnimationMoney.SetActive(true);
         switch (choix)
         {
