@@ -46,7 +46,7 @@ public class PlayerEvents : MonoBehaviour
 		switch (weopenType)
 		{
 			case WeopenType.none:
-				RangeWeopen = 3.5f;
+				RangeWeopen = 2f;
 
 				break;
 			case WeopenType.Knife:
@@ -90,7 +90,7 @@ public class PlayerEvents : MonoBehaviour
 		switch (weopenType)
 		{
 			case WeopenType.none:
-				RangeWeopen = 3;
+				RangeWeopen = 2;
 
 				break;
 			case WeopenType.Knife:
@@ -125,7 +125,7 @@ public class PlayerEvents : MonoBehaviour
 			switch (weopenType)
 			{
 				case WeopenType.none:
-					RangeWeopen = 2.5f;
+					RangeWeopen = 2f;
 
 					break;
 				case WeopenType.Knife:
@@ -349,16 +349,16 @@ public class PlayerEvents : MonoBehaviour
 			switch (weopenType)
 			{
 				case WeopenType.none:
-					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.4f));
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
 					break;
 				case WeopenType.Knife:
-					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.3f));
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
 					break;
 				case WeopenType.Disc:
 					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
 					break;
 				case WeopenType.Butcher:
-					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.3f));
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
 					break;
 				default:
 					break;
@@ -418,6 +418,9 @@ public class PlayerEvents : MonoBehaviour
 			a = 0.1f;
         }
 		yield return new WaitForSeconds(a);
+		
+		
+		yield return new WaitForSeconds(t-0.1f);
 		if (isBonuceLevel)
 		{
 			EnnemieDeathController._instance.ActivateEnnemie(obj.GetComponent<EnnemeieBonuse>().MaterialColor, obj.transform);
@@ -435,9 +438,6 @@ public class PlayerEvents : MonoBehaviour
 
 			}
 		}
-		
-		yield return new WaitForSeconds(t-0.1f);
-		
 		obj.SetActive(false);
 	}
 

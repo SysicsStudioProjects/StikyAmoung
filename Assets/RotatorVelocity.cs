@@ -23,6 +23,7 @@ public class RotatorVelocity : MonoBehaviour
         if (target!=null)
         {
             ch.Move((-forward-Vector3.up) * 25 * Time.deltaTime);
+            target.Rotate(Vector3.up, 10);
         }
 
         // rb.angularVelocity = transform.up * 10;
