@@ -27,8 +27,13 @@ public class TeleportSystem : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.transform.tag == "PLayer")
         {
+            if (other.GetComponent<PlayerMovement>().enabled==false)
+            {
+                return;
+            }
             //hey hey we will send to enable Teleport Pos
             if (EventController.teleportCollision!=null)
             {

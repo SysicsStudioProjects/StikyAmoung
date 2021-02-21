@@ -10,7 +10,7 @@ public class BonuseController : MonoBehaviour
 
     public void InitCoins(int c)
     {
-        c = coinsWin;
+        coinsWin = c;
         coinsDefault = Singleton._instance.coins;
         CoinsText.text = coinsDefault.ToString();
         StartCoroutine(CaroutineBonuse());
