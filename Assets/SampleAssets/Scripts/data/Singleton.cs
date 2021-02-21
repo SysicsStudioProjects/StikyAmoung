@@ -67,7 +67,7 @@ public class Singleton : MonoBehaviour
         QualitySettings.vSyncCount = 0;
       Application.targetFrameRate = 55;
         // When the Menu starts, set the rendering to target 20fps
-        OnDemandRendering.renderFrameInterval = 3;
+        OnDemandRendering.renderFrameInterval = 2;
 
 
         if (_instance == null)
