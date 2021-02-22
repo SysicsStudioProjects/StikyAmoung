@@ -200,6 +200,7 @@ public class PlayerEvents : MonoBehaviour
 					{
 						EventController.canKill(target, shortestDistance);
 					}
+					StartCoroutine(SlowTime());
 				}
 				
 
