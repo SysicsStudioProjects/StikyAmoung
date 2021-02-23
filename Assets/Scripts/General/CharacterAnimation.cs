@@ -17,6 +17,8 @@ public class CharacterAnimation : MonoBehaviour
 
     public GameObject BusherPrfab;
     public GameObject BusherPrfab2;
+
+    public GameObject SpearPrefab;
     // Start is called before the first frame update
    void OnEnable(){
        EventController.gameWin+=GameWin;
@@ -90,8 +92,9 @@ public class CharacterAnimation : MonoBehaviour
                 break;
             case "Disc2":
                 objSpawn = DiscPrefab2;
-
-
+                break;
+            case "Spear":
+                objSpawn = SpearPrefab;
                 break;
             default:
                 break;

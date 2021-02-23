@@ -58,7 +58,7 @@ public class GameControl : MonoBehaviour
         if (LevelBonuse)
         {
             EventController.levelBonuseFinished += LevelBonuseFinished;
-            coinsValue *= 2;
+            //coinsValue *= 2;
             if (EventController.isBonuceLevel != null)
             {
                 EventController.isBonuceLevel(true);
@@ -133,7 +133,7 @@ public class GameControl : MonoBehaviour
         }
         StartCoroutine(LevelCompleted());
        
-            AddBonuse.interactable = IronSource.Agent.isRewardedVideoAvailable();
+         AddBonuse.interactable = IronSource.Agent.isRewardedVideoAvailable();
        
     }
     IEnumerator LevelCompleted()

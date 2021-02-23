@@ -6,6 +6,8 @@ using System.Collections;
 using System;
 public class Singleton : MonoBehaviour
 {
+    public AudioSource audio;
+
     public static Singleton _instance;
     #region data
     public int level;
@@ -29,6 +31,7 @@ public class Singleton : MonoBehaviour
         {
             EventController.onchangeItems();
         }
+        audio.mute = !sound;
     }
     public void load()
     {
@@ -53,6 +56,7 @@ public class Singleton : MonoBehaviour
                 }
             }
         }
+        audio.mute = !sound;
     }
     #endregion
     private void OnEnable()
@@ -94,7 +98,7 @@ public class Singleton : MonoBehaviour
         {
             save();
         }
-
+        audio.mute = !sound;
     }
     void Update()
     {

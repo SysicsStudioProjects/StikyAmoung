@@ -21,7 +21,7 @@ public class BonuseController : MonoBehaviour
    
     IEnumerator CaroutineBonuse()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
         int value = coinsWin / 20;
         for (int i = 0; i < 1000; i++)
         {
