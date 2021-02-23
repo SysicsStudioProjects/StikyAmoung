@@ -138,6 +138,18 @@ public class SkinSelected : MonoBehaviour
             case "Butcher_knife2":
                 PlayerEvents.weopenType = WeopenType.Butcher;
                 break;
+            case "Spear":
+                PlayerEvents.weopenType = WeopenType.Disc;
+                break;
+            case "Knife4":
+                PlayerEvents.weopenType = WeopenType.Knife;
+                break;
+            case "Knife3":
+                PlayerEvents.weopenType = WeopenType.Knife;
+                break;
+            case "Axe_weapon":
+                PlayerEvents.weopenType = WeopenType.Butcher;
+                break;
             default:
                 break;
         }

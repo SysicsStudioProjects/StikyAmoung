@@ -15,6 +15,8 @@ public class PlayerEvents : MonoBehaviour
 	public bool AutoFocuse;
 	public bool vibration;
 
+	bool Istarting;
+
 	bool isBonuceLevel;
 
 	public GameObject BloodObj;
@@ -41,6 +43,7 @@ public class PlayerEvents : MonoBehaviour
 		EventController.deathWithSpike += DeathWithSpike;
 		EventController.gameWin += GameWin;
 		EventController.ennemieDown += EnnemieDown;
+		EventController.gameStart += GameStart;
 		StartCoroutine(CaroutineTarget());
 
 		switch (weopenType)
@@ -80,7 +83,7 @@ public class PlayerEvents : MonoBehaviour
 		EventController.deathWithSpike -= DeathWithSpike;
 		EventController.gameWin -= GameWin;
 		EventController.ennemieDown -= EnnemieDown;
-
+		EventController.gameStart -= GameStart;
 
 
 
@@ -242,6 +245,7 @@ public class PlayerEvents : MonoBehaviour
 
 	IEnumerator CaroutineTarget()
 	{
+        
 		yield return new WaitForSeconds(0.1f);
 		/*if (canKill == false)
 		{
@@ -252,7 +256,7 @@ public class PlayerEvents : MonoBehaviour
 				EventController.canKill(null, 0);
 			}
 		}*/
-		if (stopKilling == false)
+		if (stopKilling == false&&Istarting)
 		{
 			UpdateTarget();
 		}
@@ -311,7 +315,7 @@ public class PlayerEvents : MonoBehaviour
 			}*/
 			if (vibration)
 			{
-				Handheld.Vibrate();
+				//Handheld.Vibrate();
 			}
 
 			LookTotarget(1);
@@ -335,7 +339,7 @@ public class PlayerEvents : MonoBehaviour
 			}*/
 			if (vibration)
 			{
-				Handheld.Vibrate();
+				//Handheld.Vibrate();
 			}
 
 
@@ -496,6 +500,10 @@ public class PlayerEvents : MonoBehaviour
 		stopKilling = false;
 
 	}
+	void GameStart(bool b)
+    {
+		Istarting = b;
+    }
 }
 
 public enum WeopenType {none,Knife,Disc,Butcher }

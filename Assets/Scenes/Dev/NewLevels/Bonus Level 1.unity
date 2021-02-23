@@ -100,7 +100,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 111ec85d3d2549b4c8ed22e115433b33,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1650,6 +1650,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4969717436693213861, guid: 43ba1080b6970db4ab96cbcfd40e668c,
         type: 3}
+    - target: {fileID: 138351223753442492, guid: 798cccfae76ba544b842f301f9c01b8c,
+        type: 3}
+      propertyPath: SpearObj
+      value: 
+      objectReference: {fileID: 395250561}
     - target: {fileID: 1495214806872877881, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
       propertyPath: m_IsActive
@@ -2027,6 +2032,12 @@ Transform:
   m_Father: {fileID: 1037339875}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 30.444002, y: 69.547005, z: 54.622}
+--- !u!1 &395250561 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5219783724091503986, guid: 798cccfae76ba544b842f301f9c01b8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 297624750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &461701472
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5968,12 +5979,12 @@ PrefabInstance:
     - target: {fileID: 255416883249547193, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}
       propertyPath: field of view
-      value: 40
+      value: 39.3
       objectReference: {fileID: 0}
     - target: {fileID: 255416883249547193, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}
       propertyPath: far clip plane
-      value: 80
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 255416883249547194, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}
@@ -5988,12 +5999,12 @@ PrefabInstance:
     - target: {fileID: 255416883249547198, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 28.67
+      value: 27.355957
       objectReference: {fileID: 0}
     - target: {fileID: 255416883249547198, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -41.94
+      value: -40.258057
       objectReference: {fileID: 0}
     - target: {fileID: 255416883249547198, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}

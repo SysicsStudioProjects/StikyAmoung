@@ -14,23 +14,23 @@ public class AdsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*IronSource.Agent.setUserId(AppsFlyer.getAppsFlyerId());
+        IronSource.Agent.setUserId(AppsFlyer.getAppsFlyerId());
 #if UNITY_ANDROID && !UNITY_EDITOR
 AppsFlyerAndroid.validateAndSendInAppPurchase( "Gio8zFFVzAZJGr9sbHXoVb",  "signature",  "purchaseData",  "price",  "currency",  null,  this);
 #endif
-*/
+
 
         // AppsFlyer.validateReceipt();
 IronSource.Agent.shouldTrackNetworkState (true);
         #if UNITY_ANDROID
-        string appKey = "e87f5639";
+        string appKey = "ead72521";
 #elif UNITY_IPHONE
         string appKey = "8545d445";
 #else
         string appKey = "unexpected_platform";
 #endif
-
-  IronSource.Agent.validateIntegration();
+       
+        IronSource.Agent.validateIntegration();
   IronSource.Agent.init(appKey);
         
     }
@@ -57,7 +57,7 @@ IronSource.Agent.shouldTrackNetworkState (true);
     {
       InitRewardVideo();
       InitIntertiate();
-        InitBanner();
+      InitBanner();
     
     }
 

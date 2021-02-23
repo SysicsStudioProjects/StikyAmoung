@@ -107,12 +107,12 @@ public class EnnemiePatrol : MonoBehaviour
             if (BodyRendered.isVisible)
             {
                 anim.enabled = true;
-                view.enabled = true;
+                //view.enabled = true;
             }
             else
             {
                 anim.enabled = false;
-                view.enabled = false;
+                //view.enabled = false;
 
             }
         }

@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     public GameObject SkinMenu;
     public GameObject Player;
     public CinemachineBrain cinemachineBrain;
+    public CanvasGroup panel;
     void Awake(){
        
       
@@ -19,6 +20,7 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         Time.timeScale = 1;
+        StartCoroutine(StartPanel());
         SkinMenu.SetActive(false);
         StartCoroutine(EnablePlayer());
         IronSource.Agent.loadInterstitial();
@@ -48,6 +50,17 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         cinemachineBrain.m_DefaultBlend.m_Time = 2.0f;
 
+    }
+
+    IEnumerator StartPanel()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            yield return new WaitForFixedUpdate();
+            panel.alpha -= 0.01f;
+        }
+
+        panel.gameObject.SetActive(false);
     }
     
 }
