@@ -11,13 +11,15 @@ public class ShootBale : MonoBehaviour
     //public Collider collider;
     private void FixedUpdate()
     {
-        /*if (target==null)
+        if (target==null)
         {
-            rb.velocity=(parent *Time.smoothDeltaTime*800);
-        }*/
+            gameObject.SetActive(false);
+            return;
+        }
         if (target==null||!target.gameObject.activeInHierarchy)
         {
             gameObject.SetActive(false);
+            return;
         }
             speed += 0.02f;
             Vector3 dir = target.position - transform.position;

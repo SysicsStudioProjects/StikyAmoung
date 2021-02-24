@@ -49,7 +49,7 @@ public class PlayerEvents : MonoBehaviour
 		switch (weopenType)
 		{
 			case WeopenType.none:
-				RangeWeopen = 2f;
+				RangeWeopen = 2.5f;
 
 				break;
 			case WeopenType.Knife:
@@ -93,7 +93,7 @@ public class PlayerEvents : MonoBehaviour
 		switch (weopenType)
 		{
 			case WeopenType.none:
-				RangeWeopen = 2;
+				RangeWeopen = 2.5f;
 
 				break;
 			case WeopenType.Knife:
@@ -105,7 +105,7 @@ public class PlayerEvents : MonoBehaviour
 				RangeWeopen = 8;
 				break;
 			case WeopenType.Butcher:
-				RangeWeopen = 3;
+				RangeWeopen = 2.5f;
 
 				break;
 			default:
@@ -128,7 +128,7 @@ public class PlayerEvents : MonoBehaviour
 			switch (weopenType)
 			{
 				case WeopenType.none:
-					RangeWeopen = 2f;
+					RangeWeopen = 2.5f;
 
 					break;
 				case WeopenType.Knife:
@@ -140,7 +140,7 @@ public class PlayerEvents : MonoBehaviour
 					RangeWeopen = 8;
 					break;
 				case WeopenType.Butcher:
-					RangeWeopen = 3;
+					RangeWeopen = 2.5f;
 
 					break;
 				default:
@@ -303,11 +303,30 @@ public class PlayerEvents : MonoBehaviour
 	bool stopKilling;
 	public void KillEvent(Transform t)
 	{
-
-		stopKilling = true;
-		if (target != null&&t==null)
+		if (t != null)
 		{
-
+			target = t;
+		}
+		stopKilling = true;
+		if (target != null)
+		{
+			switch (weopenType)
+			{
+				case WeopenType.none:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
+					break;
+				case WeopenType.Knife:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
+					break;
+				case WeopenType.Disc:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
+					break;
+				case WeopenType.Butcher:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
+					break;
+				default:
+					break;
+			}
 			StartCoroutine(SlowTime());
 			/*if (EventController.canKill != null)
 			{
@@ -329,45 +348,10 @@ public class PlayerEvents : MonoBehaviour
 
 
 		}
-		if (t != null)
-		{
-			target = t;
-
-			/*if (EventController.canKill != null)
-			{
-				EventController.canKill(null, 0);
-			}*/
-			if (vibration)
-			{
-				//Handheld.Vibrate();
-			}
-
-
-
-				//StartCoroutine(DesactivateEnnemy(target.gameObject,0.1f));
-			//t.gameObject.SetActive(false);
-
-			
-		}
+		
         if (target!=null)
         {
-			switch (weopenType)
-			{
-				case WeopenType.none:
-					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
-					break;
-				case WeopenType.Knife:
-					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
-					break;
-				case WeopenType.Disc:
-					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
-					break;
-				case WeopenType.Butcher:
-					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
-					break;
-				default:
-					break;
-			}
+			
 		}
 		
 	}
@@ -413,6 +397,10 @@ public class PlayerEvents : MonoBehaviour
 
 	IEnumerator DesactivateEnnemy(GameObject obj,float t)
 	{
+        if (weopenType!=WeopenType.Disc)
+        {
+			playerMovement.enabled = false;
+        }
 		float a = 0;
         if (t>0.1f)
         {
@@ -444,6 +432,8 @@ public class PlayerEvents : MonoBehaviour
 			}
 		}
 		obj.SetActive(false);
+		playerMovement.enabled = true;
+
 	}
 
 
