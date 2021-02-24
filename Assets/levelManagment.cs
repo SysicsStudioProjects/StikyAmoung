@@ -13,10 +13,16 @@ public class levelManagment : MonoBehaviour
     
     void Start(){
         print(Singleton._instance.level);
-        SceneManager.LoadSceneAsync(Singleton._instance.level);
+        StartCoroutine(StartScene());
     }
 
     public void OnchargeScene(){
+        SceneManager.LoadSceneAsync(Singleton._instance.level);
+    }
+
+    IEnumerator StartScene()
+    {
+        yield return new WaitForSeconds(3.4f);
         SceneManager.LoadSceneAsync(Singleton._instance.level);
     }
 }
