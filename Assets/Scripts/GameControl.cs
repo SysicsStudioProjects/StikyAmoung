@@ -39,9 +39,14 @@ public class GameControl : MonoBehaviour
     public Text CoinsBonusText;
     public Button AddBonuse;
     public GameObject BonusePanel;
+
+    public LevelManager levelManager;
+   
     private void OnEnable()
     {
-        
+        LevelBonuse = levelManager.thislevel.IsBonuceLevel;
+        alleennemie = levelManager.thislevel.NbEnnemy;
+        LevelIndex = levelManager.thislevel.LevelIndex;
         Time.timeScale = 1;
         
         EventController.ennemieDown += EnnemieDown;
@@ -57,6 +62,7 @@ public class GameControl : MonoBehaviour
         EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         if (LevelBonuse)
         {
+            TmeRcanvas.SetActive(true);
             EventController.levelBonuseFinished += LevelBonuseFinished;
             //coinsValue *= 2;
             if (EventController.isBonuceLevel != null)
@@ -105,7 +111,7 @@ public class GameControl : MonoBehaviour
     {
         NBkill++;
         EnnemieDieText.text = NBkill.ToString();
-        CoinsWin += coinsValue;
+        //CoinsWin += coinsValue;
         if (NBkill==alleennemie)
         {
             StartCoroutine(YielTowin());
@@ -116,7 +122,13 @@ public class GameControl : MonoBehaviour
 
     IEnumerator YielTowin()
     {
-        yield return new WaitForSeconds(0.5f);
+        Singleton._instance.state = GameState.win;
+        yield return new WaitForSeconds(0.4f);
+        if (EventController.gameWin != null)
+        {
+            EventController.gameWin();
+        }
+        yield return new WaitForSeconds(0.1f);
         GameWin();
     }
     void GameWin()
@@ -125,12 +137,18 @@ public class GameControl : MonoBehaviour
 
 
         AllCoinsText.text = AllCoins.ToString();
-        CoinsBonuse = coinsValue * alleennemie;
-        CoinsBonusText.text = "+" + CoinsBonuse;
-        if (EventController.gameWin != null)
+        if (LevelBonuse)
         {
-            EventController.gameWin();
+            coinsValue = 7;
+            CoinsBonuse = coinsValue * alleennemie;
         }
+        else
+        {
+            CoinsBonuse = 50;
+        }
+        
+        CoinsBonusText.text = "+" + (CoinsBonuse*3);
+       
         StartCoroutine(LevelCompleted());
        
          AddBonuse.interactable = IronSource.Agent.isRewardedVideoAvailable();
@@ -176,7 +194,9 @@ public class GameControl : MonoBehaviour
         {
             EventController.gameWin();
         }
-        int value = CoinsWin / 20;
+        CoinsWin = CoinsBonuse;
+        CoinsWinText.text = CoinsWin.ToString();
+        int value = CoinsWin / 10;
         for (int i = 0; i < 1000; i++)
         {
             yield return new WaitForSecondsRealtime(0.04f);
@@ -213,19 +233,35 @@ public class GameControl : MonoBehaviour
     }
     public void LoadScene()
     {
-        Scene scene = SceneManager.GetActiveScene();
-        int buildIndex = scene.buildIndex;
-        
-        if (buildIndex==SceneManager.sceneCountInBuildSettings-1)
+        int a = 0;
+        a = LevelIndex / 5;
+        int modulo = LevelIndex % 5;
+        if (modulo==0)
         {
-            buildIndex = 0;
-            SceneManager.LoadScene(buildIndex);
+            SceneManager.LoadScene(a + 1);
         }
         else
         {
-            SceneManager.LoadScene(buildIndex + 1);
+            Scene scene = SceneManager.GetActiveScene();
+            int buildIndex = scene.buildIndex;
+            SceneManager.LoadScene(buildIndex);
         }
-        
+
+
+       /* Scene scene = SceneManager.GetActiveScene();
+        int buildIndex = scene.buildIndex;
+        SceneManager.LoadScene(buildIndex);*/
+
+        /* if (buildIndex==SceneManager.sceneCountInBuildSettings-1)
+         {
+             buildIndex = 0;
+             SceneManager.LoadScene(buildIndex);
+         }
+         else
+         {
+             SceneManager.LoadScene(buildIndex + 1);
+         }*/
+
     }
      bool IsGameStarted;
     void GameStart(bool b)
@@ -242,7 +278,7 @@ public class GameControl : MonoBehaviour
 
         Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
-        SceneManager.LoadScene(buildIndex);
+        SceneManager.LoadSceneAsync(buildIndex);
     }
 
     //player will disepear
@@ -334,3 +370,5 @@ public class CardImages
     public Image Card;
     public CardType cardType;
 }
+
+public enum GameState { none,win,loose}

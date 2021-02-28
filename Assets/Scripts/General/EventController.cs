@@ -79,5 +79,9 @@ public static class EventController
     public delegate void OnchangeItems();
     public static OnchangeItems onchangeItems;
 
+    public delegate void GetSkinStart(Skin s);
+    public static GetSkinStart getSkinstart;
+
+
 
 }

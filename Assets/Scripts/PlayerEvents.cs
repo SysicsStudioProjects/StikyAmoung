@@ -44,17 +44,17 @@ public class PlayerEvents : MonoBehaviour
 		EventController.gameWin += GameWin;
 		EventController.ennemieDown += EnnemieDown;
 		EventController.gameStart += GameStart;
-		StartCoroutine(CaroutineTarget());
+		InvokeRepeating("CaroutineTarget",0,0.1f);
 
 		switch (weopenType)
 		{
 			case WeopenType.none:
 				RangeWeopen = 2.5f;
-
+				range = 4;
 				break;
 			case WeopenType.Knife:
 				RangeWeopen = 2.5f;
-
+				range = 4;
 				break;
 			case WeopenType.Disc:
 				range = 8;
@@ -62,6 +62,7 @@ public class PlayerEvents : MonoBehaviour
 				break;
 			case WeopenType.Butcher:
 				RangeWeopen = 2.5f;
+				range = 4;
 
 				break;
 			default:
@@ -186,7 +187,7 @@ public class PlayerEvents : MonoBehaviour
 		else
 		{
 			target = null;
-			print("heyy");
+
 			if (EventController.canKill != null)
 			{
 				EventController.canKill(null, 0);
@@ -203,7 +204,7 @@ public class PlayerEvents : MonoBehaviour
 					{
 						EventController.canKill(target, shortestDistance);
 					}
-					StartCoroutine(SlowTime());
+					//StartCoroutine(SlowTime());
 				}
 				
 
@@ -243,10 +244,10 @@ public class PlayerEvents : MonoBehaviour
 	}
 
 
-	IEnumerator CaroutineTarget()
+	void CaroutineTarget()
 	{
         
-		yield return new WaitForSeconds(0.1f);
+		
 		/*if (canKill == false)
 		{
 			target = null;
@@ -261,7 +262,7 @@ public class PlayerEvents : MonoBehaviour
 			UpdateTarget();
 		}
 
-		StartCoroutine(CaroutineTarget());
+		
 	}
 	Transform switchTarget;
 	void LookTotarget(float speedrotate)
@@ -279,18 +280,22 @@ public class PlayerEvents : MonoBehaviour
 		{
 			case WeopenType.none:
 				anim.SetTrigger("attack");
+				
 				break;
 			case WeopenType.Knife:
 				anim.SetTrigger("attackknife");
-
+				
 				break;
 			case WeopenType.Disc:
 				anim.SetTrigger("attackdisc");
+
 				StartCoroutine(SlowTime());
 
 				break;
 			case WeopenType.Butcher:
+
 				anim.SetTrigger("attackButcher");
+				
 				break;
 			default:
 				break;
@@ -399,7 +404,7 @@ public class PlayerEvents : MonoBehaviour
 	{
         if (weopenType!=WeopenType.Disc)
         {
-			playerMovement.enabled = false;
+			//playerMovement.enabled = false;
         }
 		float a = 0;
         if (t>0.1f)
@@ -432,7 +437,7 @@ public class PlayerEvents : MonoBehaviour
 			}
 		}
 		obj.SetActive(false);
-		playerMovement.enabled = true;
+		//playerMovement.enabled = true;
 
 	}
 

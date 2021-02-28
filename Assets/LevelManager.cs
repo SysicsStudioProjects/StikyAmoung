@@ -9,13 +9,23 @@ public class LevelManager : MonoBehaviour
     public GameObject Player;
     public CinemachineBrain cinemachineBrain;
     public CanvasGroup panel;
+    public GameObject gameControl;
+    public List<Level> Levels;
+    [HideInInspector]
+    public Level thislevel;
+
+    public static LevelManager _instance;
     void Awake(){
-       
-      
+        _instance = this;
     }
     private void Start()
     {
-       
+        Singleton._instance.state = GameState.none;
+        int LevelIndex = Singleton._instance.level;
+        int l = Levels.FindIndex(d => d.LevelIndex == LevelIndex);
+        Level = Levels[l].LevelObj;
+        thislevel = Levels[l];
+        Player.transform.position = Levels[l].PlayerPos.position;
     }
     private void OnEnable()
     {
@@ -29,18 +39,21 @@ public class LevelManager : MonoBehaviour
     IEnumerator EnablePlayer(){
         yield return new WaitForSeconds(0.2f);
         Level.SetActive(true);
+        gameControl.SetActive(true);
         yield return new WaitForSeconds(0.2f);
         Player.SetActive(true);
     }
 
     public void OpenSkinMenu(){
          Level.SetActive(false);
+        gameControl.SetActive(false);
         SkinMenu.SetActive(true);
          StartCoroutine(ControlCamera());
     }
 
     public void CloseSkinMenu(){
          Level.SetActive(true);
+        gameControl.SetActive(true);
         SkinMenu.SetActive(false);
         StartCoroutine(ControlCamera());
     }
@@ -63,4 +76,14 @@ public class LevelManager : MonoBehaviour
         panel.gameObject.SetActive(false);
     }
     
+}
+
+[System.Serializable]
+public class Level
+{
+    public Transform PlayerPos;
+    public int LevelIndex;
+    public GameObject LevelObj;
+    public int NbEnnemy;
+    public bool IsBonuceLevel;
 }

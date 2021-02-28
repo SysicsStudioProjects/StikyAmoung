@@ -7,7 +7,7 @@ public class EnnemeieBonuse : MonoBehaviour
     public float wanderTimer;
 
     private Transform target;
-    private NavMeshAgent agent;
+  //  private NavMeshAgent agent;
     private float timer;
     public Animator anim;
 
@@ -15,11 +15,12 @@ public class EnnemeieBonuse : MonoBehaviour
     public SkinnedMeshRenderer HandLeftRendere;
     public SkinnedMeshRenderer HandRightRendere;
     public Color MaterialColor;
+    
     // Use this for initialization
     void OnEnable()
     {
         SetupMaterial();
-        agent = GetComponent<NavMeshAgent>();
+     //   agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer;
         EventController.gameStart+=GameStart;
     }
@@ -45,29 +46,48 @@ public class EnnemeieBonuse : MonoBehaviour
         }
         if(isgameStart){
         timer += Time.deltaTime;
-
+          
         if (timer >= wanderTimer)
         {
-            Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
-            agent.SetDestination(newPos);
-            timer = 0;
+                //Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+                //agent.SetDestination(newPos);
+		if(EnnemiePos._instance!=null){
+  target=EnnemiePos._instance.RetutnPos();
+                timer = 0;
+}
+              
         }
-        anim.SetFloat("speed", agent.velocity.magnitude);
+            if (target!=null)
+            {
+                Vector3 dir = target.position - transform.position;
+                transform.Translate(dir.normalized * 3 * Time.deltaTime, Space.World);
+                //transform.LookAt(target.position);
+                LockOnTarget();
+                anim.SetFloat("speed", dir.magnitude*Time.deltaTime);
+            }
+           
+            // anim.SetFloat("speed", agent.velocity.magnitude);
         }
     }
-
-    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+    void LockOnTarget()
     {
-        Vector3 randDirection = Random.insideUnitSphere * dist;
-
-        randDirection += origin;
-
-        NavMeshHit navHit;
-
-        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
-
-        return navHit.position;
+        Vector3 dir = target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
+        transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
+    /*  public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+      {
+          Vector3 randDirection = Random.insideUnitSphere * dist;
+
+          randDirection += origin;
+
+          NavMeshHit navHit;
+
+          NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
+
+          return navHit.position;
+      }*/
 
     public void DetectPlayer(Transform t)
     {

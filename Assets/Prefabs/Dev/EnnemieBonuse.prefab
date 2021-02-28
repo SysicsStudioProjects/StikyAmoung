@@ -19867,7 +19867,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7273086917802523531}
-  - component: {fileID: 622778852704216916}
   - component: {fileID: 622778852704216938}
   - component: {fileID: 622778854033195014}
   - component: {fileID: 6186161863891597873}
@@ -19895,28 +19894,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!195 &622778852704216916
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7273086917802523528}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1.61
-  m_BaseOffset: 0.78
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!136 &622778852704216938
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -19976,7 +19953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wanderRadius: 20
-  wanderTimer: 2
+  wanderTimer: 5
   anim: {fileID: 7273086917903408903}
   BodyRendered: {fileID: 1023742507463619780}
   HandLeftRendere: {fileID: 615265191892799767}
@@ -20113,6 +20090,15 @@ MonoBehaviour:
   Hands: {fileID: 7578833349904624427}
   playerEvents: {fileID: 0}
   audio: {fileID: 1802213985}
+  DiscObject: {fileID: 0}
+  DiscPrfab: {fileID: 0}
+  DiscPrefab2: {fileID: 0}
+  BusherObject: {fileID: 0}
+  BusherPrfab: {fileID: 0}
+  BusherPrfab2: {fileID: 0}
+  SpearPrefab: {fileID: 0}
+  playerMvt: {fileID: 0}
+  weopenType: 0
 --- !u!82 &1802213985
 AudioSource:
   m_ObjectHideFlags: 0
