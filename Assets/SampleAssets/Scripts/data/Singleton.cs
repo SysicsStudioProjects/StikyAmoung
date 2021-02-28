@@ -7,7 +7,7 @@ using System;
 public class Singleton : MonoBehaviour
 {
     public AudioSource audio;
-
+    public GameState state;
     public static Singleton _instance;
     #region data
     public int level;
@@ -67,12 +67,12 @@ public class Singleton : MonoBehaviour
 
     void Awake()
     {
-        
+        state = GameState.none;
         QualitySettings.vSyncCount = 0;
-      Application.targetFrameRate = 55;
+      Application.targetFrameRate = 60;
         // When the Menu starts, set the rendering to target 20fps
-        OnDemandRendering.renderFrameInterval = 2;
-
+        OnDemandRendering.renderFrameInterval = 0;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         if (_instance == null)
         {
@@ -102,10 +102,11 @@ public class Singleton : MonoBehaviour
     }
     void Update()
     {
-        if (Application.targetFrameRate != 55)
-        {
-            Application.targetFrameRate = 55;
-        }
+      //  Application.targetFrameRate = 55;
+        /* if (Application.targetFrameRate != 55)
+         {
+             Application.targetFrameRate = 55;
+         }*/
     }
 
     public void LoadSkinSelectedMenu(int indexCurrentScene,int indexSkinScene){

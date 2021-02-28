@@ -15,27 +15,28 @@ public class MovementController : MonoBehaviour
     bool stopMvt;
 
     public GameObject TeleportButton;
+
     private void OnEnable()
     {
-        StartCoroutine(StartCaroutineKillEvent(0.5f));
-        EventController.canKill += ChangeButtonBehavior;
-        EventController.gameWin += GameWin;
-        if (PlayerEvents.weopenType==WeopenType.Disc)
+       // StartCoroutine(StartCaroutineKillEvent(0.5f));
+       // EventController.canKill += ChangeButtonBehavior;
+        //EventController.gameWin += GameWin;
+     /*   if (PlayerEvents.weopenType==WeopenType.Disc)
         {
             KillButton.interactable = true;
-        }
+        }*/
 
-        disableDiscButton = true;
+        //disableDiscButton = true;
         EventController.teleportCollision += EnableTeleportButton;
     }
 
     private void OnDisable()
     {
-        EventController.canKill -= ChangeButtonBehavior;
-        EventController.gameWin -= GameWin;
+       // EventController.canKill -= ChangeButtonBehavior;
+       // EventController.gameWin -= GameWin;
         EventController.teleportCollision -= EnableTeleportButton;
-        x = 0;
-        y = 0;
+       // x = 0;
+       // y = 0;
         stopMvt = false;
     }
 
@@ -45,7 +46,7 @@ public class MovementController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+   /* void Update()
     {
        // Application.targetFrameRate = 30;
         if (stopMvt == true)
@@ -61,7 +62,7 @@ public class MovementController : MonoBehaviour
                 MoveKeys(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             }
         }
-    }
+    }*/
 
     public  void MoveJoystic(float _x,float _y)
     {

@@ -10,9 +10,21 @@ public class DeadEvent : MonoBehaviour
 
     public MeshRenderer UP;
     public MeshRenderer Down;
+
+    public CreateMoney createMoney;
+
+
     private void Start()
     {
         speed = Random.Range(20, 40);
+        if (LevelManager._instance.thislevel.IsBonuceLevel==true)
+        {
+            createMoney.enabled = true;
+        }
+        else
+        {
+            createMoney.enabled = false;
+        }
         StartCoroutine(Retouche());
     }
   /*  #region UI

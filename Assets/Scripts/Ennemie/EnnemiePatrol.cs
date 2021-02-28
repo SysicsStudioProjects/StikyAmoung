@@ -7,7 +7,7 @@ public class EnnemiePatrol : MonoBehaviour
     Renderer m_Renderer;
     public int indexPoint;
     public int EnnemieId;
-    public NavMeshAgent agent;
+   // public NavMeshAgent agent;
     //[HideInInspector]
    // public List<Transform> points;
     [HideInInspector]
@@ -36,6 +36,9 @@ public class EnnemiePatrol : MonoBehaviour
 
     public Color MaterialColor;
     public bool IsTask;
+
+    bool isStopping;
+    public float speed;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -119,19 +122,22 @@ public class EnnemiePatrol : MonoBehaviour
        
         if (_DetectPlayer!=null)
         {
-            agent.enabled = false;
+            //  agent.enabled = false;
+            isStopping = true;
             return;
 
         }
         else
         {
             startDetect = false;
-            agent.enabled = true;
+            // agent.enabled = true;
+            isStopping = false;
         }
         if (focuseToPlayer&&targetPlayer==player.transform)
         {
             print("we are here");
-            agent.enabled = false;
+            //agent.enabled = false;
+            isStopping = true;
             Vector3 dir = player.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(dir);
             Vector3 rotation = Quaternion.Slerp(transform.rotation, lookRotation, 0.1f).eulerAngles;
@@ -139,20 +145,24 @@ public class EnnemiePatrol : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, rotation.y, 0);
             
         }
-        if (target!=null&&agent.enabled==true)
+        if (target!=null&&isStopping==false)
         {
-            agent.angularSpeed = 120;
-           
-            agent.speed = 3.5f;
-            agent.SetDestination(target.position);
-        
+            // agent.angularSpeed = 120;
+
+            //  agent.speed = 3.5f;
+            // agent.SetDestination(target.position);
+            Vector3 dir = target.position - transform.position;
+            transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+            //transform.LookAt(target.position);
+            LockOnTarget();
+            anim.SetFloat("speed", 1);
             if (Vector3.Distance(transform.position, target.position) < 1f&&target!=player)
             {
                 ToNextPoint();
             }
         }
       
-        anim.SetFloat("speed", agent.velocity.magnitude);
+        
 
     }
 
@@ -199,9 +209,14 @@ public class EnnemiePatrol : MonoBehaviour
     IEnumerator WaitingTask()
     {
         startEneum = true;
-        agent.enabled = false;
+        target = null;
+        // agent.enabled = false;
+        isStopping = true;
+        anim.SetFloat("speed", 0);
         yield return new WaitForSeconds(3);
-        agent.enabled = true;
+        //agent.enabled = true;
+        isStopping = false;
+       
         if (indexPoint >= pathe.Points.Count - 1)
         {
             indexPoint = 0;
@@ -234,8 +249,9 @@ public class EnnemiePatrol : MonoBehaviour
         else
         {
             targetPlayer = null;
-          
-            agent.enabled = true;
+
+            //  agent.enabled = true;
+            isStopping = false;
             /* if (EnnemieId!=-1)
              {
 
@@ -338,6 +354,14 @@ public class EnnemiePatrol : MonoBehaviour
         {
             ToNextPoint();
         }
+    }
+
+    void LockOnTarget()
+    {
+        Vector3 dir = target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
+        transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
 }
 

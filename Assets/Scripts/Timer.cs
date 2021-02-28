@@ -8,6 +8,13 @@ public class Timer : MonoBehaviour
     public int time;
     public float increment;
     bool isFinished;
+    public GameObject LevelCanvas;
+
+
+    private void OnEnable()
+    {
+        LevelCanvas.SetActive(false);
+    }
     // Start is called before the first frame update
     void Start()
     {

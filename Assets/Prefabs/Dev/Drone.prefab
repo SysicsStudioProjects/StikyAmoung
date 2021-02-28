@@ -29561,6 +29561,9 @@ MonoBehaviour:
   BusherObject: {fileID: 0}
   BusherPrfab: {fileID: 0}
   BusherPrfab2: {fileID: 0}
+  SpearPrefab: {fileID: 0}
+  playerMvt: {fileID: 0}
+  weopenType: 0
 --- !u!1 &6707056575241145869
 GameObject:
   m_ObjectHideFlags: 0
@@ -29633,7 +29636,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6848140615248118339}
   - component: {fileID: 3693734057279856287}
-  - component: {fileID: 3693734057279856284}
   - component: {fileID: 3693734058634050002}
   - component: {fileID: 4178216462355598233}
   - component: {fileID: 6848140615248118337}
@@ -29676,7 +29678,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indexPoint: -1
   EnnemieId: -1
-  agent: {fileID: 3693734057279856284}
   target: {fileID: 0}
   targetPlayer: {fileID: 0}
   anim: {fileID: 6848140615550412495}
@@ -29699,28 +29700,7 @@ MonoBehaviour:
   PortalDown: {fileID: 4669693734496527328}
   MaterialColor: {r: 0, g: 1, b: 0.10293555, a: 1}
   IsTask: 0
---- !u!195 &3693734057279856284
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6848140615248118336}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.63
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.52
-  m_BaseOffset: 0.9
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  speed: 3
 --- !u!114 &3693734058634050002
 MonoBehaviour:
   m_ObjectHideFlags: 0

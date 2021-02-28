@@ -32,9 +32,11 @@ public class SkinSelected : MonoBehaviour
         if (Isplaying)
         {
             InitRemove();
+            EventController.getSkinstart += SetupSkinStart;
+            EventController.gameStart += initStart;
         }
         init();
-       
+        initStart(false);
         EventController.useSkin += SetSkin;
         EventController.removeSkin += RemoveSKin;
     }
@@ -42,6 +44,8 @@ public class SkinSelected : MonoBehaviour
     {
         EventController.useSkin -= SetSkin;
         EventController.removeSkin -= RemoveSKin;
+        EventController.getSkinstart -= SetupSkinStart;
+        EventController.gameStart -= initStart;
 
         if (PetFollow!=null)
         {
@@ -321,6 +325,71 @@ public class SkinSelected : MonoBehaviour
                 item.material = DefaultSkin;
 
             }
+        }
+    }
+    Skin StartSkin;
+    void SetupSkinStart(Skin s)
+    {
+        StartSkin = s;
+        initStart(false);
+
+
+    }
+    void initStart(bool b)
+    {
+        print("we are here and we need to change plz");
+        if (StartSkin==null)
+        {
+            return;
+        }
+        switch (StartSkin.type)
+        {
+            case SkinType.hat:
+                for (int i = 0; i < HatObject.Count; i++)
+                {
+                    if (HatObject[i].name==StartSkin.name)
+                    {
+                        HatObject[i].SetActive(true);
+                    }
+                    else
+                    {
+                        HatObject[i].SetActive(false);
+                    }
+                  
+                }
+
+                break;
+           
+            case SkinType.glasse:
+                for (int i = 0; i < GlasesObject.Count; i++)
+                {
+                    if (GlasesObject[i].name == StartSkin.name)
+                    {
+                        GlasesObject[i].SetActive(true);
+                    }
+                    else
+                    {
+                        GlasesObject[i].SetActive(false);
+                    }
+                  
+                }
+                break;
+            case SkinType.wap:
+                for (int i = 0; i < Weopen.Count; i++)
+                {
+                    if (Weopen[i].name == StartSkin.name)
+                    {
+                        Weopen[i].SetActive(true);
+                    }
+                    else
+                    {
+                        Weopen[i].SetActive(false);
+                    }
+                    Wepon(StartSkin);
+                }
+                break;
+            default:
+                break;
         }
     }
 }

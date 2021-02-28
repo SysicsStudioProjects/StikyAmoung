@@ -8,7 +8,7 @@ public class AdsManager : MonoBehaviour
   
   public static AdsManager _instance;
   public string AdsState;
-
+    public string key;
 
   
     // Start is called before the first frame update
@@ -16,7 +16,7 @@ public class AdsManager : MonoBehaviour
     {
         IronSource.Agent.setUserId(AppsFlyer.getAppsFlyerId());
 #if UNITY_ANDROID && !UNITY_EDITOR
-AppsFlyerAndroid.validateAndSendInAppPurchase( "Gio8zFFVzAZJGr9sbHXoVb",  "signature",  "purchaseData",  "price",  "currency",  null,  this);
+AppsFlyerAndroid.validateAndSendInAppPurchase( key,  "signature",  "purchaseData",  "price",  "currency",  null,  this);
 #endif
 
 
@@ -30,9 +30,11 @@ IronSource.Agent.shouldTrackNetworkState (true);
         string appKey = "unexpected_platform";
 #endif
        
-        IronSource.Agent.validateIntegration();
-  IronSource.Agent.init(appKey);
         
+   
+  IronSource.Agent.init(appKey);
+  IronSource.Agent.validateIntegration();
+
     }
     private void Awake()
     {

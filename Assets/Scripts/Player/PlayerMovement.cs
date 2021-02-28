@@ -15,12 +15,10 @@ public class PlayerMovement : MonoBehaviour
     public PlayableDirector Brawling;
     
     public float speedRotation;
+    public Joystick js;
     private void OnEnable()
     {
-        if (PlayerPrefs.HasKey("speed"))
-        {
-            playerSpeed = PlayerPrefs.GetFloat("speed");
-        }
+        
         EventController.canKill += ChangeTarget;
         EventController.sendSettingData += GetSettingData;
         EventController.gameWin += GameWin;
@@ -45,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isWin==true)
+        if (isWin==true||Singleton._instance.state==GameState.win)
         {
             transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.z, transform.rotation.w);
            
@@ -66,8 +64,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //mo= new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        Vector3 move = MovementController.Move();
-       
+        //  Vector3 move = MovementController.Move();
+        Vector3 move = new Vector3(js.Horizontal, 0, js.Vertical);
 
         anim.SetFloat("speed", Mathf.Abs(move.magnitude * Time.deltaTime * playerSpeed));
         if (move!=Vector3.zero)
@@ -91,8 +89,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 anim.speed = 1;
             }*/
-            playerSpeed = 9;
-            anim.speed = 2;
+            playerSpeed = 8;
+            //anim.speed = 2;
             move.y=0;
             controller.Move(move.normalized * Time.smoothDeltaTime * playerSpeed);
             // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
@@ -102,9 +100,9 @@ public class PlayerMovement : MonoBehaviour
             anim.speed = 1;
         }
 
-        if (move != Vector3.zero)
+        if (move != Vector3.zero&& transform.forward.normalized != move.normalized)
         {
-            LockOnTarget(move);
+            LockOnTarget(move.normalized);
            // gameObject.transform.forward = move;
         }
 
@@ -184,6 +182,7 @@ public class PlayerMovement : MonoBehaviour
     bool isWin;
     void GameWin()
     {
+      
         isWin = true;
        // this.enabled = false;
     }

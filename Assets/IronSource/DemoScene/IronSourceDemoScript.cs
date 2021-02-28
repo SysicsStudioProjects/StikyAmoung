@@ -113,7 +113,7 @@ public class IronSourceDemoScript : MonoBehaviour
 
 
         Rect showRewardedVideoButton = new Rect(0.10f * Screen.width, 0.15f * Screen.height, 0.80f * Screen.width, 0.08f * Screen.height);
-        if (GUI.Button(showRewardedVideoButton, "Show Rearded Video"))
+        if (GUI.Button(showRewardedVideoButton, "Show Rewarded Video"))
         {
             Debug.Log("unity-script: ShowRewardedVideoButtonClicked");
             if (IronSource.Agent.isRewardedVideoAvailable())

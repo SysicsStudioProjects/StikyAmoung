@@ -10,7 +10,7 @@ public class BonuseController : MonoBehaviour
 
     public void InitCoins(int c)
     {
-        coinsWin = c;
+        coinsWin = c*3;
         coinsDefault = Singleton._instance.coins;
         CoinsText.text = coinsDefault.ToString();
         StartCoroutine(CaroutineBonuse());
@@ -22,7 +22,7 @@ public class BonuseController : MonoBehaviour
     IEnumerator CaroutineBonuse()
     {
         yield return new WaitForSeconds(1.5f);
-        int value = coinsWin / 20;
+        int value = coinsWin / 50;
         for (int i = 0; i < 1000; i++)
         {
             yield return new WaitForFixedUpdate();

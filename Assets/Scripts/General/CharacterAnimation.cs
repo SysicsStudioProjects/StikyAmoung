@@ -19,6 +19,9 @@ public class CharacterAnimation : MonoBehaviour
     public GameObject BusherPrfab2;
 
     public GameObject SpearPrefab;
+    public PlayerMovement playerMvt;
+
+    public WeopenType weopenType;
     // Start is called before the first frame update
    void OnEnable(){
        EventController.gameWin+=GameWin;
@@ -30,12 +33,15 @@ public class CharacterAnimation : MonoBehaviour
     }
 
     void GameWin(){
+        
         if (audio==null)
         {
             return;
         }
         audio.Stop();
         audio.enabled=false;
+        controlHands();
+
     }
     // Update is called once per frame
     
@@ -53,9 +59,22 @@ public class CharacterAnimation : MonoBehaviour
         Hands.SetActive(true);
     }
 
+    void controlHands()
+    {
+        if (PlayerEvents.weopenType == WeopenType.none)
+        {
+            Hands.SetActive(false);
+        }
+        else
+        {
+            Hands.SetActive(true);
+        }
+    }
+
     Vector3 dir;
    public void Killevent()
     {
+        playerMvt.enabled = false;
         Hands.SetActive(true);
         if (playerEvents!=null)
         {
@@ -68,10 +87,23 @@ public class CharacterAnimation : MonoBehaviour
 
     public void KnifeKill()
     {
+        if (playerMvt != null)
+        {
+            playerMvt.enabled = false;
+        }
         if (playerEvents != null)
         {
             playerEvents.KillEvent(null);
         }
+    }
+
+    public void EnableMvt()
+    {
+        if (playerMvt != null)
+        {
+            playerMvt.enabled = true;
+        }
+      
     }
 
     public void DiscKill()
@@ -112,33 +144,37 @@ public class CharacterAnimation : MonoBehaviour
 
     public void BucherShoot()
     {
-       /* string name = "";
-        for (int i = 0; i < BusherObject.transform.childCount; i++)
-        {
-            if (BusherObject.transform.GetChild(i).gameObject.activeInHierarchy)
-            {
-                name = BusherObject.transform.GetChild(i).gameObject.name;
-            }
-        }
-        GameObject objSpawn = new GameObject();
-        switch (name)
-        {
-            case "Butcher_knife1":
-                objSpawn = BusherPrfab;
-                break;
-            case "Butcher_knife2":
-                objSpawn = BusherPrfab2;
+        /* string name = "";
+         for (int i = 0; i < BusherObject.transform.childCount; i++)
+         {
+             if (BusherObject.transform.GetChild(i).gameObject.activeInHierarchy)
+             {
+                 name = BusherObject.transform.GetChild(i).gameObject.name;
+             }
+         }
+         GameObject objSpawn = new GameObject();
+         switch (name)
+         {
+             case "Butcher_knife1":
+                 objSpawn = BusherPrfab;
+                 break;
+             case "Butcher_knife2":
+                 objSpawn = BusherPrfab2;
 
 
-                break;
-            default:
-                break;
+                 break;
+             default:
+                 break;
+         }
+         Transform Target = playerEvents.target;
+         BusherObject.SetActive(false);
+         StartCoroutine(ReturnShootbaleObj(BusherObject));
+         GameObject obj = Instantiate(objSpawn, BusherObject.transform.position, Quaternion.identity);
+         obj.GetComponent<ShootBale>().SetTarget(Target, transform.forward, playerEvents);*/
+        if (playerMvt != null)
+        {
+            playerMvt.enabled = false;
         }
-        Transform Target = playerEvents.target;
-        BusherObject.SetActive(false);
-        StartCoroutine(ReturnShootbaleObj(BusherObject));
-        GameObject obj = Instantiate(objSpawn, BusherObject.transform.position, Quaternion.identity);
-        obj.GetComponent<ShootBale>().SetTarget(Target, transform.forward, playerEvents);*/
         if (playerEvents != null)
         {
             playerEvents.KillEvent(null);
@@ -163,6 +199,11 @@ public class CharacterAnimation : MonoBehaviour
         if (transform.rotation!=new Quaternion(0,0,0,0))
         {
             transform.rotation = new Quaternion(0, 0, 0, 0);
+        }
+        if (weopenType!=PlayerEvents.weopenType)
+        {
+            controlHands();
+            weopenType = PlayerEvents.weopenType;
         }
     }
 

@@ -18,6 +18,11 @@ public class TeleportSystem : MonoBehaviour
     public GameObject Fleshe;
     private void OnEnable()
     {
+        if (cinemachineBrain==null)
+        {
+
+            cinemachineBrain = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CinemachineBrain>();
+        }
         EventController.enterTeleport += PlayerEnter;
     }
     private void OnDisable()
