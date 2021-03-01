@@ -2997,11 +2997,11 @@ PrefabInstance:
     - target: {fileID: 1542668730, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 1139738050}
+      objectReference: {fileID: 241485827}
     - target: {fileID: 1542668730, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 1139738050}
+      objectReference: {fileID: 241485827}
     - target: {fileID: 1542668731, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
       propertyPath: m_LocalPosition.z
       value: -34.839073
@@ -3038,7 +3038,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerMvt
       value: 
-      objectReference: {fileID: 241485834}
+      objectReference: {fileID: 0}
     - target: {fileID: 218742196110369937, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
       propertyPath: m_IsActive
@@ -3208,7 +3208,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 241485827}
+      objectReference: {fileID: 0}
     - target: {fileID: 2913605201239419400, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -3228,12 +3228,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 241485827}
+      objectReference: {fileID: 0}
     - target: {fileID: 2913605201239419400, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 241485827}
+      objectReference: {fileID: 0}
     - target: {fileID: 2913605201239419400, guid: 798cccfae76ba544b842f301f9c01b8c,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -3987,9 +3987,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 824024501, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
---- !u!1 &241485827 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2910046781887073617, guid: 798cccfae76ba544b842f301f9c01b8c,
+--- !u!4 &241485827 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4849155852754066646, guid: 798cccfae76ba544b842f301f9c01b8c,
     type: 3}
   m_PrefabInstance: {fileID: 241485826}
   m_PrefabAsset: {fileID: 0}
@@ -3999,18 +3999,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 241485826}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &241485834 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2910046781887073644, guid: 798cccfae76ba544b842f301f9c01b8c,
+--- !u!1 &241485829 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4849155852754066645, guid: 798cccfae76ba544b842f301f9c01b8c,
     type: 3}
   m_PrefabInstance: {fileID: 241485826}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241485827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a609528549ee3fd47a1ad74ac1a90924, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &269673371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4986,12 +4980,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd7ae6c4d6291ed48b7b435f7b5ffd79, type: 3}
---- !u!4 &1139738050 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2910046781887073618, guid: 798cccfae76ba544b842f301f9c01b8c,
-    type: 3}
-  m_PrefabInstance: {fileID: 241485826}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1221527072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5227,7 +5215,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 241485827}
+      objectReference: {fileID: 241485829}
     - target: {fileID: 1329826308341184918, guid: 7f38cac46d8001242b53982c59ae1e04,
         type: 3}
       propertyPath: cinemachineBrain
@@ -5900,7 +5888,7 @@ PrefabInstance:
     - target: {fileID: 255416883249547193, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}
       propertyPath: m_OcclusionCulling
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 255416883249547194, guid: cb348a596f0044f499ed6579b5092606,
         type: 3}
