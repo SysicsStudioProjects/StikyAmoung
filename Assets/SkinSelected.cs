@@ -124,6 +124,9 @@ public class SkinSelected : MonoBehaviour
     {
         switch (s.name)
         {
+            case "":
+                PlayerEvents.weopenType = WeopenType.none;
+                break;
             case "Disc1":
                 PlayerEvents.weopenType = WeopenType.Disc;
                 break;

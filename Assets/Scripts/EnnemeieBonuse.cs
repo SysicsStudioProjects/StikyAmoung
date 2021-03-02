@@ -7,7 +7,7 @@ public class EnnemeieBonuse : MonoBehaviour
     public float wanderTimer;
 
     private Transform target;
-  //  private NavMeshAgent agent;
+    private NavMeshAgent agent;
     private float timer;
     public Animator anim;
 
@@ -19,6 +19,7 @@ public class EnnemeieBonuse : MonoBehaviour
     // Use this for initialization
     void OnEnable()
     {
+        agent = GetComponent<NavMeshAgent>();
         SetupMaterial();
      //   agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer;
@@ -49,25 +50,17 @@ public class EnnemeieBonuse : MonoBehaviour
           
         if (timer >= wanderTimer)
         {
-                //Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
-                //agent.SetDestination(newPos);
-		if(EnnemiePos._instance!=null){
-  target=EnnemiePos._instance.RetutnPos();
                 timer = 0;
-}
-              
-        }
-            if (target!=null)
-            {
-                Vector3 dir = target.position - transform.position;
-                transform.Translate(dir.normalized * 3 * Time.deltaTime, Space.World);
-                //transform.LookAt(target.position);
-                LockOnTarget();
-                anim.SetFloat("speed", dir.magnitude*Time.deltaTime);
+                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+                agent.SetDestination(newPos);
+               
+
             }
-           
-            // anim.SetFloat("speed", agent.velocity.magnitude);
+
+            anim.SetFloat("speed", agent.velocity.magnitude);
+
         }
+        
     }
     void LockOnTarget()
     {
@@ -76,7 +69,7 @@ public class EnnemeieBonuse : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
         transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
-    /*  public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+      public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
       {
           Vector3 randDirection = Random.insideUnitSphere * dist;
 
@@ -87,7 +80,7 @@ public class EnnemeieBonuse : MonoBehaviour
           NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
 
           return navHit.position;
-      }*/
+      }
 
     public void DetectPlayer(Transform t)
     {

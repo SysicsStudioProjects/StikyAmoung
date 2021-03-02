@@ -26,6 +26,7 @@ public class LevelManager : MonoBehaviour
         Level = Levels[l].LevelObj;
         thislevel = Levels[l];
         Player.transform.position = Levels[l].PlayerPos.position;
+        IronSource.Agent.loadInterstitial();
     }
     private void OnEnable()
     {

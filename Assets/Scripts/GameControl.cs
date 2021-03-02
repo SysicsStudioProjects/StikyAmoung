@@ -248,9 +248,9 @@ public class GameControl : MonoBehaviour
         }
 
 
-       /* Scene scene = SceneManager.GetActiveScene();
+        /*Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
-        SceneManager.LoadScene(buildIndex);*/
+        SceneManager.LoadScene(buildIndex+1);*/
 
         /* if (buildIndex==SceneManager.sceneCountInBuildSettings-1)
          {
@@ -348,18 +348,9 @@ public class GameControl : MonoBehaviour
 
     public void ContiniueWithoutBonuseReward()
     {
+        AdsManager._instance.ShowIntertiate();
         
-        if (IsBonuseReward==false)
-        {
-            int random = Random.Range(0, 2);
-            print(random);
-            if (random==0)
-            {
-                AdsManager._instance.ShowIntertiate();
-                print("we show video");
-                
-            }
-        }
+
     }
 }
 
