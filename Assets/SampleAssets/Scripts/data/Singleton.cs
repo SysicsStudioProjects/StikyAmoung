@@ -103,10 +103,10 @@ public class Singleton : MonoBehaviour
     void Update()
     {
       //  Application.targetFrameRate = 55;
-        /* if (Application.targetFrameRate != 55)
+         if (Application.targetFrameRate != 55)
          {
              Application.targetFrameRate = 55;
-         }*/
+         }
     }
 
     public void LoadSkinSelectedMenu(int indexCurrentScene,int indexSkinScene){

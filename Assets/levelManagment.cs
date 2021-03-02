@@ -22,7 +22,7 @@ public class levelManagment : MonoBehaviour
 
     IEnumerator StartScene()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
         //SceneManager.LoadSceneAsync(1);
         int a = 0;
         a = Singleton._instance.level / 5;

@@ -41,4 +41,13 @@ public class SettingMenuController : MonoBehaviour
 
         }
     }
+
+    public void RateUs()
+    {
+#if UNITY_ANDROID
+        Application.OpenURL("https://play.google.com/store/apps/details?id=com.sysics.rocket.dark.impostor");
+#elif UNITY_IPHONE
+ Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+#endif
+    }
 }

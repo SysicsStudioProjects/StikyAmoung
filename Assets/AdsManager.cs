@@ -5,40 +5,37 @@ using UnityEngine.SceneManagement;
 using AppsFlyerSDK;
 public class AdsManager : MonoBehaviour
 {
-  
-  public static AdsManager _instance;
-  public string AdsState;
+
+    public static AdsManager _instance;
+    public string AdsState;
     public string key;
 
-  
+
     // Start is called before the first frame update
     void Start()
     {
+
+
         IronSource.Agent.setUserId(AppsFlyer.getAppsFlyerId());
-#if UNITY_ANDROID && !UNITY_EDITOR
-AppsFlyerAndroid.validateAndSendInAppPurchase( key,  "signature",  "purchaseData",  "price",  "currency",  null,  this);
-#endif
-
-
         // AppsFlyer.validateReceipt();
-IronSource.Agent.shouldTrackNetworkState (true);
-        #if UNITY_ANDROID
+        IronSource.Agent.shouldTrackNetworkState(true);
+#if UNITY_ANDROID
         string appKey = "ead72521";
 #elif UNITY_IPHONE
         string appKey = "8545d445";
 #else
         string appKey = "unexpected_platform";
 #endif
-       
-        
-   
-  IronSource.Agent.init(appKey);
-  IronSource.Agent.validateIntegration();
+
+
+
+        IronSource.Agent.init(appKey);
+        IronSource.Agent.validateIntegration();
 
     }
     private void Awake()
     {
-              if (_instance == null)
+        if (_instance == null)
         {
 
             _instance = this;
@@ -49,31 +46,35 @@ IronSource.Agent.shouldTrackNetworkState (true);
         }
         else
         {
-            
+
             Destroy(gameObject);
         }
         //StartCoroutine(LoadInter());
+
+
+
     }
 
     private void OnEnable()
     {
-      InitRewardVideo();
-      InitIntertiate();
-      InitBanner();
-    
+        InitRewardVideo();
+        InitIntertiate();
+        InitBanner();
+
     }
 
     private void OnDisable()
     {
-       DiInitRewardVideo();
+        DiInitRewardVideo();
         DeIntertiate();
         DeInitBanner();
     }
 
 
     #region rewardVideo 
-    void InitRewardVideo(){
-    IronSourceEvents.onRewardedVideoAdOpenedEvent += RewardedVideoAdOpenedEvent;
+    void InitRewardVideo()
+    {
+        IronSourceEvents.onRewardedVideoAdOpenedEvent += RewardedVideoAdOpenedEvent;
         IronSourceEvents.onRewardedVideoAdClosedEvent += RewardedVideoAdClosedEvent;
         IronSourceEvents.onRewardedVideoAvailabilityChangedEvent += RewardedVideoAvailabilityChangedEvent;
         IronSourceEvents.onRewardedVideoAdStartedEvent += RewardedVideoAdStartedEvent;
@@ -82,7 +83,8 @@ IronSource.Agent.shouldTrackNetworkState (true);
         IronSourceEvents.onRewardedVideoAdShowFailedEvent += RewardedVideoAdShowFailedEvent;
         IronSourceEvents.onRewardedVideoAdClickedEvent += RewardedVideoAdClickedEvent;
     }
-  void DiInitRewardVideo(){
+    void DiInitRewardVideo()
+    {
         IronSourceEvents.onRewardedVideoAdOpenedEvent -= RewardedVideoAdOpenedEvent;
         IronSourceEvents.onRewardedVideoAdClosedEvent -= RewardedVideoAdClosedEvent;
         IronSourceEvents.onRewardedVideoAvailabilityChangedEvent -= RewardedVideoAvailabilityChangedEvent;
@@ -92,90 +94,96 @@ IronSource.Agent.shouldTrackNetworkState (true);
         IronSourceEvents.onRewardedVideoAdShowFailedEvent -= RewardedVideoAdShowFailedEvent;
         IronSourceEvents.onRewardedVideoAdClickedEvent -= RewardedVideoAdClickedEvent;
 
-  } 
-  
+    }
+
     void RewardedVideoAvailabilityChangedEvent(bool canShowAd)
     {
         //when canShowAd false we will disable all button was request a Reward Ads
-        
-      AdsState="unity-script: I got RewardedVideoAvailabilityChangedEvent, value = " + canShowAd;
-        if (EventController.chnageButtonRewardRequest!=null)
+
+        AdsState = "unity-script: I got RewardedVideoAvailabilityChangedEvent, value = " + canShowAd;
+        if (EventController.chnageButtonRewardRequest != null)
         {
             EventController.chnageButtonRewardRequest(canShowAd);
         }
-       
+
         Debug.Log("unity-script: I got RewardedVideoAvailabilityChangedEvent, value = " + canShowAd);
     }
 
     void RewardedVideoAdOpenedEvent()
     {
 
-      AdsState="unity-script: I got RewardedVideoAdOpenedEvent";
+        AdsState = "unity-script: I got RewardedVideoAdOpenedEvent";
         Debug.Log("unity-script: I got RewardedVideoAdOpenedEvent");
+
     }
 
     void RewardedVideoAdRewardedEvent(IronSourcePlacement ssp)
     {
-      if(EventController.videoRewarded!=null){
-        EventController.videoRewarded(true);
-      }
-      AdsState="unity-script: I got RewardedVideoAdRewardedEvent, amount = " + ssp.getRewardAmount() + " name = " + ssp.getRewardName();
+        if (EventController.videoRewarded != null)
+        {
+            EventController.videoRewarded(true);
+        }
+        AdsState = "unity-script: I got RewardedVideoAdRewardedEvent, amount = " + ssp.getRewardAmount() + " name = " + ssp.getRewardName();
         Debug.Log("unity-script: I got RewardedVideoAdRewardedEvent, amount = " + ssp.getRewardAmount() + " name = " + ssp.getRewardName());
-        
+
     }
 
     void RewardedVideoAdClosedEvent()
     {
-      if(EventController.videoRewarded!=null){
-        EventController.videoRewarded(false);
-      }
-      AdsState="unity-script: I got RewardedVideoAdClosedEvent";
+        if (EventController.videoRewarded != null)
+        {
+            EventController.videoRewarded(false);
+        }
+        AdsState = "unity-script: I got RewardedVideoAdClosedEvent";
         Debug.Log("unity-script: I got RewardedVideoAdClosedEvent");
     }
 
     void RewardedVideoAdStartedEvent()
     {
-      AdsState="unity-script: I got RewardedVideoAdStartedEvent";
+        AdsState = "unity-script: I got RewardedVideoAdStartedEvent";
         Debug.Log("unity-script: I got RewardedVideoAdStartedEvent");
     }
 
     void RewardedVideoAdEndedEvent()
     {
-      AdsState="unity-script: I got RewardedVideoAdEndedEvent";
+        AdsState = "unity-script: I got RewardedVideoAdEndedEvent";
         Debug.Log("unity-script: I got RewardedVideoAdEndedEvent");
     }
 
     void RewardedVideoAdShowFailedEvent(IronSourceError error)
     {
-        if(EventController.videoRewarded!=null){
-        EventController.videoRewarded(false);
-      }
+        if (EventController.videoRewarded != null)
+        {
+            EventController.videoRewarded(false);
+        }
         if (EventController.chnageButtonRewardRequest != null)
         {
             EventController.chnageButtonRewardRequest(false);
         }
-        AdsState ="unity-script: I got RewardedVideoAdShowFailedEvent, code :  " + error.getCode() + ", description : " + error.getDescription();
+        AdsState = "unity-script: I got RewardedVideoAdShowFailedEvent, code :  " + error.getCode() + ", description : " + error.getDescription();
         Debug.Log("unity-script: I got RewardedVideoAdShowFailedEvent, code :  " + error.getCode() + ", description : " + error.getDescription());
     }
 
     void RewardedVideoAdClickedEvent(IronSourcePlacement ssp)
     {
-      AdsState="unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName();
+        AdsState = "unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName();
         Debug.Log("unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName());
     }
-    
-    public void ShowRewardVideo(){
-       
+
+    public void ShowRewardVideo()
+    {
+
         if (IronSource.Agent.isRewardedVideoAvailable())
-            {
-                IronSource.Agent.showRewardedVideo();
-            }
-       
+        {
+            IronSource.Agent.showRewardedVideo();
+        }
+
     }
 
- 
-    public void GoToNextScene(string name){
-      StartCoroutine(LoadYourAsyncScene(name));
+
+    public void GoToNextScene(string name)
+    {
+        StartCoroutine(LoadYourAsyncScene(name));
     }
 
     IEnumerator LoadYourAsyncScene(string name)
@@ -229,6 +237,7 @@ IronSource.Agent.shouldTrackNetworkState (true);
     void InterstitialAdShowSucceededEvent()
     {
         Debug.Log("unity-script: I got InterstitialAdShowSucceededEvent");
+
     }
 
     void InterstitialAdShowFailedEvent(IronSourceError error)
@@ -305,6 +314,7 @@ IronSource.Agent.shouldTrackNetworkState (true);
     void BannerAdClickedEvent()
     {
         Debug.Log("unity-script: I got BannerAdClickedEvent");
+
     }
 
     void BannerAdScreenPresentedEvent()
@@ -341,10 +351,10 @@ IronSource.Agent.shouldTrackNetworkState (true);
 
     IEnumerator LoadInter()
     {
-        
+
         yield return new WaitForSeconds(1);
         print("that's so good");
-             IronSource.Agent.loadInterstitial();
+        IronSource.Agent.loadInterstitial();
     }
-    
+
 }

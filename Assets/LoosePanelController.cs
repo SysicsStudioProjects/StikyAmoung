@@ -35,6 +35,8 @@ public class LoosePanelController : MonoBehaviour
         }
         if (IsBonuseReward)
         {
+            Singleton._instance.level += 1;
+            Singleton._instance.save();
             gameControl.LoadScene();
         }
 
