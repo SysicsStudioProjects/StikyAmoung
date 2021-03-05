@@ -77,6 +77,10 @@ public class LevelManager : MonoBehaviour
         panel.gameObject.SetActive(false);
     }
     
+    public string  ReturnLevelindex()
+    {
+        return "0";
+    }
 }
 
 [System.Serializable]

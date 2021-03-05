@@ -225,6 +225,11 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 255416881866631019}
+    - target: {fileID: 4337356242934829200, guid: ff4a2cec2a5f58c49955364507b26019,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.088
+      objectReference: {fileID: 0}
     - target: {fileID: 5799192183923688637, guid: ff4a2cec2a5f58c49955364507b26019,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -284,6 +289,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628353509119455079, guid: ff4a2cec2a5f58c49955364507b26019,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.58
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff4a2cec2a5f58c49955364507b26019, type: 3}
@@ -3183,11 +3193,11 @@ PrefabInstance:
     - target: {fileID: 1542668730, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 241485827}
+      objectReference: {fileID: 241485829}
     - target: {fileID: 1542668730, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 241485827}
+      objectReference: {fileID: 241485829}
     - target: {fileID: 1542668731, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
       propertyPath: m_LocalPosition.z
       value: -34.839073
@@ -4173,15 +4183,21 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 824024501, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 798cccfae76ba544b842f301f9c01b8c, type: 3}
---- !u!4 &241485827 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4849155852754066646, guid: 798cccfae76ba544b842f301f9c01b8c,
+--- !u!1 &241485827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8306244328532257257, guid: 798cccfae76ba544b842f301f9c01b8c,
     type: 3}
   m_PrefabInstance: {fileID: 241485826}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &241485828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4192784654603418408, guid: 798cccfae76ba544b842f301f9c01b8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 241485826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &241485829 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8306244328532257258, guid: 798cccfae76ba544b842f301f9c01b8c,
     type: 3}
   m_PrefabInstance: {fileID: 241485826}
   m_PrefabAsset: {fileID: 0}
@@ -5115,7 +5131,7 @@ PrefabInstance:
     - target: {fileID: 6799951873063694561, guid: fd7ae6c4d6291ed48b7b435f7b5ffd79,
         type: 3}
       propertyPath: level
-      value: 21
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 6799951873063694562, guid: fd7ae6c4d6291ed48b7b435f7b5ffd79,
         type: 3}
@@ -5375,7 +5391,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 1907122616}
+      objectReference: {fileID: 241485827}
     - target: {fileID: 1329826308341184918, guid: 7f38cac46d8001242b53982c59ae1e04,
         type: 3}
       propertyPath: cinemachineBrain
@@ -5500,6 +5516,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2038613439616614621, guid: 7f38cac46d8001242b53982c59ae1e04,
+        type: 3}
+      propertyPath: m_EventPayload.m_Name
+      value: Level5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2038613439616614621, guid: 7f38cac46d8001242b53982c59ae1e04,
+        type: 3}
+      propertyPath: m_EventPayload.m_Parameters.m_Parameters.Array.data[0].m_Value.m_Value
+      value: Level5
       objectReference: {fileID: 0}
     - target: {fileID: 6339241989107055828, guid: 7f38cac46d8001242b53982c59ae1e04,
         type: 3}
@@ -5685,12 +5711,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1907122616 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4849155852754066645, guid: 798cccfae76ba544b842f301f9c01b8c,
-    type: 3}
-  m_PrefabInstance: {fileID: 241485826}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1907149947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5707,6 +5727,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1897257885600007196, guid: acd62839836a06846b74220b1cb7f92c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.36
       objectReference: {fileID: 0}
     - target: {fileID: 1897257885934287582, guid: acd62839836a06846b74220b1cb7f92c,
         type: 3}

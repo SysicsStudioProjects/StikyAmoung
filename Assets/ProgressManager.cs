@@ -118,26 +118,41 @@ public class ProgressManager : MonoBehaviour
 
     void LoadNextScene()
     {
-        Scene scene = SceneManager.GetActiveScene();
-        int buildIndex = scene.buildIndex;
+        /* Scene scene = SceneManager.GetActiveScene();
+         int buildIndex = scene.buildIndex;
 
-        if (buildIndex == SceneManager.sceneCountInBuildSettings-1)
+         if (buildIndex == SceneManager.sceneCountInBuildSettings-1)
+         {
+             buildIndex = 0;
+             SceneManager.LoadScene(buildIndex);
+         }
+         else
+         {
+
+             SceneManager.LoadScene(buildIndex + 1);
+
+         }*/
+
+        int a = 0;
+        int LevelIndex = gameControl.LevelIndex;
+        a = LevelIndex / 5;
+        int modulo = LevelIndex % 5;
+        if (modulo == 0)
         {
-            buildIndex = 0;
-            SceneManager.LoadScene(buildIndex);
+            SceneManager.LoadScene(a + 1);
         }
         else
         {
-         
-            SceneManager.LoadScene(buildIndex + 1);
-            
+            Scene scene = SceneManager.GetActiveScene();
+            int buildIndex = scene.buildIndex;
+            SceneManager.LoadScene(buildIndex);
         }
     }
     bool IsWatched;
     void ShowVideo()
     {
         IsWatched = true;
-        AdsManager._instance.ShowRewardVideo();
+        AdsManager._instance.ShowRewardVideo("Progress_item_reward");
     }
 
     void VideoBonuseRewarded(bool b)

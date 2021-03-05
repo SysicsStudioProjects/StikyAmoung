@@ -194,7 +194,7 @@ public class CharacterAnimation : MonoBehaviour
         }
         
     }
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         if (transform.rotation!=new Quaternion(0,0,0,0))
         {

@@ -156,10 +156,7 @@ public class EnnemiePatrol : MonoBehaviour
             //transform.LookAt(target.position);
             LockOnTarget();
             anim.SetFloat("speed", 1);
-            if (Vector3.Distance(transform.position, target.position) < 1f&&target!=player)
-            {
-                ToNextPoint();
-            }
+            
         }
       
         
@@ -205,6 +202,26 @@ public class EnnemiePatrol : MonoBehaviour
 
     }
 
+    IEnumerator VerifPointDistance()
+    {
+        yield return new WaitForSeconds(0.2f);
+        if (target==null)
+        {
+            StartCoroutine(VerifPointDistance());
+        
+        }
+        else
+        {
+            if (Vector3.Distance(transform.position, target.position) < 1f && target != player)
+            {
+                ToNextPoint();
+            }
+            StartCoroutine(VerifPointDistance());
+        }
+          
+
+       
+    }
     bool startEneum;
     IEnumerator WaitingTask()
     {
@@ -343,6 +360,7 @@ public class EnnemiePatrol : MonoBehaviour
     }
     void GameStart(bool b)
     {
+        StartCoroutine(VerifPointDistance());
         IsGameStart = b;
         Field.SetActive(true);
         if (BodyRendered.gameObject.activeInHierarchy)
@@ -354,6 +372,7 @@ public class EnnemiePatrol : MonoBehaviour
         {
             ToNextPoint();
         }
+
     }
 
     void LockOnTarget()

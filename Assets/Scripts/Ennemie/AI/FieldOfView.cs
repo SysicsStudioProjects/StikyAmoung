@@ -24,13 +24,18 @@ public class FieldOfView : MonoBehaviour {
 
 	public MeshFilter viewMeshFilter;
 	Mesh viewMesh;
+	public bool isDrone;
 
 	void Start() {
 		viewMesh = new Mesh ();
 		viewMesh.name = "View Mesh";
 		viewMeshFilter.mesh = viewMesh;
+	/*	if (isDrone)
+		{
+			viewRadius = viewRadius * 2;
 
-		
+		}*/
+
 	}
 	void OnEnable(){
 		StartCoroutine ("FindTargetsWithDelay", 0.02f);
@@ -58,43 +63,93 @@ public class FieldOfView : MonoBehaviour {
 
 	void FindVisibleTargets() {
 		visibleTargets.Clear ();
-		Collider[] targetsInViewRadius = Physics.OverlapSphere (transform.position, viewRadius, targetMask);
+		float r = viewRadius;
+		if (isDrone)
+		{
+			r = viewRadius * 8;
 
+		}
+		Collider[] targetsInViewRadius = Physics.OverlapSphere (transform.position, r, targetMask);
+
+		
 		for (int i = 0; i < targetsInViewRadius.Length; i++) {
 			Transform target = targetsInViewRadius [i].transform;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
-			if (Vector3.Angle (transform.forward, dirToTarget) < viewAngle / 2) {
-				float dstToTarget = Vector3.Distance (transform.position, target.position);
-				
-                if (dstToTarget > viewRadius-1)
-                {
-					ennemieEvent.DetectPlayer(null);
-					return;
-                }
-				if (!Physics.Raycast (transform.position, dirToTarget, dstToTarget, obstacleMask)) {
-					visibleTargets.Add(target);
-					ennemieEvent.DetectPlayer(target);
-					
+            if (isDrone)
+            {
+				if (Vector3.Angle(-transform.up, dirToTarget) < viewAngle / 2)
+				{
+					float dstToTarget = Vector3.Distance(transform.position, target.position);
 
-					/* if (cameraController != null)
-					 {
-						 if (cameraController.hasSack == true)
+					if (dstToTarget > viewRadius - 1)
+					{
+						ennemieEvent.DetectPlayer(null);
+						return;
+					}
+					if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
+					{
+						visibleTargets.Add(target);
+						ennemieEvent.DetectPlayer(target);
+
+
+						/* if (cameraController != null)
 						 {
-							 visibleTargets.Add(target);
-							 if (EventsController.die != null)
+							 if (cameraController.hasSack == true)
 							 {
-								 EventsController.die(DieType.Arrested);
+								 visibleTargets.Add(target);
+								 if (EventsController.die != null)
+								 {
+									 EventsController.die(DieType.Arrested);
+								 }
 							 }
-						 }
-					 }*/
+						 }*/
 
 
-				}
-                else
-                {
-					ennemieEvent.DetectPlayer(null);
+					}
+					else
+					{
+						ennemieEvent.DetectPlayer(null);
+					}
 				}
 			}
+            else
+            {
+				if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+				{
+					float dstToTarget = Vector3.Distance(transform.position, target.position);
+
+					if (dstToTarget > viewRadius - 1)
+					{
+						ennemieEvent.DetectPlayer(null);
+						return;
+					}
+					if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
+					{
+						visibleTargets.Add(target);
+						ennemieEvent.DetectPlayer(target);
+
+
+						/* if (cameraController != null)
+						 {
+							 if (cameraController.hasSack == true)
+							 {
+								 visibleTargets.Add(target);
+								 if (EventsController.die != null)
+								 {
+									 EventsController.die(DieType.Arrested);
+								 }
+							 }
+						 }*/
+
+
+					}
+					else
+					{
+						ennemieEvent.DetectPlayer(null);
+					}
+				}
+			}
+			
 		}
         if (visibleTargets.Count<=0)
         {

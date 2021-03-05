@@ -170,7 +170,7 @@ public class AdsManager : MonoBehaviour
         Debug.Log("unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName());
     }
 
-    public void ShowRewardVideo()
+    public void ShowRewardVideo(string s)
     {
 
         if (IronSource.Agent.isRewardedVideoAvailable())
@@ -260,7 +260,7 @@ public class AdsManager : MonoBehaviour
         Debug.Log("unity-script: I got InterstitialAdClosedEvent");
     }
 
-    public void ShowIntertiate()
+    public void ShowIntertiate(string s)
     {
         if (IronSource.Agent.isInterstitialReady())
         {
@@ -339,7 +339,7 @@ public class AdsManager : MonoBehaviour
 
     public void ShowBanner()
     {
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Banner_bottom");
     }
 
     public void DestroyBanner()

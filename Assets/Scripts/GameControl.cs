@@ -322,7 +322,7 @@ public class GameControl : MonoBehaviour
     bool IsBonuseReward;
     public void GetBonuse()
     {
-        AdsManager._instance.ShowRewardVideo();
+        AdsManager._instance.ShowRewardVideo("Endlevel_win_x3coin_reward");
         IsBonuseReward = true;
     }
 
@@ -346,9 +346,9 @@ public class GameControl : MonoBehaviour
        
     }
 
-    public void ContiniueWithoutBonuseReward()
+    public void ContiniueWithoutBonuseReward(string s)
     {
-        AdsManager._instance.ShowIntertiate();
+        AdsManager._instance.ShowIntertiate(s);
         
 
     }

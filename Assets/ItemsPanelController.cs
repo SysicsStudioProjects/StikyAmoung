@@ -78,7 +78,7 @@ public class ItemsPanelController : MonoBehaviour
     {
         switchSkin = t;
         IsBonuseReward = true;
-        AdsManager._instance.ShowRewardVideo();
+        AdsManager._instance.ShowRewardVideo("Startlevel_itemtry_reward");
     }
 
     void ChangeRewardStatut(bool b)

@@ -26,7 +26,7 @@ public class TestAds : MonoBehaviour
     }
 
     public void ShowRewardVideo(){
-        AdsManager._instance.ShowRewardVideo();
+       // AdsManager._instance.ShowRewardVideo();
     }
 
     void GetRewarded(bool b){

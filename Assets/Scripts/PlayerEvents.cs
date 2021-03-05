@@ -115,7 +115,7 @@ public class PlayerEvents : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void FixedUpdate()
+	void LateUpdate()
 	{
         if (playerMovement.enabled==false)
         {
@@ -130,11 +130,12 @@ public class PlayerEvents : MonoBehaviour
 			{
 				case WeopenType.none:
 					RangeWeopen = 2.5f;
-
+					
+					range = 4;
 					break;
 				case WeopenType.Knife:
 					RangeWeopen = 2.5f;
-
+					range = 4;
 					break;
 				case WeopenType.Disc:
 					range = 8;
@@ -142,7 +143,7 @@ public class PlayerEvents : MonoBehaviour
 					break;
 				case WeopenType.Butcher:
 					RangeWeopen = 2.5f;
-
+					range = 4;
 					break;
 				default:
 					break;
@@ -151,7 +152,7 @@ public class PlayerEvents : MonoBehaviour
 		}
 		if (target != null && AutoFocuse&&target.gameObject.activeInHierarchy)
 		{
-			LookTotarget(0.5f);
+			LookTotarget(0.8f);
 
 
 		}
