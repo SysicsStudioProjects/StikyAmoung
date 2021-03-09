@@ -8,21 +8,39 @@ public class ShootBale : MonoBehaviour
     public float speed;
     //public Rigidbody rb;
     public Animator anim;
+    Vector3 dire;
     //public Collider collider;
     private void FixedUpdate()
     {
         if (target==null)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            if (dire==Vector3.zero)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                transform.Translate(dire * speed * Time.deltaTime);
+            }
+            
             return;
         }
         if (target==null||!target.gameObject.activeInHierarchy)
         {
-            gameObject.SetActive(false);
+            if (dire == Vector3.zero)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                transform.Translate(dire * speed * Time.deltaTime);
+            }
             return;
         }
             speed += 0.02f;
             Vector3 dir = target.position - transform.position;
+        dire = dir;
             float distanceThisFrame = speed * Time.deltaTime;
 
             if (dir.magnitude <= 0.5f)
@@ -61,15 +79,16 @@ public class ShootBale : MonoBehaviour
         {
             
             playerEvents.KillEvent(collision.transform);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            //Destroy(gameObject);
         }
         else if (collision.transform.tag!="PLayer")
         
         {
             // Destroy(gameObject);
-
+            gameObject.SetActive(false);
           
-            Destroy(gameObject);
+          //  Destroy(gameObject);
 
         }
         

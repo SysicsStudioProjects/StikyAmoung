@@ -8,7 +8,7 @@ public enum SkinState{
 
 public enum SkinType
 {
-    hat,bette,skin,glasse,wap
+    hat,bette,skin,glasse,wap,special
 }
 
 [System.Serializable]

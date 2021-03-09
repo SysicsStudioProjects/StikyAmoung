@@ -21,6 +21,7 @@ public class EnnemeieBonuse : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         SetupMaterial();
+        wanderTimer = Random.Range(1, 5);
      //   agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer;
         EventController.gameStart+=GameStart;

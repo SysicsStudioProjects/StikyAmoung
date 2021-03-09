@@ -175,7 +175,7 @@ public class AdsManager : MonoBehaviour
 
         if (IronSource.Agent.isRewardedVideoAvailable())
         {
-            IronSource.Agent.showRewardedVideo();
+            IronSource.Agent.showRewardedVideo(s);
         }
 
     }
@@ -264,7 +264,7 @@ public class AdsManager : MonoBehaviour
     {
         if (IronSource.Agent.isInterstitialReady())
         {
-            IronSource.Agent.showInterstitial();
+            IronSource.Agent.showInterstitial(s);
         }
         else
         {

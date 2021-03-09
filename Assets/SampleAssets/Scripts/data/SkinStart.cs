@@ -93,6 +93,28 @@ public class SkinStart : MonoBehaviour
 
     public void use()
     {
+        for (int i = 0; i < Singleton._instance.skins.allSkins.Count; i++)
+        {
+            if (skin.type == SkinType.special)
+            {
+                if (Singleton._instance.skins.allSkins[i].state == SkinState.useIt && Singleton._instance.skins.allSkins[i].type != SkinType.glasse && Singleton._instance.skins.allSkins[i].type != SkinType.bette)
+                {
+                    Singleton._instance.skins.allSkins[i].state = SkinState.buyIt;
+                }
+            }
+            else if (skin.type != SkinType.glasse&&skin.type!=SkinType.bette)
+            {
+                if (Singleton._instance.skins.allSkins[i].state == SkinState.useIt && Singleton._instance.skins.allSkins[i].type == SkinType.special)
+                {
+                    Singleton._instance.skins.allSkins[i].state = SkinState.buyIt;
+                }
+            }
+            /*if (Singleton._instance.skins.allSkins[i].state==SkinState.useIt&& Singleton._instance.skins.allSkins[i].type!=SkinType.glasse&& Singleton._instance.skins.allSkins[i]!=skin&&skin.type==SkinType.special)
+            {
+                Singleton._instance.skins.allSkins[i].state = SkinState.buyIt;
+            }*/
+
+        }
         print(skin.name);
         skin.state = SkinState.useIt;
         if (manegerSkins.changeSkinStat != null)
@@ -104,6 +126,7 @@ public class SkinStart : MonoBehaviour
         {
             EventController.useSkin(skin);
         }
+       
         Singleton._instance.save();
     }
 
@@ -144,9 +167,83 @@ public class SkinStart : MonoBehaviour
     }
 
     void setUpStat(Skin s) {
-        if (s.type != skin.type)
+
+
+       /* if (s.type==SkinType.glasse)
+        {
+            if (skin.type==SkinType.glasse&&skin==s)
+            {
+
+                return;
+            }
+            else
+            {
+                if (skin.state==SkinState.useIt&& skin.type == SkinType.glasse)
+                {
+                    skin.state = SkinState.buyIt;
+                    setButton();
+                }
+            }
+        }
+        else
+        {
+            if (skin.state==SkinState.useIt&&skin.type!=SkinType.glasse)
+            {
+                if (skin==s)
+                {
+                    return;
+                }
+                else
+                {
+                    skin.state = SkinState.buyIt;
+                    setButton();
+                    
+                }
+            }
+
+        }*/
+        if (s.type!=SkinType.special&&s.type!=SkinType.glasse)
+        {
+            print("we are herreeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            print(skin.type);
+            print(skin.state);
+
+            if (skin.type==SkinType.special&& skin.state != SkinState.none)
+            {
+               int index= Singleton._instance.skins.allSkins.FindIndex(d => d.name == skin.name);
+                
+                if (index!=-1)
+                {
+                  
+                    Singleton._instance.skins.allSkins[index].state = SkinState.buyIt;
+                    Singleton._instance.save();
+                }
+                skin.state = SkinState.buyIt;
+                setButton();
+                return;
+            }
+        }
+        if (s.type != skin.type&&s.type!=SkinType.special)
         {
             return;
+        }
+
+        else if (s.type == SkinType.special)
+        {
+            if (skin.type!=SkinType.glasse)
+            {
+                if (s != skin && skin.state != SkinState.none)
+                {
+                    int index = Singleton._instance.skins.allSkins.FindIndex(d => d.name == skin.name);
+                    if (index != -1)
+                    {
+                        Singleton._instance.skins.allSkins[index].state = SkinState.buyIt;
+                        Singleton._instance.save();
+                    }
+                    skin.state = SkinState.buyIt;
+                    setButton();
+                }
+            }
         }
         else
         {

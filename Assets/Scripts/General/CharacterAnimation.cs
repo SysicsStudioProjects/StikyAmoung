@@ -18,8 +18,12 @@ public class CharacterAnimation : MonoBehaviour
     public GameObject BusherPrfab;
     public GameObject BusherPrfab2;
 
+    public GameObject captinamericaPrefab;
     public GameObject SpearPrefab;
     public PlayerMovement playerMvt;
+
+    public GameObject IronShootPrefab;
+    public GameObject GogoPrefab;
 
     public WeopenType weopenType;
     // Start is called before the first frame update
@@ -50,7 +54,7 @@ public class CharacterAnimation : MonoBehaviour
     {
         if (PlayerEvents.weopenType==WeopenType.none)
         {
-            Hands.SetActive(false);
+            //Hands.SetActive(false);
         }
        
     }
@@ -63,7 +67,7 @@ public class CharacterAnimation : MonoBehaviour
     {
         if (PlayerEvents.weopenType == WeopenType.none)
         {
-            Hands.SetActive(false);
+           // Hands.SetActive(false);
         }
         else
         {
@@ -105,6 +109,13 @@ public class CharacterAnimation : MonoBehaviour
         }
       
     }
+    public void DisableMvt()
+    {
+        if (playerMvt != null)
+        {
+            playerMvt.enabled = false;
+        }
+    }
 
     public void DiscKill()
     {
@@ -128,6 +139,9 @@ public class CharacterAnimation : MonoBehaviour
             case "Spear":
                 objSpawn = SpearPrefab;
                 break;
+            case "Shield_CaptainAmerica":
+                objSpawn = captinamericaPrefab;
+                break;
             default:
                 break;
         }
@@ -142,6 +156,21 @@ public class CharacterAnimation : MonoBehaviour
         }*/
     }
 
+    public Transform IronmanShootPos;
+    public void IronManshoot()
+    {
+        Transform Target = playerEvents.target;
+        GameObject obj = Instantiate(IronShootPrefab, IronmanShootPos.position, Quaternion.identity);
+        obj.GetComponent<ShootBale>().SetTarget(Target, transform.forward, playerEvents);
+    }
+
+    public Transform GogoShootPos;
+    public void GogoShoot()
+    {
+        Transform Target = playerEvents.target;
+        GameObject obj = Instantiate(GogoPrefab, GogoShootPos.position, Quaternion.identity);
+        obj.GetComponent<ShootBale>().SetTarget(Target, transform.forward, playerEvents);
+    }
     public void BucherShoot()
     {
         /* string name = "";

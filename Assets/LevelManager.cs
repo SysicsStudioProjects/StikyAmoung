@@ -27,6 +27,11 @@ public class LevelManager : MonoBehaviour
         thislevel = Levels[l];
         Player.transform.position = Levels[l].PlayerPos.position;
         IronSource.Agent.loadInterstitial();
+        if (!IronSource.Agent.isInterstitialReady())
+        {
+            StartCoroutine(LoadInter());
+        }
+      
     }
     private void OnEnable()
     {
@@ -45,6 +50,16 @@ public class LevelManager : MonoBehaviour
         Player.SetActive(true);
     }
 
+    IEnumerator LoadInter()
+    {
+        IronSource.Agent.loadInterstitial();
+        yield return new WaitForSeconds(3);
+        if (!IronSource.Agent.isInterstitialReady())
+        {
+            StartCoroutine(LoadInter());
+        }
+      
+    }
     public void OpenSkinMenu(){
          Level.SetActive(false);
         gameControl.SetActive(false);
