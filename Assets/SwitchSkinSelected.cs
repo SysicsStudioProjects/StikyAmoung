@@ -7,6 +7,7 @@ public class SwitchSkinSelected : MonoBehaviour
     public Skin GlassesSkin;
     public Skin HatSkin;
     public Skin MaterialSkin;
+    public Skin SpecielSkin;
     public List<GameObject> GlasesObject;
     public List<GameObject> HatObject;
     public List<SkinnedMeshRenderer> SkinsObjetcs;
@@ -22,6 +23,7 @@ public class SwitchSkinSelected : MonoBehaviour
     public Skin PetSkin;
     // Start is called before the first frame update
 
+    public List<SpecialPackage> specialPackages;
     private void OnEnable()
     {
         EventController.switchKin += ChangeSkin;
@@ -55,6 +57,26 @@ public class SwitchSkinSelected : MonoBehaviour
             case SkinType.wap:
                 WeopenSkin = s;
                 SetupSkin(Weopen, WeopenSkin);
+                break;
+            case SkinType.special:
+                SpecielSkin = s;
+                Skin hat = new Skin();
+                Skin skinmaterial = new Skin();
+                Skin specialweopen = new Skin();
+                char slash = '/';
+                string[] n = s.name.Split(slash);
+                hat.name = n[0];
+                hat.type = SkinType.hat;
+                skinmaterial.name = n[1];
+                skinmaterial.type = SkinType.skin;
+                specialweopen.name = n[2];
+                specialweopen.type = SkinType.wap;
+               // HatSkin = hat;
+                SetupSkin(HatObject, hat);
+               MaterialSkin = skinmaterial;
+                SetupMaterial();
+               // WeopenSkin = specialweopen;
+                SetupSkin(Weopen, specialweopen);
                 break;
             default:
                 break;
@@ -109,6 +131,8 @@ public class SwitchSkinSelected : MonoBehaviour
       
     }
 
+
+
     void CloseALL()
     {
         GlassesSkin.name = null;
@@ -116,10 +140,23 @@ public class SwitchSkinSelected : MonoBehaviour
         MaterialSkin = null;
         WeopenSkin = null;
         PetSkin = null;
+        SpecielSkin = null;
         SetupSkin(HatObject, HatSkin);
         SetupSkin(Pet, PetSkin);
         SetupMaterial();
         SetupSkin(GlasesObject, GlassesSkin);
         SetupSkin(Weopen, WeopenSkin);
     }
+}
+
+
+[System.Serializable]
+public class SpecialPackage
+{
+    public string SkinName;
+    public Material skinMaterial;
+    public GameObject hats;
+    public GameObject weopen;
+    public GameObject[] otherobjs;
+    
 }

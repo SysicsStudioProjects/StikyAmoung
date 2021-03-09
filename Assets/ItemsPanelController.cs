@@ -24,7 +24,13 @@ public class ItemsPanelController : MonoBehaviour
 
     private void OnEnable()
     {
-      
+
+        if (Singleton._instance.level == 1)
+        {
+            MainMenu.SetActive(true);
+            this.gameObject.SetActive(false);
+            return;
+        }
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].interactable = IronSource.Agent.isRewardedVideoAvailable();
@@ -37,6 +43,7 @@ public class ItemsPanelController : MonoBehaviour
 
         EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         EventController.videoRewarded += VideoBonuseRewarded;
+        
 
     }
 

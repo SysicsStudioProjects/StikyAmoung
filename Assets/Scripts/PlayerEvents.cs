@@ -44,11 +44,19 @@ public class PlayerEvents : MonoBehaviour
 		EventController.gameWin += GameWin;
 		EventController.ennemieDown += EnnemieDown;
 		EventController.gameStart += GameStart;
-		InvokeRepeating("CaroutineTarget",0,0.1f);
+		InvokeRepeating("CaroutineTarget",0,0.2f);
 
 		switch (weopenType)
 		{
 			case WeopenType.none:
+
+				Skin s = new Skin();
+				int index = Singleton._instance.skins.allSkins.FindIndex(d => d.name == "Knife1");
+				s = Singleton._instance.skins.allSkins[index];
+				s.state = SkinState.useIt;
+				Singleton._instance.save();
+				weopenType = WeopenType.Knife;
+				EventController.useSkin(s);
 				RangeWeopen = 2.5f;
 				range = 4;
 				break;
@@ -63,6 +71,16 @@ public class PlayerEvents : MonoBehaviour
 			case WeopenType.Butcher:
 				RangeWeopen = 2.5f;
 				range = 4;
+
+				break;
+			case WeopenType.gogo:
+				RangeWeopen = 8f;
+				range = 8;
+
+				break;
+			case WeopenType.ironman:
+				RangeWeopen = 8f;
+				range = 8;
 
 				break;
 			default:
@@ -94,12 +112,19 @@ public class PlayerEvents : MonoBehaviour
 		switch (weopenType)
 		{
 			case WeopenType.none:
+				Skin s = new Skin();
+				int index = Singleton._instance.skins.allSkins.FindIndex(d => d.name == "Knife1");
+				s = Singleton._instance.skins.allSkins[index];
+				s.state = SkinState.useIt;
+				Singleton._instance.save();
+				EventController.useSkin(s);
+				weopenType = WeopenType.Knife;
 				RangeWeopen = 2.5f;
-
+				range = 4;
 				break;
 			case WeopenType.Knife:
 				RangeWeopen = 2.5f;
-
+				range = 4;
 				break;
 			case WeopenType.Disc:
 				range = 8;
@@ -107,6 +132,16 @@ public class PlayerEvents : MonoBehaviour
 				break;
 			case WeopenType.Butcher:
 				RangeWeopen = 2.5f;
+				range = 4;
+				break;
+			case WeopenType.gogo:
+				RangeWeopen = 8f;
+				range = 8;
+
+				break;
+			case WeopenType.ironman:
+				RangeWeopen = 8f;
+				range = 8;
 
 				break;
 			default:
@@ -132,6 +167,13 @@ public class PlayerEvents : MonoBehaviour
 					RangeWeopen = 2.5f;
 					
 					range = 4;
+					Skin s = new Skin();
+					int index = Singleton._instance.skins.allSkins.FindIndex(d => d.name == "Knife1");
+					s = Singleton._instance.skins.allSkins[index];
+					s.state = SkinState.useIt;
+					Singleton._instance.save();
+					weopenType = WeopenType.Knife;
+					EventController.useSkin(s);
 					break;
 				case WeopenType.Knife:
 					RangeWeopen = 2.5f;
@@ -144,6 +186,16 @@ public class PlayerEvents : MonoBehaviour
 				case WeopenType.Butcher:
 					RangeWeopen = 2.5f;
 					range = 4;
+					break;
+				case WeopenType.gogo:
+					RangeWeopen = 8f;
+					range = 8;
+
+					break;
+				case WeopenType.ironman:
+					RangeWeopen = 8f;
+					range = 8;
+
 					break;
 				default:
 					break;
@@ -298,6 +350,13 @@ public class PlayerEvents : MonoBehaviour
 				anim.SetTrigger("attackButcher");
 				
 				break;
+			case WeopenType.ironman:
+				anim.SetTrigger("iron");
+				break;
+
+			case WeopenType.gogo:
+				anim.SetTrigger("gogo");
+				break;
 			default:
 				break;
 		}
@@ -328,6 +387,12 @@ public class PlayerEvents : MonoBehaviour
 					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
 					break;
 				case WeopenType.Butcher:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
+					break;
+				case WeopenType.ironman:
+					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
+					break;
+				case WeopenType.gogo:
 					StartCoroutine(DesactivateEnnemy(target.gameObject, 0.1f));
 					break;
 				default:
@@ -380,7 +445,7 @@ public class PlayerEvents : MonoBehaviour
 		stopKilling = false;
 		target = null;
 		switchTarget = null;
-
+		//playerMovement.enabled = true;
 
 
 
@@ -403,10 +468,7 @@ public class PlayerEvents : MonoBehaviour
 
 	IEnumerator DesactivateEnnemy(GameObject obj,float t)
 	{
-        if (weopenType!=WeopenType.Disc)
-        {
-			//playerMovement.enabled = false;
-        }
+        
 		float a = 0;
         if (t>0.1f)
         {
@@ -438,8 +500,15 @@ public class PlayerEvents : MonoBehaviour
 			}
 		}
 		obj.SetActive(false);
-		//playerMovement.enabled = true;
+		if (weopenType != WeopenType.Disc)
+		{
+			//playerMovement.enabled = false;
+		}
+		else
+		{
+			playerMovement.enabled = true;
 
+		}
 	}
 
 
@@ -502,4 +571,4 @@ public class PlayerEvents : MonoBehaviour
     }
 }
 
-public enum WeopenType {none,Knife,Disc,Butcher }
+public enum WeopenType {none,Knife,Disc,Butcher,ironman,gogo }
