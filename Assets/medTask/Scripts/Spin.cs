@@ -139,7 +139,7 @@ public class Spin : MonoBehaviour
                 _watchButtonText.text = "1 DAILY SPIN";
                 break;
             case 0:
-                _watchButtonText.text = "TRY AGAIN TOMORROW";
+                _watchButtonText.text = "0 DAILY SPIN";
                 break;
 
             default:

@@ -9,6 +9,7 @@ public class ShootBale : MonoBehaviour
     //public Rigidbody rb;
     public Animator anim;
     Vector3 dire;
+    public GameObject Explosion;
     //public Collider collider;
     private void FixedUpdate()
     {
@@ -46,6 +47,12 @@ public class ShootBale : MonoBehaviour
             if (dir.magnitude <= 0.5f)
             {
                 HitTarget();
+            if (Explosion!=null)
+            {
+                GameObject expo = Instantiate(Explosion, target.position, target.rotation);
+                Destroy(expo, 2);
+            }
+            
                 return;
             }
 
@@ -80,6 +87,11 @@ public class ShootBale : MonoBehaviour
             
             playerEvents.KillEvent(collision.transform);
             gameObject.SetActive(false);
+            if (Explosion != null)
+            {
+                GameObject expo = Instantiate(Explosion, collision.transform.position, collision.transform.rotation);
+                Destroy(expo, 2);
+            }
             //Destroy(gameObject);
         }
         else if (collision.transform.tag!="PLayer")
@@ -87,8 +99,13 @@ public class ShootBale : MonoBehaviour
         {
             // Destroy(gameObject);
             gameObject.SetActive(false);
-          
-          //  Destroy(gameObject);
+            if (Explosion != null)
+            {
+                GameObject expo = Instantiate(Explosion, transform.position, transform.rotation);
+                Destroy(expo, 2);
+            }
+
+            //  Destroy(gameObject);
 
         }
         

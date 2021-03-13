@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AppsFlyerSDK;
+using UnityEngine;
 
 public class IronSourceInitilizer
 {
@@ -22,6 +23,7 @@ public class IronSourceInitilizer
                 }
                 else
                 {
+                    IronSource.Agent.setUserId(AppsFlyer.getAppsFlyerId());
                     IronSource.Agent.init(appKey);
                 }
 
