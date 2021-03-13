@@ -73,7 +73,7 @@ public class ScrollManual : MonoBehaviour
         for (int i = 11; i > 0; i--)
         {
             a -= 0.1f;
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.04f);
             scrollRect.normalizedPosition = new Vector2(a, hight);
         }
         
