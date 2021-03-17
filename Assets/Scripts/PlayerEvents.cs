@@ -46,7 +46,7 @@ public class PlayerEvents : MonoBehaviour
 		EventController.gameStart += GameStart;
 		InvokeRepeating("CaroutineTarget",0,0.2f);
 
-		switch (weopenType)
+		/*switch (weopenType)
 		{
 			case WeopenType.none:
 
@@ -85,7 +85,7 @@ public class PlayerEvents : MonoBehaviour
 				break;
 			default:
 				break;
-		}
+		}*/
 		stopKilling = false;
 		target = null;
 		switchTarget = null;
@@ -109,7 +109,7 @@ public class PlayerEvents : MonoBehaviour
 	}
 	private void Start()
 	{
-		switch (weopenType)
+		/*switch (weopenType)
 		{
 			case WeopenType.none:
 				Skin s = new Skin();
@@ -146,7 +146,7 @@ public class PlayerEvents : MonoBehaviour
 				break;
 			default:
 				break;
-		}
+		}*/
 	}
 
 	// Update is called once per frame

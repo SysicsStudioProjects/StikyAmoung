@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
             playerSpeed = 8;
             //anim.speed = 2;
             move.y=0;
-            controller.Move(move.normalized * Time.deltaTime * playerSpeed);
+            controller.Move(move.normalized * 0.02f * playerSpeed);
             // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
         }
         else

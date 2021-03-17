@@ -13,6 +13,8 @@ public class DeadEvent : MonoBehaviour
 
     public CreateMoney createMoney;
 
+    public List<GameObject> hats;
+    public List<GameObject> glasses;
 
     private void Start()
     {
@@ -26,6 +28,7 @@ public class DeadEvent : MonoBehaviour
             createMoney.enabled = false;
         }
         StartCoroutine(Retouche());
+        SetupSkin();
     }
   /*  #region UI
     public void OnclickEvent()
@@ -74,6 +77,25 @@ public class DeadEvent : MonoBehaviour
     {
         UP.materials[0].color = c;
         Down.materials[1].color = c;
+
+    }
+
+    public void SetupSkin()
+    {
+       string h = EnnemieDeathController._instance.hat;
+        string g = EnnemieDeathController._instance.glasses;
+        int indexhat = hats.FindIndex(d => d.name == h);
+        if (indexhat != -1)
+        {
+            hats[indexhat].SetActive(true);
+        }
+        int indexglasses = glasses.FindIndex(d => d.name == g);
+        if (indexglasses != -1)
+        {
+            glasses[indexglasses].SetActive(true);
+        }
+        EnnemieDeathController._instance.hat = "";
+        EnnemieDeathController._instance.glasses = "";
 
     }
 }

@@ -115,7 +115,7 @@ public class GameControl : MonoBehaviour
         if (NBkill==alleennemie)
         {
             StartCoroutine(YielTowin());
-            AdsManager._instance.DestroyBanner();
+           // AdsManager._instance.DestroyBanner();
             TmeRcanvas.SetActive(false);
         }
     }
@@ -133,7 +133,7 @@ public class GameControl : MonoBehaviour
     }
     void GameWin()
     {
-        AdsManager._instance.DestroyBanner();
+       // AdsManager._instance.DestroyBanner();
 
 
         AllCoinsText.text = AllCoins.ToString();
@@ -156,7 +156,7 @@ public class GameControl : MonoBehaviour
     }
     IEnumerator LevelCompleted()
     {
-        AdsManager._instance.DestroyBanner();
+       // AdsManager._instance.DestroyBanner();
 
         if (EventController.gameWin != null)
         {
@@ -176,7 +176,7 @@ public class GameControl : MonoBehaviour
     }
     void LevelBonuseFinished()
     {
-        AdsManager._instance.DestroyBanner();
+      //  AdsManager._instance.DestroyBanner();
 
         if (EventController.gameWin != null)
         {
@@ -218,7 +218,7 @@ public class GameControl : MonoBehaviour
 
     void GameLoose()
     {
-        AdsManager._instance.DestroyBanner();
+       // AdsManager._instance.DestroyBanner();
 
         Time.timeScale = 0;
         LoosePanel.SetActive(true);
