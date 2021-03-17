@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnnemieDeathController : MonoBehaviour
 {
     public List<EnnemyDeath> ennemyDeaths;
-
+    EnnemyDeath switchennemydeath;
     public static EnnemieDeathController _instance;
 
     private void Awake()
@@ -18,15 +18,26 @@ public class EnnemieDeathController : MonoBehaviour
         {
             if (item.statut==false)
             {
+                switchennemydeath = item;
                 item.ennemy.transform.position = t.position;
                 item.ennemy.transform.rotation = t.rotation;
                 item.deadEvent.SetColor(m);
+                
                 item.ennemy.SetActive(true);
                 item.statut = true;
                 StartCoroutine(DestactivateObj(item.ennemy));
                 return;
             }
         }
+    }
+
+    public string hat;
+    public string glasses;
+    public void GetSskins(string h,string g)
+    {
+        hat = h;
+        glasses = g;
+      
     }
 
     IEnumerator DestactivateObj(GameObject obj)
