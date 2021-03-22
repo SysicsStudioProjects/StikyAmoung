@@ -41,9 +41,12 @@ public class GameControl : MonoBehaviour
     public GameObject BonusePanel;
 
     public LevelManager levelManager;
-   
+    public GameObject BGspecialProgress;
+    public static bool IsRewardedAfterWin;
+    
     private void OnEnable()
     {
+        IsRewardedAfterWin = false;
         LevelBonuse = levelManager.thislevel.IsBonuceLevel;
         alleennemie = levelManager.thislevel.NbEnnemy;
         LevelIndex = levelManager.thislevel.LevelIndex;
@@ -162,15 +165,16 @@ public class GameControl : MonoBehaviour
         {
             EventController.gameWin();
         }
-        Singleton._instance.level = LevelIndex;
+        Singleton._instance.level = LevelIndex+1;
         Singleton._instance.save();
         yield return new WaitForSecondsRealtime(1);
         WinPanel.SetActive(true);
         CoinsWinText.text = CoinsWin.ToString();
         AllCoinsText.text = AllCoins.ToString();
         yield return new WaitForSecondsRealtime(3f);
+        BGspecialProgress.SetActive(true);
         StartCoroutine(SetupCoin());
-        Singleton._instance.level = LevelIndex;
+        Singleton._instance.level = LevelIndex+1;
         Singleton._instance.save();
 
     }
@@ -233,7 +237,7 @@ public class GameControl : MonoBehaviour
     }
     public void LoadScene()
     {
-        int a = 0;
+        /*int a = 0;
         a = LevelIndex / 5;
         int modulo = LevelIndex % 5;
         if (modulo==0)
@@ -245,13 +249,17 @@ public class GameControl : MonoBehaviour
             Scene scene = SceneManager.GetActiveScene();
             int buildIndex = scene.buildIndex;
             SceneManager.LoadScene(buildIndex);
-        }
+        }*/
 
 
-        /*Scene scene = SceneManager.GetActiveScene();
+        Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
-        SceneManager.LoadScene(buildIndex+1);*/
-
+        SceneManager.LoadScene(buildIndex+1);
+        if (SkinSelected.nbtest == 1)
+        {
+            BGSpecialController.skinSetter = null;
+            SkinSelected.nbtest = 0;
+        }
         /* if (buildIndex==SceneManager.sceneCountInBuildSettings-1)
          {
              buildIndex = 0;
@@ -279,6 +287,11 @@ public class GameControl : MonoBehaviour
         Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
         SceneManager.LoadSceneAsync(buildIndex);
+        if (SkinSelected.nbtest == 1)
+        {
+            BGSpecialController.skinSetter = null;
+            SkinSelected.nbtest = 0;
+        }
     }
 
     //player will disepear
@@ -322,6 +335,7 @@ public class GameControl : MonoBehaviour
     bool IsBonuseReward;
     public void GetBonuse()
     {
+        
         AdsManager._instance.ShowRewardVideo("Endlevel_win_x3coin_reward");
         IsBonuseReward = true;
     }
@@ -341,6 +355,7 @@ public class GameControl : MonoBehaviour
         if (IsBonuseReward)
         {
             BonusePanel.SetActive(true);
+            IsRewardedAfterWin = true;
             BonusePanel.GetComponent<BonuseController>().InitCoins(CoinsBonuse);
         }
        
@@ -348,6 +363,11 @@ public class GameControl : MonoBehaviour
 
     public void ContiniueWithoutBonuseReward(string s)
     {
+        if (SpecialItemProgress.Topen==true)
+        {
+            //BGspecialProgress.SetActive(true);
+            return;
+        }
         AdsManager._instance.ShowIntertiate(s);
         
 

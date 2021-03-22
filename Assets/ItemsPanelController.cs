@@ -19,15 +19,22 @@ public class ItemsPanelController : MonoBehaviour
     public Image HatImage;
 
     public GameObject MainMenu;
+    public GameObject SpecialPackage;
 
     public Button[] buttons;
 
     private void OnEnable()
     {
 
-        if (Singleton._instance.level == 1)
+        if (Singleton._instance.level != 0)
         {
             MainMenu.SetActive(true);
+            this.gameObject.SetActive(false);
+            return;
+        }
+        if (Singleton._instance.level==5)
+        {
+           SpecialPackage.SetActive(true);
             this.gameObject.SetActive(false);
             return;
         }

@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     
     public float speedRotation;
     public Joystick js;
+
+    public static bool isNotInput;
     private void OnEnable()
     {
         
@@ -55,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
         {
             ennemiisTarget = false;
         }
+
+        
         
         //Application.targetFrameRate = 30;
         groundedPlayer = controller.isGrounded;
@@ -66,10 +70,15 @@ public class PlayerMovement : MonoBehaviour
         //mo= new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         //  Vector3 move = MovementController.Move();
         Vector3 move = new Vector3(js.Horizontal, 0, js.Vertical);
+        if (move==Vector3.zero)
+        {
+            isNotInput=true;
+        }
 
         anim.SetFloat("speed", Mathf.Abs(move.magnitude * Time.deltaTime * playerSpeed));
         if (move!=Vector3.zero)
         {
+            isNotInput = false;
             /*if (move.magnitude>0.8)
             {
                 anim.speed = 1.5f;

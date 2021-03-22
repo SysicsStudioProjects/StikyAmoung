@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum SkinState{
-    none,buyIt,useIt
+    none,buyIt,useIt,Lock
 }
 
 public enum SkinType

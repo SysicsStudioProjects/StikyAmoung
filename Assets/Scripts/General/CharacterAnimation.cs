@@ -12,6 +12,7 @@ public class CharacterAnimation : MonoBehaviour
 
     public GameObject DiscPrfab;
     public GameObject DiscPrefab2;
+    public GameObject DiscPrefab3;
 
     public GameObject BusherObject;
 
@@ -135,6 +136,9 @@ public class CharacterAnimation : MonoBehaviour
                 break;
             case "Disc2":
                 objSpawn = DiscPrefab2;
+                break;
+            case "Disc3":
+                objSpawn = DiscPrefab3;
                 break;
             case "Spear":
                 objSpawn = SpearPrefab;

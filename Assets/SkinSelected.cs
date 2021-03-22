@@ -28,6 +28,8 @@ public class SkinSelected : MonoBehaviour
     public List<GameObject> PetPrefabs;
 
     public Transform PetPos;
+   public static int nbtest;
+    public bool isdeath;
     private void OnEnable()
     {
       
@@ -36,15 +38,73 @@ public class SkinSelected : MonoBehaviour
             InitRemove();
             EventController.getSkinstart += SetupSkinStart;
             EventController.gameStart += initStart;
+            
         }
         init();
         initStart(false);
        
+        // EventController.getSpecialPackage += GetSpecialSkin;
+        if (BGSpecialController.skinSetter!=null&&nbtest<1)
+        {
+            GetSpecialSkin(BGSpecialController.skinSetter);
+            nbtest = 1;
+            
+        }
+
+        if (isdeath)
+        {
+            StartSkin = BGSpecialController.skinSetter;
+            if (StartSkin != null)
+            {
+                Skin hat = new Skin();
+                Skin skinmaterial = new Skin();
+                Skin specialweopen = new Skin();
+                char slash = '/';
+                string[] n = StartSkin.name.Split(slash);
+                hat.name = n[0];
+                hat.type = SkinType.hat;
+                skinmaterial.name = n[1];
+                skinmaterial.type = SkinType.skin;
+                specialweopen.name = n[2];
+                specialweopen.type = SkinType.wap;
+                HatSkin = hat;
+                MaterialSkin = skinmaterial;
+                SetupMaterial();
+                WeopenSkin = specialweopen;
+                for (int i = 0; i < Weopen.Count; i++)
+                {
+                    if (Weopen[i].name == specialweopen.name)
+                    {
+                        Weopen[i].SetActive(true);
+                    }
+                    else
+                    {
+                        Weopen[i].SetActive(false);
+                    }
+                    Wepon(WeopenSkin);
+                }
+                for (int i = 0; i < HatObject.Count; i++)
+                {
+                    if (HatObject[i].name == HatSkin.name)
+                    {
+                        HatObject[i].SetActive(true);
+                    }
+                    else
+                    {
+                        HatObject[i].SetActive(false);
+                    }
+
+                }
+            }
+        }
+
         EventController.useSkin += SetSkin;
         EventController.removeSkin += RemoveSKin;
     }
     private void OnDisable()
     {
+       // EventController.getSpecialPackage -= GetSpecialSkin;
+
         EventController.useSkin -= SetSkin;
         EventController.removeSkin -= RemoveSKin;
         EventController.getSkinstart -= SetupSkinStart;
@@ -216,6 +276,9 @@ public class SkinSelected : MonoBehaviour
                 PlayerEvents.weopenType = WeopenType.Disc;
                 break;
             case "Disc2":
+                PlayerEvents.weopenType = WeopenType.Disc;
+                break;
+            case "Disc3":
                 PlayerEvents.weopenType = WeopenType.Disc;
                 break;
             case "Shield_CaptainAmerica":
@@ -767,5 +830,67 @@ public class SkinSelected : MonoBehaviour
             default:
                 break;
         }
+    }
+
+     void GetSpecialSkin(Skin s)
+    {
+
+        //StartSkin = s;
+        StartCoroutine(ActivateMagic(s));
+    }
+
+    public GameObject Magic;
+
+    IEnumerator ActivateMagic(Skin s)
+    {
+        yield return new WaitForSeconds(0.2f);
+        Magic.SetActive(true);
+        StartSkin = s;
+        yield return new WaitForSeconds(0.3f);
+      
+        if (StartSkin != null)
+        {
+            Skin hat = new Skin();
+            Skin skinmaterial = new Skin();
+            Skin specialweopen = new Skin();
+            char slash = '/';
+            string[] n = StartSkin.name.Split(slash);
+            hat.name = n[0];
+            hat.type = SkinType.hat;
+            skinmaterial.name = n[1];
+            skinmaterial.type = SkinType.skin;
+            specialweopen.name = n[2];
+            specialweopen.type = SkinType.wap;
+            HatSkin = hat;
+            MaterialSkin = skinmaterial;
+            SetupMaterial();
+            WeopenSkin = specialweopen;
+            for (int i = 0; i < Weopen.Count; i++)
+            {
+                if (Weopen[i].name == specialweopen.name)
+                {
+                    Weopen[i].SetActive(true);
+                }
+                else
+                {
+                    Weopen[i].SetActive(false);
+                }
+                Wepon(WeopenSkin);
+            }
+            for (int i = 0; i < HatObject.Count; i++)
+            {
+                if (HatObject[i].name == HatSkin.name)
+                {
+                    HatObject[i].SetActive(true);
+                }
+                else
+                {
+                    HatObject[i].SetActive(false);
+                }
+
+            }
+        }
+        yield return new WaitForSeconds(5);
+        Magic.SetActive(false);
     }
 }
