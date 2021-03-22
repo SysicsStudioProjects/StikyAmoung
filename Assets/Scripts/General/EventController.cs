@@ -82,6 +82,8 @@ public static class EventController
     public delegate void GetSkinStart(Skin s);
     public static GetSkinStart getSkinstart;
 
+    public delegate void GetSpecialPackage(Skin s);
+    public static GetSpecialPackage getSpecialPackage;
 
 
 }

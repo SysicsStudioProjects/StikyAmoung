@@ -24,17 +24,20 @@ public class levelManagment : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
         //SceneManager.LoadSceneAsync(1);
-        int a = 0;
-        a = Singleton._instance.level / 5;
-        int modulo = Singleton._instance.level % 5;
-        if (modulo == 0)
-        {
-            SceneManager.LoadScene(a);
-        }
-        else
-        {
-            SceneManager.LoadScene(a+1);
-        }
+        /*  int a = 0;
+          a = Singleton._instance.level / 5;
+          int modulo = Singleton._instance.level % 5;
+          if (modulo == 0)
+          {
+              SceneManager.LoadScene(a);
+          }
+          else
+          {
+              SceneManager.LoadScene(a+1);
+          }*/
+
+        int a = Singleton._instance.level;
+        SceneManager.LoadScene(a);
 
     }
 }

@@ -26,9 +26,11 @@ public class PlayerEvents : MonoBehaviour
 	public float RangeWeopen;
 	public LayerMask obstacleMask;
 	public PlayerMovement playerMovement;
+	public static bool canKill;
 	// Start is called before the first frame update
 	private void OnEnable()
 	{
+		
 		if (EventController.setPlayer != null)
 		{
 			EventController.setPlayer(transform);
@@ -44,9 +46,18 @@ public class PlayerEvents : MonoBehaviour
 		EventController.gameWin += GameWin;
 		EventController.ennemieDown += EnnemieDown;
 		EventController.gameStart += GameStart;
-		InvokeRepeating("CaroutineTarget",0,0.2f);
+		InvokeRepeating("CaroutineTarget",0,0.02f);
 
-		/*switch (weopenType)
+		
+		stopKilling = false;
+		target = null;
+		switchTarget = null;
+		StartCoroutine(VerifWeopen());
+	}
+	IEnumerator VerifWeopen()
+    {
+		yield return new WaitForSeconds(0.3f);
+		switch (weopenType)
 		{
 			case WeopenType.none:
 
@@ -60,7 +71,7 @@ public class PlayerEvents : MonoBehaviour
 				RangeWeopen = 2.5f;
 				range = 4;
 				break;
-			case WeopenType.Knife:
+			/*case WeopenType.Knife:
 				RangeWeopen = 2.5f;
 				range = 4;
 				break;
@@ -82,15 +93,11 @@ public class PlayerEvents : MonoBehaviour
 				RangeWeopen = 8f;
 				range = 8;
 
-				break;
+				break;*/
 			default:
 				break;
-		}*/
-		stopKilling = false;
-		target = null;
-		switchTarget = null;
+		}
 	}
-
 	private void OnDisable()
 	{
 		StopAllCoroutines();
@@ -152,13 +159,13 @@ public class PlayerEvents : MonoBehaviour
 	// Update is called once per frame
 	void LateUpdate()
 	{
-        if (playerMovement.enabled==false)
+        /*if (playerMovement.enabled==false)
         {
 			target = null;
 			switchTarget = null;
 			stopKilling = false;
 			return;
-        }
+        }*/
         if (weopen!=weopenType)
         {
 			switch (weopenType)
@@ -251,8 +258,10 @@ public class PlayerEvents : MonoBehaviour
 		{
 			if (switchTarget != null)
 			{
-                if (RangeWeopen<4)
+				
+				if (RangeWeopen<4)
                 {
+					
 					if (EventController.canKill != null)
 					{
 						EventController.canKill(target, shortestDistance);
@@ -262,28 +271,32 @@ public class PlayerEvents : MonoBehaviour
 				
 
 
-				if (shortestDistance <= RangeWeopen)
+				if (shortestDistance <= RangeWeopen )
 				{
-					
-					
-					if (RangeWeopen > 4)
-					{
-						Vector3 dirToTarget = (target.position - transform.position).normalized;
-						if (!Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
+					canKill = true;
+					if (PlayerMovement.isNotInput)
+                    {
+						if (RangeWeopen > 4)
+						{
+							Vector3 dirToTarget = (target.position - transform.position).normalized;
+							if (!Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
+							{
+								Kill();
+								StartCoroutine(SlowTime());
+							}
+							else
+							{
+								StartCoroutine(SlowTime());
+							}
+						}
+						else
 						{
 							Kill();
-							StartCoroutine(SlowTime());
 						}
-                        else
-                        {
-							StartCoroutine(SlowTime());
-						}
+						stopKilling = true;
 					}
-                    else
-                    {
-						Kill();
-					}
-					stopKilling = true;
+					
+					
 				}
 
 				//target = null;

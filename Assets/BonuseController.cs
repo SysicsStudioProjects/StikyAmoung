@@ -7,7 +7,8 @@ public class BonuseController : MonoBehaviour
     int coinsDefault;
     int coinsWin;
     public Text CoinsText;
-
+    public SpecialItemProgress specialItemProgress;
+    public GameControl gameControl;
     public void InitCoins(int c)
     {
         coinsWin = c*3;
@@ -40,5 +41,16 @@ public class BonuseController : MonoBehaviour
             CoinsText.text = coinsDefault.ToString();
 
         }
+    }
+
+    public void OpenOrchangeScene()
+    {
+        if (SpecialItemProgress.Topen == true)
+        {
+            specialItemProgress.gameObject.SetActive(true);
+            return;
+        }
+        else gameControl.LoadScene();
+
     }
 }

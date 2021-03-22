@@ -10,9 +10,20 @@ public class ReseatSkins : MonoBehaviour
     {
         foreach (var item in skins.allSkins)
         {
-            item.nbWatch = 5;
-            item.toWatch = true;
-            item.state = SkinState.none;
+            if (item.type==SkinType.special)
+            {
+                item.state = SkinState.Lock;
+                item.nbWatch = 24;
+                item.toWatch = false;
+                item.inProgress = false;
+            }
+            else
+            {
+                item.nbWatch = 5;
+                item.toWatch = true;
+                item.state = SkinState.none;
+            }
+            
         }
     }
 

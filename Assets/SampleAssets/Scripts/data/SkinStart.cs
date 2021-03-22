@@ -15,6 +15,7 @@ public class SkinStart : MonoBehaviour
     public Button _watchButton;
 
     public PlayableDirector playableDirector;
+    public Image LookImage;
 
     public void setSkin(Skin s) {
         skin = s;
@@ -83,6 +84,10 @@ public class SkinStart : MonoBehaviour
             watchButton.SetActive( false);
             buyButton.SetActive( false);
             removeButton.SetActive(false);
+        }
+        else if (skin.state==SkinState.Lock)
+        {
+            LookImage.gameObject.SetActive(true);
         }
     }
     public void watch()
