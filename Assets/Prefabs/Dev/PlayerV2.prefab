@@ -90517,6 +90517,9 @@ MonoBehaviour:
   enemyTag: Ennemie
   range: 4
   target: {fileID: 0}
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 1024
   anim: {fileID: 896711645655157020}
   DeathPlayer: {fileID: 4969717436693213861, guid: 4bb983a945c9b1447abaded849a2c9b0,
     type: 3}
@@ -90529,6 +90532,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   playerMovement: {fileID: 8306244327372858948}
+  r: 0
   LazerParticle: {fileID: 3308807162788094320}
 --- !u!136 &6568259350006233247
 CapsuleCollider:
@@ -90692,6 +90696,7 @@ MonoBehaviour:
   - {fileID: 6240911250440084265, guid: 81cc4b7422aeee6449393264b734db39, type: 3}
   - {fileID: 5935107775643857331, guid: 8b106352b0fc2ca48b254d7ab9fa74d8, type: 3}
   PetPos: {fileID: 6123188646486758801}
+  isdeath: 0
   Magic: {fileID: 4289396006294930846}
 --- !u!1 &8306818626401886670
 GameObject:

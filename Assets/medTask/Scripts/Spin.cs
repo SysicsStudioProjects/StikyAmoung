@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 
+
 public class Spin : MonoBehaviour
 {
     
@@ -33,14 +34,15 @@ public class Spin : MonoBehaviour
     {
         inits();
         //Ads.tourads += spinTourne;
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+       // EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         
         EventController.videoRewarded += VideoBonuseRewarded;
-        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        //_watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        _watchButton.interactable = AdsManager._instance.VerifRewarded();
     }
     private void OnDisable()
     {
-       EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+     //  EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         
         EventController.videoRewarded -= VideoBonuseRewarded;
         //Ads.tourads -= spinTourne;
@@ -112,7 +114,7 @@ public class Spin : MonoBehaviour
                 FreeSpinButton.interactable = false;
             }
         }
-        if (isStartRotate==false && Singleton._instance.AdsSpinVideo>0 && IronSource.Agent.isRewardedVideoAvailable())
+       if (isStartRotate==false && Singleton._instance.AdsSpinVideo>0 && AdsManager._instance.VerifRewarded())
         {
             DailyButton.interactable = true;
         }
@@ -352,13 +354,13 @@ public class Spin : MonoBehaviour
 
     public void video()
     {
-        Ads.ins_ads.showRewardP("Turn_Complete");
+        //Ads.ins_ads.showRewardP("Turn_Complete");
         //ads.text = nbAds+"tour";
         
     }
     public void videoDeffaut()
     {
-        Ads.ins_ads.showReward();
+       // Ads.ins_ads.showReward();
         
 
     }
@@ -470,8 +472,10 @@ public class Spin : MonoBehaviour
     bool IsWatched;
     void ShowVideo()
     {
+       
         IsWatched = true;
-        AdsManager._instance.ShowRewardVideo("Luckywheelscreen_freespin_reward");
+        //AdsManager._instance.ShowRewardVideo("Luckywheelscreen_freespin_reward");
+        AdsManager._instance.ShowReward("Luckywheelscreen_freespin_reward");
     }
 
     void VideoBonuseRewarded(bool b)

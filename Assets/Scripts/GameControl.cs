@@ -46,6 +46,7 @@ public class GameControl : MonoBehaviour
     
     private void OnEnable()
     {
+        //AdsManager._instance.ShowBanner("Banner_bottom");
         IsRewardedAfterWin = false;
         LevelBonuse = levelManager.thislevel.IsBonuceLevel;
         alleennemie = levelManager.thislevel.NbEnnemy;
@@ -62,7 +63,7 @@ public class GameControl : MonoBehaviour
         EventController.leftTeleport += LeftTeleport;
         EventController.hasACard += GetCard;
         EventController.cardRequired += CardRequired;
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+      //  EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         if (LevelBonuse)
         {
             TmeRcanvas.SetActive(true);
@@ -94,12 +95,16 @@ public class GameControl : MonoBehaviour
         EventController.leftTeleport -= LeftTeleport;
         EventController.hasACard -= GetCard;
         EventController.cardRequired -= CardRequired;
-        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+       // EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         EventController.videoRewarded -= VideoBonuseRewarded;
         EventController.onchangeItems -= InitCoin;
 
 
 
+    }
+    private void Update()
+    {
+        AddBonuse.interactable = AdsManager._instance.VerifRewarded();
     }
     // Start is called before the first frame update
     void InitCoin()
@@ -154,7 +159,7 @@ public class GameControl : MonoBehaviour
        
         StartCoroutine(LevelCompleted());
        
-         AddBonuse.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        // AddBonuse.interactable = IronSource.Agent.isRewardedVideoAvailable();
        
     }
     IEnumerator LevelCompleted()
@@ -278,7 +283,8 @@ public class GameControl : MonoBehaviour
         print("Game started");
         AllCanvas.SetActive(true);
 
-        AdsManager._instance.ShowBanner();
+        //AdsManager._instance.ShowBanner();
+        AdsManager._instance.ShowBanner("Banner_bottom");
     }
 
     public void RestartScene()
@@ -287,11 +293,7 @@ public class GameControl : MonoBehaviour
         Scene scene = SceneManager.GetActiveScene();
         int buildIndex = scene.buildIndex;
         SceneManager.LoadSceneAsync(buildIndex);
-        if (SkinSelected.nbtest == 1)
-        {
-            BGSpecialController.skinSetter = null;
-            SkinSelected.nbtest = 0;
-        }
+        
     }
 
     //player will disepear
@@ -335,8 +337,9 @@ public class GameControl : MonoBehaviour
     bool IsBonuseReward;
     public void GetBonuse()
     {
-        
-        AdsManager._instance.ShowRewardVideo("Endlevel_win_x3coin_reward");
+
+        //  AdsManager._instance.ShowRewardVideo("Endlevel_win_x3coin_reward");
+        AdsManager._instance.ShowReward("Endlevel_win_x3coin_reward");
         IsBonuseReward = true;
     }
 
@@ -368,9 +371,9 @@ public class GameControl : MonoBehaviour
             //BGspecialProgress.SetActive(true);
             return;
         }
-        AdsManager._instance.ShowIntertiate(s);
-        
+        // AdsManager._instance.ShowIntertiate(s);
 
+        AdsManager._instance.ShowInter(s);
     }
 }
 

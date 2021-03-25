@@ -1,38 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using AppsFlyerSDK;
+using System;
 public class AdsManager : MonoBehaviour
 {
-
     public static AdsManager _instance;
     public string AdsState;
-    public string key;
-
-
-    // Start is called before the first frame update
+    //string adUnitId = "436001";
+    int retryAttempt;
+    private int interstitialRetryAttempt;
+    private int rewardedRetryAttempt;
+    private int rewardedInterstitialRetryAttempt;
+    public string REWARDED_AD_UNIT_ID;
+    public string INTER_AD_UNIT_ID;
+    public string bannerAdUnitId;
     void Start()
     {
+        MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) => {
 
-
-        IronSource.Agent.setUserId(AppsFlyer.getAppsFlyerId());
-        // AppsFlyer.validateReceipt();
-        IronSource.Agent.shouldTrackNetworkState(true);
-#if UNITY_ANDROID
-        string appKey = "ead72521";
-#elif UNITY_IPHONE
-        string appKey = "8545d445";
-#else
-        string appKey = "unexpected_platform";
-#endif
-
-
-
-        IronSource.Agent.init(appKey);
-        IronSource.Agent.validateIntegration();
-
+            InitializeInterstitialAds();
+            InitializeRewardedAds();
+            InitializeBannerAds();
+            // AppLovin SDK is initialized, start loading ads
+        };
+        MaxSdk.SetSdkKey("7PspscCcbGd6ohttmPcZTwGmZCihCW-Jwr7nSJN2a_9Mg0ERPs0tmGdKTK1gs__nr6XHQvK0vTNaTb1uR1mCIN");
+        MaxSdk.InitializeSdk();
+        
     }
+
     private void Awake()
     {
         if (_instance == null)
@@ -49,312 +44,219 @@ public class AdsManager : MonoBehaviour
 
             Destroy(gameObject);
         }
-        //StartCoroutine(LoadInter());
-
-
-
     }
 
+   
     private void OnEnable()
     {
-        InitRewardVideo();
-        InitIntertiate();
-        InitBanner();
+     
+      
+    }
+   
+    #region inter
+    void InitializeInterstitialAds()
+    {
+        // Attach callback
+        MaxSdkCallbacks.OnInterstitialLoadedEvent += OnInterstitialLoadedEvent;
+        MaxSdkCallbacks.OnInterstitialLoadFailedEvent += OnInterstitialFailedEvent;
+        MaxSdkCallbacks.OnInterstitialAdFailedToDisplayEvent += InterstitialFailedToDisplayEvent;
+        MaxSdkCallbacks.OnInterstitialHiddenEvent += OnInterstitialDismissedEvent;
+
+        // Load the first interstitial
+        LoadInterstitial();
+    }
+
+    
+    public void LoadInterstitial()
+    {
+        MaxSdk.LoadInterstitial(INTER_AD_UNIT_ID);
 
     }
 
-    private void OnDisable()
+    private void OnInterstitialLoadedEvent(string adUnitId)
     {
-        DiInitRewardVideo();
-        DeIntertiate();
-        DeInitBanner();
+        // Interstitial ad is ready to be shown. MaxSdk.IsInterstitialReady(adUnitId) will now return 'true'
+
+        // Reset retry attempt
+        interstitialRetryAttempt = 0;
     }
 
-
-    #region rewardVideo 
-    void InitRewardVideo()
+    private void OnInterstitialFailedEvent(string adUnitId, int errorCode)
     {
-        IronSourceEvents.onRewardedVideoAdOpenedEvent += RewardedVideoAdOpenedEvent;
-        IronSourceEvents.onRewardedVideoAdClosedEvent += RewardedVideoAdClosedEvent;
-        IronSourceEvents.onRewardedVideoAvailabilityChangedEvent += RewardedVideoAvailabilityChangedEvent;
-        IronSourceEvents.onRewardedVideoAdStartedEvent += RewardedVideoAdStartedEvent;
-        IronSourceEvents.onRewardedVideoAdEndedEvent += RewardedVideoAdEndedEvent;
-        IronSourceEvents.onRewardedVideoAdRewardedEvent += RewardedVideoAdRewardedEvent;
-        IronSourceEvents.onRewardedVideoAdShowFailedEvent += RewardedVideoAdShowFailedEvent;
-        IronSourceEvents.onRewardedVideoAdClickedEvent += RewardedVideoAdClickedEvent;
-    }
-    void DiInitRewardVideo()
-    {
-        IronSourceEvents.onRewardedVideoAdOpenedEvent -= RewardedVideoAdOpenedEvent;
-        IronSourceEvents.onRewardedVideoAdClosedEvent -= RewardedVideoAdClosedEvent;
-        IronSourceEvents.onRewardedVideoAvailabilityChangedEvent -= RewardedVideoAvailabilityChangedEvent;
-        IronSourceEvents.onRewardedVideoAdStartedEvent -= RewardedVideoAdStartedEvent;
-        IronSourceEvents.onRewardedVideoAdEndedEvent -= RewardedVideoAdEndedEvent;
-        IronSourceEvents.onRewardedVideoAdRewardedEvent -= RewardedVideoAdRewardedEvent;
-        IronSourceEvents.onRewardedVideoAdShowFailedEvent -= RewardedVideoAdShowFailedEvent;
-        IronSourceEvents.onRewardedVideoAdClickedEvent -= RewardedVideoAdClickedEvent;
+        // Interstitial ad failed to load 
+        // We recommend retrying with exponentially higher delays up to a maximum delay (in this case 64 seconds)
 
+        interstitialRetryAttempt++;
+        double retryDelay = Math.Pow(2, Math.Min(6, interstitialRetryAttempt));
+
+        Invoke("LoadInterstitial", (float)retryDelay);
     }
 
-    void RewardedVideoAvailabilityChangedEvent(bool canShowAd)
+    private void InterstitialFailedToDisplayEvent(string adUnitId, int errorCode)
     {
-        //when canShowAd false we will disable all button was request a Reward Ads
+        // Interstitial ad failed to display. We recommend loading the next ad
+        LoadInterstitial();
+    }
 
-        AdsState = "unity-script: I got RewardedVideoAvailabilityChangedEvent, value = " + canShowAd;
-        if (EventController.chnageButtonRewardRequest != null)
+    private void OnInterstitialDismissedEvent(string adUnitId)
+    {
+        // Interstitial ad is hidden. Pre-load the next ad
+        LoadInterstitial();
+    }
+
+    public void ShowInter(string s)
+    {
+        if (MaxSdk.IsInterstitialReady(INTER_AD_UNIT_ID))
         {
-            EventController.chnageButtonRewardRequest(canShowAd);
-        }
+            MaxSdk.ShowInterstitial(INTER_AD_UNIT_ID, s);
 
-        Debug.Log("unity-script: I got RewardedVideoAvailabilityChangedEvent, value = " + canShowAd);
-    }
-
-    void RewardedVideoAdOpenedEvent()
-    {
-
-        AdsState = "unity-script: I got RewardedVideoAdOpenedEvent";
-        Debug.Log("unity-script: I got RewardedVideoAdOpenedEvent");
-
-    }
-
-    void RewardedVideoAdRewardedEvent(IronSourcePlacement ssp)
-    {
-        if (EventController.videoRewarded != null)
-        {
-            EventController.videoRewarded(true);
-        }
-        AdsState = "unity-script: I got RewardedVideoAdRewardedEvent, amount = " + ssp.getRewardAmount() + " name = " + ssp.getRewardName();
-        Debug.Log("unity-script: I got RewardedVideoAdRewardedEvent, amount = " + ssp.getRewardAmount() + " name = " + ssp.getRewardName());
-
-    }
-
-    void RewardedVideoAdClosedEvent()
-    {
-        if (EventController.videoRewarded != null)
-        {
-            EventController.videoRewarded(false);
-        }
-        AdsState = "unity-script: I got RewardedVideoAdClosedEvent";
-        Debug.Log("unity-script: I got RewardedVideoAdClosedEvent");
-    }
-
-    void RewardedVideoAdStartedEvent()
-    {
-        AdsState = "unity-script: I got RewardedVideoAdStartedEvent";
-        Debug.Log("unity-script: I got RewardedVideoAdStartedEvent");
-    }
-
-    void RewardedVideoAdEndedEvent()
-    {
-        AdsState = "unity-script: I got RewardedVideoAdEndedEvent";
-        Debug.Log("unity-script: I got RewardedVideoAdEndedEvent");
-    }
-
-    void RewardedVideoAdShowFailedEvent(IronSourceError error)
-    {
-        if (EventController.videoRewarded != null)
-        {
-            EventController.videoRewarded(false);
-        }
-        if (EventController.chnageButtonRewardRequest != null)
-        {
-            EventController.chnageButtonRewardRequest(false);
-        }
-        AdsState = "unity-script: I got RewardedVideoAdShowFailedEvent, code :  " + error.getCode() + ", description : " + error.getDescription();
-        Debug.Log("unity-script: I got RewardedVideoAdShowFailedEvent, code :  " + error.getCode() + ", description : " + error.getDescription());
-    }
-
-    void RewardedVideoAdClickedEvent(IronSourcePlacement ssp)
-    {
-        AdsState = "unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName();
-        Debug.Log("unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName());
-    }
-
-    public void ShowRewardVideo(string s)
-    {
-
-        if (IronSource.Agent.isRewardedVideoAvailable())
-        {
-            IronSource.Agent.showRewardedVideo(s);
-        }
-
-    }
-
-
-    public void GoToNextScene(string name)
-    {
-        StartCoroutine(LoadYourAsyncScene(name));
-    }
-
-    IEnumerator LoadYourAsyncScene(string name)
-    {
-        // The Application loads the Scene in the background as the current Scene runs.
-        // This is particularly good for creating loading screens.
-        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
-        // a sceneBuildIndex of 1 as shown in Build Settings.
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(name);
-
-        // Wait until the asynchronous scene fully loads
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
         }
     }
-    #endregion
-    #region Intertiate
-    void InitIntertiate()
-    {
-        IronSourceEvents.onInterstitialAdReadyEvent += InterstitialAdReadyEvent;
-        IronSourceEvents.onInterstitialAdLoadFailedEvent += InterstitialAdLoadFailedEvent;
-        IronSourceEvents.onInterstitialAdShowSucceededEvent += InterstitialAdShowSucceededEvent;
-        IronSourceEvents.onInterstitialAdShowFailedEvent += InterstitialAdShowFailedEvent;
-        IronSourceEvents.onInterstitialAdClickedEvent += InterstitialAdClickedEvent;
-        IronSourceEvents.onInterstitialAdOpenedEvent += InterstitialAdOpenedEvent;
-        IronSourceEvents.onInterstitialAdClosedEvent += InterstitialAdClosedEvent;
-    }
 
-    void DeIntertiate()
+    public bool verifInter()
     {
-        IronSourceEvents.onInterstitialAdReadyEvent -= InterstitialAdReadyEvent;
-        IronSourceEvents.onInterstitialAdLoadFailedEvent -= InterstitialAdLoadFailedEvent;
-        IronSourceEvents.onInterstitialAdShowSucceededEvent -= InterstitialAdShowSucceededEvent;
-        IronSourceEvents.onInterstitialAdShowFailedEvent -= InterstitialAdShowFailedEvent;
-        IronSourceEvents.onInterstitialAdClickedEvent -= InterstitialAdClickedEvent;
-        IronSourceEvents.onInterstitialAdOpenedEvent -= InterstitialAdOpenedEvent;
-        IronSourceEvents.onInterstitialAdClosedEvent -= InterstitialAdClosedEvent;
-    }
-    void InterstitialAdReadyEvent()
-    {
-        Debug.Log("unity-script: I got InterstitialAdReadyEvent");
-    }
-
-    void InterstitialAdLoadFailedEvent(IronSourceError error)
-    {
-        Debug.Log("unity-script: I got InterstitialAdLoadFailedEvent, code: " + error.getCode() + ", description : " + error.getDescription());
-    }
-
-    void InterstitialAdShowSucceededEvent()
-    {
-        Debug.Log("unity-script: I got InterstitialAdShowSucceededEvent");
-
-    }
-
-    void InterstitialAdShowFailedEvent(IronSourceError error)
-    {
-        Debug.Log("unity-script: I got InterstitialAdShowFailedEvent, code :  " + error.getCode() + ", description : " + error.getDescription());
-    }
-
-    void InterstitialAdClickedEvent()
-    {
-        Debug.Log("unity-script: I got InterstitialAdClickedEvent");
-    }
-
-    void InterstitialAdOpenedEvent()
-    {
-        Debug.Log("unity-script: I got InterstitialAdOpenedEvent");
-    }
-
-    void InterstitialAdClosedEvent()
-    {
-        Debug.Log("unity-script: I got InterstitialAdClosedEvent");
-    }
-
-    public void ShowIntertiate(string s)
-    {
-        if (IronSource.Agent.isInterstitialReady())
+        if (MaxSdk.IsInterstitialReady(INTER_AD_UNIT_ID))
         {
-            IronSource.Agent.showInterstitial(s);
+            return true;
+
         }
         else
         {
-            Debug.Log("unity-script: IronSource.Agent.isInterstitialReady - False");
+            return false;
         }
     }
     #endregion
 
-    #region Banner
-    void InitBanner()
-    {
-        // Add Banner Events
-        IronSourceEvents.onBannerAdLoadedEvent += BannerAdLoadedEvent;
-        IronSourceEvents.onBannerAdLoadFailedEvent += BannerAdLoadFailedEvent;
-        IronSourceEvents.onBannerAdClickedEvent += BannerAdClickedEvent;
-        IronSourceEvents.onBannerAdScreenPresentedEvent += BannerAdScreenPresentedEvent;
-        IronSourceEvents.onBannerAdScreenDismissedEvent += BannerAdScreenDismissedEvent;
-        IronSourceEvents.onBannerAdLeftApplicationEvent += BannerAdLeftApplicationEvent;
+    #region Reward
 
-        //Add ImpressionSuccess Event
-        IronSourceEvents.onImpressionSuccessEvent += ImpressionSuccessEvent;
-    }
-    void DeInitBanner()
+    void InitializeRewardedAds()
     {
-        // Add Banner Events
-        IronSourceEvents.onBannerAdLoadedEvent -= BannerAdLoadedEvent;
-        IronSourceEvents.onBannerAdLoadFailedEvent -= BannerAdLoadFailedEvent;
-        IronSourceEvents.onBannerAdClickedEvent -= BannerAdClickedEvent;
-        IronSourceEvents.onBannerAdScreenPresentedEvent -= BannerAdScreenPresentedEvent;
-        IronSourceEvents.onBannerAdScreenDismissedEvent -= BannerAdScreenDismissedEvent;
-        IronSourceEvents.onBannerAdLeftApplicationEvent -= BannerAdLeftApplicationEvent;
+        // Attach callback
+        MaxSdkCallbacks.OnRewardedAdLoadedEvent += OnRewardedAdLoadedEvent;
+        MaxSdkCallbacks.OnRewardedAdLoadFailedEvent += OnRewardedAdFailedEvent;
+        MaxSdkCallbacks.OnRewardedAdFailedToDisplayEvent += OnRewardedAdFailedToDisplayEvent;
+        MaxSdkCallbacks.OnRewardedAdDisplayedEvent += OnRewardedAdDisplayedEvent;
+        MaxSdkCallbacks.OnRewardedAdClickedEvent += OnRewardedAdClickedEvent;
+        MaxSdkCallbacks.OnRewardedAdHiddenEvent += OnRewardedAdDismissedEvent;
+        MaxSdkCallbacks.OnRewardedAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
 
-        //Add ImpressionSuccess Event
-        IronSourceEvents.onImpressionSuccessEvent -= ImpressionSuccessEvent;
+        // Load the first rewarded ad
+        LoadRewardedAd();
     }
 
-    void BannerAdLoadedEvent()
+    void DeInitialiseRewardAds()
     {
-        Debug.Log("unity-script: I got BannerAdLoadedEvent");
+        MaxSdkCallbacks.OnRewardedAdLoadedEvent -= OnRewardedAdLoadedEvent;
+        MaxSdkCallbacks.OnRewardedAdLoadFailedEvent -= OnRewardedAdFailedEvent;
+        MaxSdkCallbacks.OnRewardedAdFailedToDisplayEvent -= OnRewardedAdFailedToDisplayEvent;
+        MaxSdkCallbacks.OnRewardedAdDisplayedEvent -= OnRewardedAdDisplayedEvent;
+        MaxSdkCallbacks.OnRewardedAdClickedEvent -= OnRewardedAdClickedEvent;
+        MaxSdkCallbacks.OnRewardedAdHiddenEvent -= OnRewardedAdDismissedEvent;
+        MaxSdkCallbacks.OnRewardedAdReceivedRewardEvent -= OnRewardedAdReceivedRewardEvent;
     }
 
-    void BannerAdLoadFailedEvent(IronSourceError error)
+    private void LoadRewardedAd()
     {
-        Debug.Log("unity-script: I got BannerAdLoadFailedEvent, code: " + error.getCode() + ", description : " + error.getDescription());
+        MaxSdk.LoadRewardedAd(REWARDED_AD_UNIT_ID);
     }
 
-    void BannerAdClickedEvent()
+    private void OnRewardedAdLoadedEvent(string adUnitId)
     {
-        Debug.Log("unity-script: I got BannerAdClickedEvent");
+        // Rewarded ad is ready to be shown. MaxSdk.IsRewardedAdReady(adUnitId) will now return 'true'
 
+        // Reset retry attempt
+        rewardedRetryAttempt = 0;
     }
 
-    void BannerAdScreenPresentedEvent()
+    private void OnRewardedAdFailedEvent(string adUnitId, int errorCode)
     {
-        Debug.Log("unity-script: I got BannerAdScreenPresentedEvent");
+        // Rewarded ad failed to load 
+        // We recommend retrying with exponentially higher delays up to a maximum delay (in this case 64 seconds)
+
+        rewardedRetryAttempt++;
+        double retryDelay = Math.Pow(2, Math.Min(6, rewardedRetryAttempt));
+
+        Invoke("LoadRewardedAd", (float)retryDelay);
     }
 
-    void BannerAdScreenDismissedEvent()
+    private void OnRewardedAdFailedToDisplayEvent(string adUnitId, int errorCode)
     {
-        Debug.Log("unity-script: I got BannerAdScreenDismissedEvent");
+         if (EventController.videoRewarded != null)
+         {
+             EventController.videoRewarded(false);
+         }
+        // Rewarded ad failed to display. We recommend loading the next ad
+        LoadRewardedAd();
     }
 
-    void BannerAdLeftApplicationEvent()
+    private void OnRewardedAdDisplayedEvent(string adUnitId) { }
+
+    private void OnRewardedAdClickedEvent(string adUnitId) { }
+
+    private void OnRewardedAdDismissedEvent(string adUnitId)
     {
-        Debug.Log("unity-script: I got BannerAdLeftApplicationEvent");
-    }
-    void ImpressionSuccessEvent(IronSourceImpressionData impressionData)
-    {
-        Debug.Log("unity - script: I got ImpressionSuccessEvent ToString(): " + impressionData.ToString());
-        Debug.Log("unity - script: I got ImpressionSuccessEvent allData: " + impressionData.allData);
+        // Rewarded ad is hidden. Pre-load the next ad
+        LoadRewardedAd();
     }
 
-    public void ShowBanner()
+    private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward)
     {
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Banner_bottom");
+          if (EventController.videoRewarded != null)
+          {
+              EventController.videoRewarded(true);
+          }
+        double retryDelay = Math.Pow(2, Math.Min(6, rewardedRetryAttempt));
+        Invoke("LoadRewardedAd", (float)retryDelay);
+        // Rewarded ad was displayed and user should receive the reward
     }
 
-    public void DestroyBanner()
+    public void ShowReward(string s)
     {
-        IronSource.Agent.destroyBanner();
+        if (MaxSdk.IsRewardedAdReady(REWARDED_AD_UNIT_ID))
+        {
+            MaxSdk.ShowRewardedAd(REWARDED_AD_UNIT_ID, s);
+
+        }
     }
     #endregion
 
+    #region banner
 
-    IEnumerator LoadInter()
+    void InitializeBannerAds()
     {
+        // Adaptive banners are sized based on device width for positions that stretch full width (TopCenter and BottomCenter).
+        // You may use the utility method `MaxSdkUtils.GetAdaptiveBannerHeight()` to help with view sizing adjustments
+        MaxSdk.CreateBanner(bannerAdUnitId, MaxSdkBase.BannerPosition.BottomCenter);
+        
 
-        yield return new WaitForSeconds(1);
-        print("that's so good");
-        IronSource.Agent.loadInterstitial();
+        // Set background or background color for banners to be fully functional
+        MaxSdk.SetBannerBackgroundColor(bannerAdUnitId, Color.black);
     }
 
+    public void ShowBanner(string s)
+    {
+        
+        MaxSdk.ShowBanner(bannerAdUnitId);
+    }
+
+
+    #endregion
+
+    public bool VerifRewarded()
+    {
+        if (MaxSdk.IsRewardedAdReady(REWARDED_AD_UNIT_ID))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    /*  private void Update()
+      {
+
+          //rewardbutton.interactable = MaxSdk.IsRewardedAdReady(adUnitId);
+
+      }*/
 }

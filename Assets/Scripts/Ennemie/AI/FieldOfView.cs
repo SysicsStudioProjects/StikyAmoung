@@ -38,7 +38,7 @@ public class FieldOfView : MonoBehaviour {
 
 	}
 	void OnEnable(){
-		StartCoroutine ("FindTargetsWithDelay", 0.02f);
+		StartCoroutine ("FindTargetsWithDelay", 0.05f);
 	}
 	private void OnDisable()
 	{

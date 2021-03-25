@@ -26,8 +26,14 @@ public class LevelManager : MonoBehaviour
         Level = Levels[l].LevelObj;
         thislevel = Levels[l];
         Player.transform.position = Levels[l].PlayerPos.position;
-        IronSource.Agent.loadInterstitial();
+        /*IronSource.Agent.loadInterstitial();
+         
         if (!IronSource.Agent.isInterstitialReady())
+        {
+            StartCoroutine(LoadInter());
+        }*/
+
+        if (!AdsManager._instance.verifInter())
         {
             StartCoroutine(LoadInter());
         }
@@ -39,7 +45,7 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(StartPanel());
         SkinMenu.SetActive(false);
         StartCoroutine(EnablePlayer());
-        IronSource.Agent.loadInterstitial();
+       // IronSource.Agent.loadInterstitial();
     }
 
     IEnumerator EnablePlayer(){
@@ -52,13 +58,18 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator LoadInter()
     {
-        IronSource.Agent.loadInterstitial();
+        AdsManager._instance.LoadInterstitial();
+      //  IronSource.Agent.loadInterstitial();
         yield return new WaitForSeconds(3);
-        if (!IronSource.Agent.isInterstitialReady())
+        if (!AdsManager._instance.verifInter())
         {
             StartCoroutine(LoadInter());
         }
-      
+        /* if (!IronSource.Agent.isInterstitialReady())
+         {
+             StartCoroutine(LoadInter());
+         }*/
+
     }
     public void OpenSkinMenu(){
          Level.SetActive(false);

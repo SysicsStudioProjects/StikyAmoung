@@ -11,14 +11,14 @@ public class LoosePanelController : MonoBehaviour
 
     private void OnEnable()
     {
-        SkipLevel.interactable = IronSource.Agent.isRewardedVideoAvailable();
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+       // SkipLevel.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        //EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         EventController.videoRewarded += VideoBonuseRewarded;
     }
 
     private void OnDisable()
     {
-        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+        //EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         EventController.videoRewarded -= VideoBonuseRewarded;
     }
 
@@ -44,7 +44,13 @@ public class LoosePanelController : MonoBehaviour
 
     public void OnclickSkipLevel()
     {
-        AdsManager._instance.ShowRewardVideo("Endlevel_fail_skiplevel_reward");
+        //AdsManager._instance.ShowRewardVideo("Endlevel_fail_skiplevel_reward");
+        AdsManager._instance.ShowReward("Endlevel_fail_skiplevel_reward");
         IsBonuseReward = true;
+    }
+    private void Update()
+    {
+        
+        SkipLevel.interactable = AdsManager._instance.VerifRewarded();
     }
 }

@@ -6815,6 +6815,7 @@ MonoBehaviour:
   BarItem: {fileID: 7808876633514304640}
   Bgprogress: {fileID: 8847032175234526368}
   gameControl: {fileID: 4192784654603418410}
+  BonusePanel: {fileID: 6231537831743595130}
 --- !u!1 &4942520040342230016
 GameObject:
   m_ObjectHideFlags: 0
@@ -10160,7 +10161,7 @@ PrefabInstance:
     - target: {fileID: 1688023818950833326, guid: ea6cc93d938560a4aac4bc6b2a9c65c8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1688023818950833326, guid: ea6cc93d938560a4aac4bc6b2a9c65c8,
         type: 3}
@@ -10190,12 +10191,12 @@ PrefabInstance:
     - target: {fileID: 1688023818950833326, guid: ea6cc93d938560a4aac4bc6b2a9c65c8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1688023818950833326, guid: ea6cc93d938560a4aac4bc6b2a9c65c8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1688023818950833326, guid: ea6cc93d938560a4aac4bc6b2a9c65c8,
         type: 3}
@@ -10211,11 +10212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 4192784653466758752}
+      objectReference: {fileID: 2914185910922724669}
     - target: {fileID: 1688023818950833326, guid: ea6cc93d938560a4aac4bc6b2a9c65c8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetActive
+      value: OpenBgprogress
       objectReference: {fileID: 0}
     - target: {fileID: 1688023818950833326, guid: ea6cc93d938560a4aac4bc6b2a9c65c8,
         type: 3}
@@ -10408,7 +10409,7 @@ PrefabInstance:
     - target: {fileID: 5686189407301164539, guid: 945efc1a9116cb445a2d020e5cf6fc7c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.31244916
+      value: -0.3118175
       objectReference: {fileID: 0}
     - target: {fileID: 5686189407301164539, guid: 945efc1a9116cb445a2d020e5cf6fc7c,
         type: 3}
@@ -11006,6 +11007,11 @@ PrefabInstance:
       propertyPath: specialCharacters.Array.data[0].texture
       value: 
       objectReference: {fileID: 2800000, guid: 404c47163e5c611448b3c9882329836d, type: 3}
+    - target: {fileID: 1800266708723988999, guid: 08ad5cbaf9a174f4eb9e485398aeb0c8,
+        type: 3}
+      propertyPath: WinPanel
+      value: 
+      objectReference: {fileID: 4192784653466758752}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08ad5cbaf9a174f4eb9e485398aeb0c8, type: 3}
 --- !u!224 &8847032175234526371 stripped

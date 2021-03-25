@@ -40,7 +40,7 @@ public class ItemsPanelController : MonoBehaviour
         }
         for (int i = 0; i < buttons.Length; i++)
         {
-            buttons[i].interactable = IronSource.Agent.isRewardedVideoAvailable();
+          //  buttons[i].interactable = IronSource.Agent.isRewardedVideoAvailable();
         }
         MainMenu.SetActive(false);
         GlassesSkin = ChooseElement(SkinType.glasse);
@@ -48,15 +48,22 @@ public class ItemsPanelController : MonoBehaviour
         HatSkin = ChooseElement(SkinType.hat);
         InitImage();
 
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+       // EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         EventController.videoRewarded += VideoBonuseRewarded;
         
 
     }
+    private void Update()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+              buttons[i].interactable = AdsManager._instance.VerifRewarded();
+        }
+    }
 
     private void OnDisable()
     {
-        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+       // EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         EventController.videoRewarded -= VideoBonuseRewarded;
     }
 
@@ -92,7 +99,9 @@ public class ItemsPanelController : MonoBehaviour
     {
         switchSkin = t;
         IsBonuseReward = true;
-        AdsManager._instance.ShowRewardVideo("Startlevel_itemtry_reward");
+        //  AdsManager._instance.ShowRewardVideo("Startlevel_itemtry_reward");
+        AdsManager._instance.ShowReward("Startlevel_itemtry_reward");
+
     }
 
     void ChangeRewardStatut(bool b)

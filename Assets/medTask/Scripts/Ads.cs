@@ -17,11 +17,11 @@ public class Ads : MonoBehaviour
     public int nbvideo;
 
     // Start is called before the first frame update
-    void Start()
+ /*   void Start()
     {
         tour = false;
         DontDestroyOnLoad(this);
-        IronSourceEvents.onRewardedVideoAdRewardedEvent += RewardedVideoAdRewardedEvent;
+       // IronSourceEvents.onRewardedVideoAdRewardedEvent += RewardedVideoAdRewardedEvent;
         if (ins_ads == null)
             ins_ads = this;
         else
@@ -29,7 +29,7 @@ public class Ads : MonoBehaviour
         
 
         //initialize the ad units
-        IronSource.Agent.init("e87f5639", IronSourceAdUnits.REWARDED_VIDEO, IronSourceAdUnits.BANNER);
+        //IronSource.Agent.init("e87f5639", IronSourceAdUnits.REWARDED_VIDEO, IronSourceAdUnits.BANNER);
 
         //call the methode after 1s
         Invoke("initBanner", 1);
@@ -44,19 +44,19 @@ public class Ads : MonoBehaviour
     //initialize the banner at the bottom position
     public void initBanner()
     {
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+      //  IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
     }
 
     //play the ad Video
     public void showReward()
     {
-        IronSource.Agent.showRewardedVideo();
+      //  IronSource.Agent.showRewardedVideo();
     }
 
 
     public void showRewardP(string place)
     {
-        IronSource.Agent.showRewardedVideo(place);
+       // IronSource.Agent.showRewardedVideo(place);
     }
     //Invoked when the user completed the video and should be rewarded
     void RewardedVideoAdRewardedEvent(IronSourcePlacement placement)
@@ -84,5 +84,5 @@ public class Ads : MonoBehaviour
     {
         SceneManager.LoadScene(a);
     }
-
+ */
 }

@@ -29558,12 +29558,18 @@ MonoBehaviour:
   DiscObject: {fileID: 0}
   DiscPrfab: {fileID: 0}
   DiscPrefab2: {fileID: 0}
+  DiscPrefab3: {fileID: 0}
   BusherObject: {fileID: 0}
   BusherPrfab: {fileID: 0}
   BusherPrfab2: {fileID: 0}
+  captinamericaPrefab: {fileID: 0}
   SpearPrefab: {fileID: 0}
   playerMvt: {fileID: 0}
+  IronShootPrefab: {fileID: 0}
+  GogoPrefab: {fileID: 0}
   weopenType: 0
+  IronmanShootPos: {fileID: 0}
+  GogoShootPos: {fileID: 0}
 --- !u!1 &6707056575241145869
 GameObject:
   m_ObjectHideFlags: 0
@@ -29639,6 +29645,7 @@ GameObject:
   - component: {fileID: 3693734058634050002}
   - component: {fileID: 4178216462355598233}
   - component: {fileID: 6848140615248118337}
+  - component: {fileID: 5451875456791625788}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Untagged
@@ -29762,6 +29769,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5451875456791625788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6848140615248118336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 346919342f644ba4c974a5d9a5723ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ennemiePatrol: {fileID: 3693734057279856287}
+  view: {fileID: 3693734058634050002}
 --- !u!1 &7162390903590835858
 GameObject:
   m_ObjectHideFlags: 0
@@ -30247,6 +30268,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TreasureChestGlowRays
       objectReference: {fileID: 0}
+    - target: {fileID: 194664, guid: f4ee46380c4b7d04fa62d89e6d9d310c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 440818, guid: f4ee46380c4b7d04fa62d89e6d9d310c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -30388,10 +30413,120 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 2.3457701
       objectReference: {fileID: 0}
+    - target: {fileID: -6822328689182008245, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -6698527249484644150, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -6680061152779453644, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -5450794572020424118, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -4593126639194911333, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -3443252117526883323, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -3133498875991405556, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -2415705992661627318, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -644618702128641245, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: -125877390672382611, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 95353795954881376, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 211005023956174515, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 717529376268489253, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 72953581b36ae6b4a9b89f10f25c7e17,
         type: 3}
       propertyPath: m_Name
       value: Drone (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 985136147795156985, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3078100094243674276, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890236266240298038, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 5322663427759556558, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6164560843027276110, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329559480376209354, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087406190013747318, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684803920870093630, guid: 72953581b36ae6b4a9b89f10f25c7e17,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72953581b36ae6b4a9b89f10f25c7e17, type: 3}

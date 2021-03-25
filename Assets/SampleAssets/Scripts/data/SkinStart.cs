@@ -28,14 +28,14 @@ public class SkinStart : MonoBehaviour
     }
     private void OnEnable()
     {
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+       //EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         manegerSkins.changeSkinStat += setUpStat;
         EventController.videoRewarded += VideoBonuseRewarded;
-        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+      //  _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
     }
     private void OnDisable()
     {
-        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+        //EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         manegerSkins.changeSkinStat -= setUpStat;
         EventController.videoRewarded -= VideoBonuseRewarded;
     }
@@ -49,7 +49,7 @@ public class SkinStart : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        _watchButton.interactable = AdsManager._instance.VerifRewarded();
     }
     
     public void setButton()
@@ -100,17 +100,20 @@ public class SkinStart : MonoBehaviour
     {
         for (int i = 0; i < Singleton._instance.skins.allSkins.Count; i++)
         {
-            if (skin.type == SkinType.special)
+            if (skin.type == SkinType.special&&skin.state!=SkinState.Lock)
             {
                 if (Singleton._instance.skins.allSkins[i].state == SkinState.useIt && Singleton._instance.skins.allSkins[i].type != SkinType.glasse && Singleton._instance.skins.allSkins[i].type != SkinType.bette)
                 {
+                    print("iss meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
                     Singleton._instance.skins.allSkins[i].state = SkinState.buyIt;
                 }
             }
             else if (skin.type != SkinType.glasse&&skin.type!=SkinType.bette)
             {
-                if (Singleton._instance.skins.allSkins[i].state == SkinState.useIt && Singleton._instance.skins.allSkins[i].type == SkinType.special)
+                if (Singleton._instance.skins.allSkins[i].state == SkinState.useIt && Singleton._instance.skins.allSkins[i].type == SkinType.special && skin.state != SkinState.Lock)
                 {
+                    print("iss Thereeeeeeeeeee");
+
                     Singleton._instance.skins.allSkins[i].state = SkinState.buyIt;
                 }
             }
@@ -157,6 +160,7 @@ public class SkinStart : MonoBehaviour
 
     public void RemoveSkin()
     {
+       
         skin.state = SkinState.buyIt;
         if (manegerSkins.changeSkinStat != null)
         {
@@ -213,7 +217,7 @@ public class SkinStart : MonoBehaviour
             print(skin.type);
             print(skin.state);
 
-            if (skin.type==SkinType.special&& skin.state != SkinState.none)
+            if (skin.type==SkinType.special&& skin.state != SkinState.none&&skin.state!=SkinState.Lock)
             {
                int index= Singleton._instance.skins.allSkins.FindIndex(d => d.name == skin.name);
                 
@@ -237,7 +241,7 @@ public class SkinStart : MonoBehaviour
         {
             if (skin.type!=SkinType.glasse)
             {
-                if (s != skin && skin.state != SkinState.none)
+                if (s != skin && skin.state != SkinState.none && skin.state != SkinState.Lock)
                 {
                     int index = Singleton._instance.skins.allSkins.FindIndex(d => d.name == skin.name);
                     if (index != -1)
@@ -252,7 +256,7 @@ public class SkinStart : MonoBehaviour
         }
         else
         {
-            if (s != skin && skin.state!=SkinState.none)
+            if (s != skin && skin.state!=SkinState.none && skin.state != SkinState.Lock)
             {
                 skin.state = SkinState.buyIt;
                 setButton();
@@ -278,7 +282,8 @@ public class SkinStart : MonoBehaviour
     void ShowVideo()
     {
         IsWatched = true;
-        AdsManager._instance.ShowRewardVideo("Shop_item_reward");
+        //AdsManager._instance.ShowRewardVideo("Shop_item_reward");
+        AdsManager._instance.ShowReward("Shop_item_reward");
     }
 
     void VideoBonuseRewarded(bool b)

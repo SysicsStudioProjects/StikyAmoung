@@ -8,7 +8,7 @@ public class PlayerEvents : MonoBehaviour
 	public string enemyTag;
 	public float range;
 	public Transform target;
-
+	public LayerMask targetMask;
 	public Animator anim;
 	public GameObject DeathPlayer;
 	public GameObject DeathBonucePlayer;
@@ -46,7 +46,7 @@ public class PlayerEvents : MonoBehaviour
 		EventController.gameWin += GameWin;
 		EventController.ennemieDown += EnnemieDown;
 		EventController.gameStart += GameStart;
-		InvokeRepeating("CaroutineTarget",0,0.02f);
+		InvokeRepeating("CaroutineTarget",0,0.06f);
 
 		
 		stopKilling = false;
@@ -219,27 +219,43 @@ public class PlayerEvents : MonoBehaviour
 
 
 	}
-
+	public float r;
 	void UpdateTarget()
 	{
+		r = range;
         if (playerMovement.enabled==false)
         {
 			return;
         }
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+		//	GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+		Collider[] enemies = Physics.OverlapSphere(transform.position, r, targetMask);
 		float shortestDistance = Mathf.Infinity;
 		GameObject nearestEnemy = null;
-		foreach (GameObject enemy in enemies)
-		{
-			float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-			if (distanceToEnemy < shortestDistance)
+
+		if (enemies.Length>0)
+        {
+			 nearestEnemy = enemies[0].gameObject;
+			shortestDistance= Vector3.Distance(transform.position, nearestEnemy.transform.position);
+			Vector3 dirToTarget = (nearestEnemy.transform.position - transform.position).normalized;
+			if (Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
 			{
-				shortestDistance = distanceToEnemy;
-				nearestEnemy = enemy;
+				target = null;
+				return;
 			}
 		}
+		
 
-		if (nearestEnemy != null && shortestDistance <= range)
+			/*foreach (GameObject enemy in enemies)
+			{
+				float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+				if (distanceToEnemy < shortestDistance)
+				{
+					shortestDistance = distanceToEnemy;
+					nearestEnemy = enemy;
+				}
+			}*/
+
+			if (nearestEnemy != null )
 		{
 			target = nearestEnemy.transform;
 			//targetEnemy = nearestEnemy.GetComponent<Enemy>();
@@ -278,7 +294,7 @@ public class PlayerEvents : MonoBehaviour
                     {
 						if (RangeWeopen > 4)
 						{
-							Vector3 dirToTarget = (target.position - transform.position).normalized;
+							Vector3 dirToTarget = (nearestEnemy.transform.position - transform.position).normalized;
 							if (!Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
 							{
 								Kill();

@@ -18,14 +18,14 @@ public class ProgressManager : MonoBehaviour
     {
         ShowItem();
         EventController.videoRewarded += VideoBonuseRewarded;
-        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+       // _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        //EventController.chnageButtonRewardRequest += ChangeRewardStatut;
     }
     private void OnDisable()
     {
         EventController.videoRewarded += VideoBonuseRewarded;
-        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+        //_watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+        //EventController.chnageButtonRewardRequest += ChangeRewardStatut;
     }
 
     void ShowItem()
@@ -152,7 +152,8 @@ public class ProgressManager : MonoBehaviour
     void ShowVideo()
     {
         IsWatched = true;
-        AdsManager._instance.ShowRewardVideo("Progress_item_reward");
+        //AdsManager._instance.ShowRewardVideo("Progress_item_reward");
+        AdsManager._instance.ShowReward("Progress_item_reward");
     }
 
     void VideoBonuseRewarded(bool b)
@@ -191,5 +192,9 @@ public class ProgressManager : MonoBehaviour
         cUrrentProgres.state = SkinState.useIt;
         Singleton._instance.save();
 
+    }
+    private void Update()
+    {
+        _watchButton.interactable = AdsManager._instance.VerifRewarded();
     }
 }

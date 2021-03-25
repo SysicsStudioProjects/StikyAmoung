@@ -17,13 +17,15 @@ public class BGSpecialController : MonoBehaviour
     public MainMenu mainMenu;
     public Button RewardButton;
     public GameControl gameControl;
+    public GameObject WinPanel;
     // Start is called before the first frame update
 
     private void OnEnable()
     {
+        WinPanel.SetActive(false);
         skinSetter = null;
-        RewardButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+       // RewardButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+       // EventController.chnageButtonRewardRequest += ChangeRewardStatut;
         EventController.videoRewarded += VideoBonuseRewarded;
         SetCharacter();
     }
@@ -42,12 +44,13 @@ public class BGSpecialController : MonoBehaviour
     }
     private void OnDisable()
     {
-        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+        //EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
         EventController.videoRewarded -= VideoBonuseRewarded;
     }
     // Update is called once per frame
     void Update()
     {
+        RewardButton.interactable = AdsManager._instance.VerifRewarded();
         Round.transform.Rotate(Vector3.forward, 0.1f);
     }
 
@@ -56,7 +59,8 @@ public class BGSpecialController : MonoBehaviour
     {
         if (GameControl.IsRewardedAfterWin==false)
         {
-            AdsManager._instance.ShowIntertiate(s);
+            // AdsManager._instance.ShowIntertiate(s);
+            AdsManager._instance.ShowInter(s);
         }
         gameControl.LoadScene();
 
@@ -70,7 +74,8 @@ public class BGSpecialController : MonoBehaviour
         
         //this.gameObject.SetActive(false);
         IsBonuseReward = true;
-        AdsManager._instance.ShowRewardVideo("Startlevel_Special_Try_reward");
+        //AdsManager._instance.ShowRewardVideo("Startlevel_Special_Try_reward");
+        AdsManager._instance.ShowReward("Startlevel_Special_Try_reward");
     }
 
     void ChangeRewardStatut(bool b)
