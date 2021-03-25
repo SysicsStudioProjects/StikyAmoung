@@ -12,14 +12,14 @@ public class FreeCoin : MonoBehaviour
     public Button _watchButton;
     private void OnEnable()
     {
-        EventController.chnageButtonRewardRequest += ChangeRewardStatut;
+       // EventController.chnageButtonRewardRequest += ChangeRewardStatut;
        
         EventController.videoRewarded += VideoBonuseRewarded;
-        _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
+       // _watchButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
     }
     private void OnDisable()
     {
-        EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
+       // EventController.chnageButtonRewardRequest -= ChangeRewardStatut;
 
         EventController.videoRewarded -= VideoBonuseRewarded;
     }
@@ -65,7 +65,8 @@ public class FreeCoin : MonoBehaviour
     void ShowVideo()
     {
         IsWatched = true;
-        AdsManager._instance.ShowRewardVideo("Mainscreen_freecoin_reward");
+        // AdsManager._instance.ShowRewardVideo("Mainscreen_freecoin_reward");
+        AdsManager._instance.ShowReward("Mainscreen_freecoin_reward");
     }
 
     void VideoBonuseRewarded(bool b)
@@ -86,5 +87,8 @@ public class FreeCoin : MonoBehaviour
         IsWatched = false;
 
     }
-
+    private void Update()
+    {
+        _watchButton.interactable = AdsManager._instance.VerifRewarded();
+    }
 }

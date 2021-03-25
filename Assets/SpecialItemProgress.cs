@@ -12,6 +12,8 @@ public class SpecialItemProgress : MonoBehaviour
     public static bool Topen;
     public BGSpecialController Bgprogress;
     public GameControl gameControl;
+
+    public GameObject BonusePanel;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -110,6 +112,7 @@ public class SpecialItemProgress : MonoBehaviour
     {
         if (Topen==true)
         {
+            BonusePanel.SetActive(false);
             Bgprogress.gameObject.SetActive(true);
            // Bgprogress.SetCharacter(skin.name);
         }

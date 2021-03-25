@@ -22,7 +22,7 @@ public class TestAds : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        AdsState.text=AdsManager._instance.AdsState;
+        //AdsState.text=AdsManager._instance.AdsState;
     }
 
     public void ShowRewardVideo(){

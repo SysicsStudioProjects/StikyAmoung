@@ -44,7 +44,7 @@ public class SkinSelected : MonoBehaviour
         initStart(false);
        
         // EventController.getSpecialPackage += GetSpecialSkin;
-        if (BGSpecialController.skinSetter!=null&&nbtest<1)
+        if (BGSpecialController.skinSetter!=null&&nbtest<=1)
         {
             GetSpecialSkin(BGSpecialController.skinSetter);
             nbtest = 1;

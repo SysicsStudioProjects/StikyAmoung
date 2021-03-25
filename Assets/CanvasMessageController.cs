@@ -8,7 +8,14 @@ public class CanvasMessageController : MonoBehaviour
     public GameObject GreatJob;
     bool isFirstKill;
 
-    
+    private void Awake()
+    {
+        PlayerEvents.canKill = false;
+    }
+    private void OnEnable()
+    {
+        PlayerEvents.canKill = false;
+    }
     private void Update()
     {
         if (isFirstKill==true)
