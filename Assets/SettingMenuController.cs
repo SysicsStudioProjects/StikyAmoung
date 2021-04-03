@@ -17,7 +17,7 @@ public class SettingMenuController : MonoBehaviour
 
     private void OnDisable()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
 
     }
 

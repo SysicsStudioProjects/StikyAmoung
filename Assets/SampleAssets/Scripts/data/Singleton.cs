@@ -61,14 +61,14 @@ public class Singleton : MonoBehaviour
     #endregion
     private void OnEnable()
     {
-        
+        Time.timeScale = 1f;
         
     }
 
     void Awake()
     {
         state = GameState.none;
-     //   QualitySettings.vSyncCount = 0;
+       //QualitySettings.vSyncCount = 0;
       Application.targetFrameRate = 60;
         // When the Menu starts, set the rendering to target 20fps
      //   OnDemandRendering.renderFrameInterval = 0;

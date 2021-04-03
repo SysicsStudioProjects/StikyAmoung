@@ -32,7 +32,7 @@ public class CanvasMessageController : MonoBehaviour
         {
             if (MessagePanel.activeInHierarchy)
             {
-                Time.timeScale = 1;
+                Time.timeScale = 1f;
                 MessagePanel.SetActive(false);
                 GreatJob.SetActive(true);
                 isFirstKill = true;

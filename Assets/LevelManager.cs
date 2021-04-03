@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         StartCoroutine(StartPanel());
         SkinMenu.SetActive(false);
         StartCoroutine(EnablePlayer());

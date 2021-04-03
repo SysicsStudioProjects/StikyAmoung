@@ -32,6 +32,7 @@ public class EnnemiePatrol : MonoBehaviour
     public bool IsGameStart;
 
     public GameObject Field;
+    public Renderer FiedlRender;
     public GameObject PortalDown;
 
     public Color MaterialColor;
@@ -60,6 +61,7 @@ public class EnnemiePatrol : MonoBehaviour
     private void OnDisable()
     {
         StopCoroutine("WaitingDiePlayer");
+        StopCoroutine(VerifPointDistance());
         startDetect = false;
         if (EventController.canKill!=null)
         {
@@ -99,7 +101,7 @@ public class EnnemiePatrol : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
         if (IsGameStart==false)
         {
@@ -118,6 +120,14 @@ public class EnnemiePatrol : MonoBehaviour
                 //view.enabled = false;
 
             }
+        }
+        if (FiedlRender.isVisible)
+        {
+            view.enabled = true;
+        }
+        else
+        {
+            view.enabled = false;
         }
        
         if (_DetectPlayer!=null)

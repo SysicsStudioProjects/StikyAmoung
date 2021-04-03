@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
       
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (isWin==true||Singleton._instance.state==GameState.win)
         {
@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
             playerSpeed = 8;
             //anim.speed = 2;
             move.y=0;
-            controller.Move(move.normalized * 0.02f * playerSpeed);
+            controller.Move(move.normalized * Time.smoothDeltaTime* playerSpeed);
             // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
         }
         else

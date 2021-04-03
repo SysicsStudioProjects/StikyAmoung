@@ -6,7 +6,7 @@ public class MovementController : MonoBehaviour
 {
     public bool moveK;
     public bool MoveJ;
-    public Joystick js;
+    //public Joystick js;
     //send x joystic pos
    static float x;
     //send y joystic pos
