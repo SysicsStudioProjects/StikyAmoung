@@ -46,7 +46,7 @@ public class PlayerEvents : MonoBehaviour
 		EventController.gameWin += GameWin;
 		EventController.ennemieDown += EnnemieDown;
 		EventController.gameStart += GameStart;
-		InvokeRepeating("CaroutineTarget",0,0.06f);
+		//InvokeRepeating("CaroutineTarget",0,0.02f);
 
 		
 		stopKilling = false;
@@ -68,8 +68,9 @@ public class PlayerEvents : MonoBehaviour
 				Singleton._instance.save();
 				weopenType = WeopenType.Knife;
 				EventController.useSkin(s);
-				RangeWeopen = 2.5f;
-				range = 4;
+				RangeWeopen = 3.0f;
+
+				range = 3.0f;
 				break;
 			/*case WeopenType.Knife:
 				RangeWeopen = 2.5f;
@@ -157,6 +158,8 @@ public class PlayerEvents : MonoBehaviour
 	}
 
 	// Update is called once per frame
+
+	bool canSendEvent;
 	void LateUpdate()
 	{
         /*if (playerMovement.enabled==false)
@@ -171,9 +174,9 @@ public class PlayerEvents : MonoBehaviour
 			switch (weopenType)
 			{
 				case WeopenType.none:
-					RangeWeopen = 2.5f;
+					RangeWeopen = 3.0f;
 					
-					range = 4;
+					range = 3.0f;
 					Skin s = new Skin();
 					int index = Singleton._instance.skins.allSkins.FindIndex(d => d.name == "Knife1");
 					s = Singleton._instance.skins.allSkins[index];
@@ -183,25 +186,26 @@ public class PlayerEvents : MonoBehaviour
 					EventController.useSkin(s);
 					break;
 				case WeopenType.Knife:
-					RangeWeopen = 2.5f;
-					range = 4;
+					RangeWeopen = 3.0f;
+
+					range = 3.0f;
 					break;
 				case WeopenType.Disc:
-					range = 8;
-					RangeWeopen = 8;
+					range = 7;
+					RangeWeopen = 7;
 					break;
 				case WeopenType.Butcher:
-					RangeWeopen = 2.5f;
-					range = 4;
+					RangeWeopen = 3.0f;
+					range = 3.0f;
 					break;
 				case WeopenType.gogo:
-					RangeWeopen = 8f;
-					range = 8;
+					RangeWeopen = 7f;
+					range = 7;
 
 					break;
 				case WeopenType.ironman:
-					RangeWeopen = 8f;
-					range = 8;
+					RangeWeopen = 7f;
+					range = 7;
 
 					break;
 				default:
@@ -209,12 +213,86 @@ public class PlayerEvents : MonoBehaviour
 			}
 			weopen = weopenType;
 		}
-		if (target != null && AutoFocuse&&target.gameObject.activeInHierarchy)
+        if (playerMovement.enabled==false)
+        {
+			return;
+        }
+		if (target != null && AutoFocuse && target.gameObject.activeInHierarchy)
 		{
-			LookTotarget(0.8f);
+			if (EventController.canKill != null&&canSendEvent==false)
+			{
+				EventController.canKill(target, RangeWeopen);
+				canSendEvent = true;
+			}
+			canKill = true;
+			if (PlayerMovement.isNotInput)
+			{
+				Kill();
 
+			}
+			LookTotarget(0.8f);
+			
+            if (Vector3.Distance(transform.position, target.transform.position)<=RangeWeopen)
+            {
+				return;
+            }
+            else
+            {
+                if (target!=null)
+                {
+					if (EventController.canKill != null)
+					{
+						EventController.canKill(null, 0);
+					}
+					canSendEvent = false;
+				}
+				
+				target = null;
+				
+				isStartKilling = false;
+            }
+		}
+		r = range;
+		Collider[] enemies = Physics.OverlapSphere(transform.position, r, targetMask);
+		float shortestDistance = Mathf.Infinity;
+		GameObject nearestEnemy = null;
+		if (enemies.Length > 0)
+		{
+			nearestEnemy = enemies[0].gameObject;
+			shortestDistance = Vector3.Distance(transform.position, nearestEnemy.transform.position);
+			Vector3 dirToTarget = (nearestEnemy.transform.position - transform.position).normalized;
+			if (RangeWeopen > 4)
+			{
+				if (Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
+				{
+					target = null;
+					return;
+				}
+                else if(shortestDistance <= RangeWeopen)
+                {
+					target = nearestEnemy.transform;
+				}
+                else
+                {
+					target = null;
+                }
+			}
+            else if(shortestDistance<=RangeWeopen)
+            {
+				target = nearestEnemy.transform;
+				
+			}
+            else
+            {
+				target = null;
+				
+			}
 
 		}
+
+		
+
+		
 
 
 
@@ -222,106 +300,7 @@ public class PlayerEvents : MonoBehaviour
 	public float r;
 	void UpdateTarget()
 	{
-		r = range;
-        if (playerMovement.enabled==false)
-        {
-			return;
-        }
-		//	GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-		Collider[] enemies = Physics.OverlapSphere(transform.position, r, targetMask);
-		float shortestDistance = Mathf.Infinity;
-		GameObject nearestEnemy = null;
-
-		if (enemies.Length>0)
-        {
-			 nearestEnemy = enemies[0].gameObject;
-			shortestDistance= Vector3.Distance(transform.position, nearestEnemy.transform.position);
-			Vector3 dirToTarget = (nearestEnemy.transform.position - transform.position).normalized;
-			if (Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
-			{
-				target = null;
-				return;
-			}
-		}
 		
-
-			/*foreach (GameObject enemy in enemies)
-			{
-				float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-				if (distanceToEnemy < shortestDistance)
-				{
-					shortestDistance = distanceToEnemy;
-					nearestEnemy = enemy;
-				}
-			}*/
-
-			if (nearestEnemy != null )
-		{
-			target = nearestEnemy.transform;
-			//targetEnemy = nearestEnemy.GetComponent<Enemy>();
-		}
-		else
-		{
-			target = null;
-
-			if (EventController.canKill != null)
-			{
-				EventController.canKill(null, 0);
-			}
-
-		}
-		if (stopKilling == false)
-		{
-			if (switchTarget != null)
-			{
-				
-				if (RangeWeopen<4)
-                {
-					
-					if (EventController.canKill != null)
-					{
-						EventController.canKill(target, shortestDistance);
-					}
-					//StartCoroutine(SlowTime());
-				}
-				
-
-
-				if (shortestDistance <= RangeWeopen )
-				{
-					canKill = true;
-					if (PlayerMovement.isNotInput)
-                    {
-						if (RangeWeopen > 4)
-						{
-							Vector3 dirToTarget = (nearestEnemy.transform.position - transform.position).normalized;
-							if (!Physics.Raycast(transform.position, dirToTarget, shortestDistance, obstacleMask))
-							{
-								Kill();
-								StartCoroutine(SlowTime());
-							}
-							else
-							{
-								StartCoroutine(SlowTime());
-							}
-						}
-						else
-						{
-							Kill();
-						}
-						stopKilling = true;
-					}
-					
-					
-				}
-
-				//target = null;
-			}
-
-			switchTarget = target;
-
-
-		}
 
 	}
 
@@ -356,8 +335,13 @@ public class PlayerEvents : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0, rotation.y, 0);
 	}
 
+	bool isStartKilling;
 	void Kill()
 	{
+        if (isStartKilling==true)
+        {
+			return;
+        }
 		switch (weopenType)
 		{
 			case WeopenType.none:
@@ -389,7 +373,7 @@ public class PlayerEvents : MonoBehaviour
 			default:
 				break;
 		}
-		
+		isStartKilling = true;
 
 
 
@@ -535,9 +519,10 @@ public class PlayerEvents : MonoBehaviour
 		}
 		else
 		{
-			playerMovement.enabled = true;
+			//playerMovement.enabled = true;
 
 		}
+		isStartKilling = false;
 	}
 
 

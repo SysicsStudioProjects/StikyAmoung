@@ -16,14 +16,13 @@ public class ShootBale : MonoBehaviour
         if (target==null)
         {
             //gameObject.SetActive(false);
-            if (dire==Vector3.zero)
+           /*if (dire==Vector3.zero)
             {
                 gameObject.SetActive(false);
-            }
-            else
-            {
-                transform.Translate(dire * speed * Time.deltaTime);
-            }
+            }*/
+            
+                transform.Translate(playerEvents.transform.forward * speed * Time.deltaTime);
+            
             
             return;
         }
@@ -41,7 +40,7 @@ public class ShootBale : MonoBehaviour
         }
             speed += 0.02f;
             Vector3 dir = target.position - transform.position;
-        dire = dir;
+            dire = dir;
             float distanceThisFrame = speed * Time.deltaTime;
 
             if (dir.magnitude <= 0.5f)
@@ -73,6 +72,7 @@ public class ShootBale : MonoBehaviour
     public void SetTarget(Transform t,Vector3 _parent,PlayerEvents _playerEvents)
     {
         target = t;
+
         parent = _parent;
         playerEvents = _playerEvents;
     }

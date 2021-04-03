@@ -51,7 +51,7 @@ public class GameControl : MonoBehaviour
         LevelBonuse = levelManager.thislevel.IsBonuceLevel;
         alleennemie = levelManager.thislevel.NbEnnemy;
         LevelIndex = levelManager.thislevel.LevelIndex;
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         
         EventController.ennemieDown += EnnemieDown;
         EventController.gameLoose += GameLoose;
@@ -284,7 +284,11 @@ public class GameControl : MonoBehaviour
         AllCanvas.SetActive(true);
 
         //AdsManager._instance.ShowBanner();
-        AdsManager._instance.ShowBanner("Banner_bottom");
+        if (!Application.isEditor)
+        {
+            AdsManager._instance.ShowBanner("Banner_bottom");
+        }
+           
     }
 
     public void RestartScene()
