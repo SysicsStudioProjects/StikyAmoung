@@ -149,8 +149,10 @@ public class Spin : MonoBehaviour
         }
 
     }
+    public GameObject CloseButton;
     public void click()
     {
+        CloseButton.gameObject.SetActive(false);
         if (tour)
         {
             
@@ -366,7 +368,7 @@ public class Spin : MonoBehaviour
     }
     public void Ok()
     {
-
+        CloseButton.gameObject.SetActive(true);
         isStartRotate = false;
        
         Getchoix();
@@ -459,6 +461,7 @@ public class Spin : MonoBehaviour
 
     public void OnclickVideo()
     {
+        CloseButton.gameObject.SetActive(false);
         ShowVideo();
         
         Singleton._instance.AdsSpinVideo -= 1;

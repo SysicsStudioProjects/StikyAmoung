@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Firebase.Analytics;
 public class BGSpecialController : MonoBehaviour
 {
     public List<SpecialCharacter> specialCharacters;
@@ -22,6 +22,8 @@ public class BGSpecialController : MonoBehaviour
 
     private void OnEnable()
     {
+        
+
         WinPanel.SetActive(false);
         skinSetter = null;
        // RewardButton.interactable = IronSource.Agent.isRewardedVideoAvailable();
@@ -38,6 +40,7 @@ public class BGSpecialController : MonoBehaviour
             if (specialSkin.name==specialCharacters[i].name)
             {
                 CharacterImage.texture = specialCharacters[i].texture;
+                FirebaseAnalytics.LogEvent("_tryitem_popup_show", new Parameter("_tryitem_popup_show", CharacterImage.texture.name));
                 return;
             }
         }
@@ -57,6 +60,7 @@ public class BGSpecialController : MonoBehaviour
     
     public void NoThanksButton(string s)
     {
+        FirebaseAnalytics.LogEvent("_tryitem_popup_decline", new Parameter("_tryitem_popup_decline", CharacterImage.texture.name));
         if (GameControl.IsRewardedAfterWin==false)
         {
             // AdsManager._instance.ShowIntertiate(s);
@@ -71,8 +75,9 @@ public class BGSpecialController : MonoBehaviour
 
     public void SetSpecialPackage()
     {
-        
+
         //this.gameObject.SetActive(false);
+        FirebaseAnalytics.LogEvent("_tryitem_popup_watch", new Parameter("_tryitem_popup_watch", CharacterImage.texture.name));
         IsBonuseReward = true;
         //AdsManager._instance.ShowRewardVideo("Startlevel_Special_Try_reward");
         AdsManager._instance.ShowReward("Startlevel_Special_Try_reward");

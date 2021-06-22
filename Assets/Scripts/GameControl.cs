@@ -3,6 +3,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Firebase.Analytics;
 public class GameControl : MonoBehaviour
 {
 
@@ -104,7 +105,11 @@ public class GameControl : MonoBehaviour
     }
     private void Update()
     {
-        AddBonuse.interactable = AdsManager._instance.VerifRewarded();
+        if (AddBonuse!=null)
+        {
+            AddBonuse.interactable = AdsManager._instance.VerifRewarded();
+        }
+        
     }
     // Start is called before the first frame update
     void InitCoin()
@@ -131,6 +136,7 @@ public class GameControl : MonoBehaviour
     IEnumerator YielTowin()
     {
         Singleton._instance.state = GameState.win;
+        FirebaseAnalytics.LogEvent("Win_Level_", new Parameter("Win_Level_", levelManager.Level.ToString()));
         yield return new WaitForSeconds(0.4f);
         if (EventController.gameWin != null)
         {
@@ -227,8 +233,8 @@ public class GameControl : MonoBehaviour
 
     void GameLoose()
     {
-       // AdsManager._instance.DestroyBanner();
-
+        // AdsManager._instance.DestroyBanner();
+        FirebaseAnalytics.LogEvent("Lose_Level_", new Parameter("Lose_Level_", levelManager.Level.ToString()));
         Time.timeScale = 0;
         LoosePanel.SetActive(true);
         //StartCoroutine(LevelLoose());
@@ -352,7 +358,7 @@ public class GameControl : MonoBehaviour
         AddBonuse.interactable = b;
     }
 
-
+    public GameObject GreatJobText;
     void VideoBonuseRewarded(bool b)
     {
         if (b==false)
@@ -361,9 +367,25 @@ public class GameControl : MonoBehaviour
         }
         if (IsBonuseReward)
         {
-            BonusePanel.SetActive(true);
+            StopAllCoroutines();
+            //BonusePanel.SetActive(true);
             IsRewardedAfterWin = true;
-            BonusePanel.GetComponent<BonuseController>().InitCoins(CoinsBonuse);
+            if (AddBonuse!=null)
+            {
+                Destroy(AddBonuse.gameObject);
+                CoinsBonuse = CoinsBonuse * 4;
+                CoinsWinText.text = CoinsBonuse.ToString();
+                AllCoins += 150;
+                Singleton._instance.coins = AllCoins;
+                AllCoinsText.text = AllCoins.ToString();
+
+                Singleton._instance.save();
+                StopAllCoroutines();
+                GreatJobText.gameObject.SetActive(true);
+            }
+            
+           
+            //BonusePanel.GetComponent<BonuseController>().InitCoins(CoinsBonuse);
         }
        
     }
@@ -373,6 +395,10 @@ public class GameControl : MonoBehaviour
         if (SpecialItemProgress.Topen==true)
         {
             //BGspecialProgress.SetActive(true);
+            return;
+        }
+        if (IsBonuseReward)
+        {
             return;
         }
         // AdsManager._instance.ShowIntertiate(s);

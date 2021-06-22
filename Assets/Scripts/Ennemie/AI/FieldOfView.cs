@@ -26,6 +26,7 @@ public class FieldOfView : MonoBehaviour {
 	Mesh viewMesh;
 	public bool isDrone;
 
+	public bool canFind;
 	void Start() {
 		viewMesh = new Mesh ();
 		viewMesh.name = "View Mesh";
@@ -48,7 +49,11 @@ public class FieldOfView : MonoBehaviour {
 	IEnumerator FindTargetsWithDelay(float delay) {
 		while (true) {
 			yield return new WaitForSeconds (delay);
-			FindVisibleTargets ();
+            if (canFind==true)
+            {
+				FindVisibleTargets();
+			}
+			
 			//FindFellingTargets();
 		}
 	}
