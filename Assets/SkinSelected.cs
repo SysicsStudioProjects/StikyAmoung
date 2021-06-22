@@ -893,4 +893,15 @@ public class SkinSelected : MonoBehaviour
         yield return new WaitForSeconds(5);
         Magic.SetActive(false);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag=="pickup")
+        {
+            Skin pickupSkin = other.GetComponent<Pickup>().thisskin;
+            SetupSkinStart(pickupSkin);
+            other.transform.root.gameObject.SetActive(false);
+            //Destroy(other.transform.root.gameObject);
+        }
+    }
 }

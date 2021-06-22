@@ -225,9 +225,10 @@ public class PlayerEvents : MonoBehaviour
 				canSendEvent = true;
 			}
 			canKill = true;
+			Kill();
 			if (PlayerMovement.isNotInput)
 			{
-				Kill();
+				
 
 			}
 			LookTotarget(0.8f);

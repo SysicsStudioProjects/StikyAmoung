@@ -19,7 +19,11 @@ public class ReseatSkins : MonoBehaviour
             }
             else
             {
-                item.nbWatch = 5;
+                item.nbWatch = item.price/1000;
+                if (item.nbWatch<=1)
+                {
+                    item.nbWatch = 2;
+                }
                 item.toWatch = true;
                 item.state = SkinState.none;
             }

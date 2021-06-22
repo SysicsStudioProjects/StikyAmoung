@@ -123,11 +123,11 @@ public class EnnemiePatrol : MonoBehaviour
         }
         if (FiedlRender.isVisible)
         {
-            view.enabled = true;
+            view.canFind = true;
         }
         else
         {
-            view.enabled = false;
+            view.canFind = false;
         }
        
         if (_DetectPlayer!=null)

@@ -37,7 +37,7 @@ public class manegerSkins : MonoBehaviour
     {
         InitCoins();
         EventController.onchangeItems += setupC;
-        listSkin("special");
+        listSkin("wap");
     }
     private void OnDisable()
     {
@@ -80,7 +80,7 @@ public class manegerSkins : MonoBehaviour
     }
     public void skinStart()
     {
-        listSkin("special");
+        listSkin("wap");
         // player.transform.position = posShop.position;
         //player.SetActive(true);
     }
@@ -93,7 +93,7 @@ public class manegerSkins : MonoBehaviour
 
     public void buyStart()
     {
-        listBuy("special");
+        listBuy("wap");
         //player.SetActive(false);
     }
 
