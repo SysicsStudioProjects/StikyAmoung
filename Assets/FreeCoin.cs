@@ -66,7 +66,7 @@ public class FreeCoin : MonoBehaviour
     {
         IsWatched = true;
         // AdsManager._instance.ShowRewardVideo("Mainscreen_freecoin_reward");
-        AdsManager._instance.ShowReward("Mainscreen_freecoin_reward");
+        AdsManager._instance.ShowRewardVideo("Mainscreen_freecoin_reward");
     }
 
     void VideoBonuseRewarded(bool b)

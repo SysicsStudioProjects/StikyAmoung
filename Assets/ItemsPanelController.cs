@@ -100,7 +100,7 @@ public class ItemsPanelController : MonoBehaviour
         switchSkin = t;
         IsBonuseReward = true;
         //  AdsManager._instance.ShowRewardVideo("Startlevel_itemtry_reward");
-        AdsManager._instance.ShowReward("Startlevel_itemtry_reward");
+        AdsManager._instance.ShowRewardVideo("Startlevel_itemtry_reward");
 
     }
 

@@ -64,7 +64,7 @@ public class BGSpecialController : MonoBehaviour
         if (GameControl.IsRewardedAfterWin==false)
         {
             // AdsManager._instance.ShowIntertiate(s);
-            AdsManager._instance.ShowInter(s);
+            AdsManager._instance.ShowIntertiate("DefaultInterstitial");
         }
         gameControl.LoadScene();
 
@@ -80,7 +80,7 @@ public class BGSpecialController : MonoBehaviour
         FirebaseAnalytics.LogEvent("_tryitem_popup_watch", new Parameter("_tryitem_popup_watch", CharacterImage.texture.name));
         IsBonuseReward = true;
         //AdsManager._instance.ShowRewardVideo("Startlevel_Special_Try_reward");
-        AdsManager._instance.ShowReward("Startlevel_Special_Try_reward");
+        AdsManager._instance.ShowRewardVideo("Startlevel_Special_Try_reward");
     }
 
     void ChangeRewardStatut(bool b)

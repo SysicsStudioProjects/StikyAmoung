@@ -283,7 +283,7 @@ public class SkinStart : MonoBehaviour
     {
         IsWatched = true;
         //AdsManager._instance.ShowRewardVideo("Shop_item_reward");
-        AdsManager._instance.ShowReward("Shop_item_reward");
+        AdsManager._instance.ShowRewardVideo("Shop_item_reward");
     }
 
     void VideoBonuseRewarded(bool b)

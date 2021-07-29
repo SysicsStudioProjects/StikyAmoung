@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public static bool isNotInput;
     private void OnEnable()
     {
-        
+        playerSpeed = 8;
         EventController.canKill += ChangeTarget;
         EventController.sendSettingData += GetSettingData;
         EventController.gameWin += GameWin;
@@ -60,15 +60,14 @@ public class PlayerMovement : MonoBehaviour
 
         
         
-        //Application.targetFrameRate = 30;
+       
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
         }
 
-        //mo= new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        //  Vector3 move = MovementController.Move();
+       
         Vector3 move = new Vector3(js.Horizontal, 0, js.Vertical);
         if (move==Vector3.zero)
         {
@@ -79,30 +78,12 @@ public class PlayerMovement : MonoBehaviour
         if (move!=Vector3.zero)
         {
             isNotInput = false;
-            /*if (move.magnitude>0.8)
-            {
-                anim.speed = 1.5f;
-                playerSpeed = 8;
-            }
-            if (move.magnitude<0.8&&move.magnitude>0.3)
-            {
-                anim.speed = 1;
-                playerSpeed = 12;
-            }
-            if (move.magnitude<=0.3&&move.magnitude>0.05f)
-            {
-                anim.speed = 0.8f;
-                playerSpeed =15;
-            }
-            if (move.magnitude<=0.01)
-            {
-                anim.speed = 1;
-            }*/
-            playerSpeed = 8;
-            //anim.speed = 2;
+            
+            
+           
             move.y=0;
             controller.Move(move.normalized * Time.smoothDeltaTime* playerSpeed);
-            // anim.speed = move.magnitude * Time.deltaTime * playerSpeed*10;
+          
         }
         else
         {
@@ -112,46 +93,17 @@ public class PlayerMovement : MonoBehaviour
         if (move != Vector3.zero&& transform.forward.normalized != move.normalized)
         {
             LockOnTarget(move.normalized);
-           // gameObject.transform.forward = move;
+          
         }
 
-        // Changes the height position of the player..
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
-        {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        }
+      
+        
         if (groundedPlayer==false)
         {
             playerVelocity.y = gravityValue * Time.deltaTime;
             controller.Move(playerVelocity);
         }
-        /*string x = (transform.localPosition.x).ToString();
-        string y = (transform.localPosition.y).ToString();
-        string z = (transform.localPosition.z).ToString();
         
-        if (x.Length>5||y.Length>5||z.Length>5){
-
-            string a = "";
-        string b = "";
-        string c = "";
-        for (int i = 0; i < 5; i++)
-        {
-            if (i <= x.Length - 1)
-            {
-                a += x[i];
-            }
-            if (i <= y.Length - 1)
-            {
-                b += y[i];
-            }
-            if (i <= z.Length - 1)
-            {
-                c += z[i];
-            }
-
-        }
-        transform.localPosition = new Vector3(float.Parse(a), float.Parse(b), float.Parse(c));
-        }*/
         
         
 
@@ -193,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
     {
       
         isWin = true;
-       // this.enabled = false;
+      
     }
     void GameLoose()
     {

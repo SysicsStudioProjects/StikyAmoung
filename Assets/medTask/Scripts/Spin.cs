@@ -478,7 +478,7 @@ public class Spin : MonoBehaviour
        
         IsWatched = true;
         //AdsManager._instance.ShowRewardVideo("Luckywheelscreen_freespin_reward");
-        AdsManager._instance.ShowReward("Luckywheelscreen_freespin_reward");
+        AdsManager._instance.ShowRewardVideo("Luckywheel_freespin_reward");
     }
 
     void VideoBonuseRewarded(bool b)

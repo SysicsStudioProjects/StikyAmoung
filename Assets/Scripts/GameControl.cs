@@ -292,7 +292,7 @@ public class GameControl : MonoBehaviour
         //AdsManager._instance.ShowBanner();
         if (!Application.isEditor)
         {
-            AdsManager._instance.ShowBanner("Banner_bottom");
+            AdsManager._instance.ShowBanner();
         }
            
     }
@@ -349,7 +349,7 @@ public class GameControl : MonoBehaviour
     {
 
         //  AdsManager._instance.ShowRewardVideo("Endlevel_win_x3coin_reward");
-        AdsManager._instance.ShowReward("Endlevel_win_x3coin_reward");
+        AdsManager._instance.ShowRewardVideo("Endlevel_win_x3coin_reward");
         IsBonuseReward = true;
     }
 
@@ -403,7 +403,7 @@ public class GameControl : MonoBehaviour
         }
         // AdsManager._instance.ShowIntertiate(s);
 
-        AdsManager._instance.ShowInter(s);
+        AdsManager._instance.ShowIntertiate("DefaultInterstitial");
     }
 }
 

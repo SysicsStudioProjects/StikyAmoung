@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator LoadInter()
     {
-        AdsManager._instance.LoadInterstitial();
+        //AdsManager._instance.();
       //  IronSource.Agent.loadInterstitial();
         yield return new WaitForSeconds(3);
         if (!AdsManager._instance.verifInter())

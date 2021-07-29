@@ -117,44 +117,7 @@ public class PlayerEvents : MonoBehaviour
 	}
 	private void Start()
 	{
-		/*switch (weopenType)
-		{
-			case WeopenType.none:
-				Skin s = new Skin();
-				int index = Singleton._instance.skins.allSkins.FindIndex(d => d.name == "Knife1");
-				s = Singleton._instance.skins.allSkins[index];
-				s.state = SkinState.useIt;
-				Singleton._instance.save();
-				EventController.useSkin(s);
-				weopenType = WeopenType.Knife;
-				RangeWeopen = 2.5f;
-				range = 4;
-				break;
-			case WeopenType.Knife:
-				RangeWeopen = 2.5f;
-				range = 4;
-				break;
-			case WeopenType.Disc:
-				range = 8;
-				RangeWeopen = 8;
-				break;
-			case WeopenType.Butcher:
-				RangeWeopen = 2.5f;
-				range = 4;
-				break;
-			case WeopenType.gogo:
-				RangeWeopen = 8f;
-				range = 8;
-
-				break;
-			case WeopenType.ironman:
-				RangeWeopen = 8f;
-				range = 8;
-
-				break;
-			default:
-				break;
-		}*/
+		
 	}
 
 	// Update is called once per frame
@@ -162,13 +125,7 @@ public class PlayerEvents : MonoBehaviour
 	bool canSendEvent;
 	void LateUpdate()
 	{
-        /*if (playerMovement.enabled==false)
-        {
-			target = null;
-			switchTarget = null;
-			stopKilling = false;
-			return;
-        }*/
+        
         if (weopen!=weopenType)
         {
 			switch (weopenType)

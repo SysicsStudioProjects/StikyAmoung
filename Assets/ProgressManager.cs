@@ -153,7 +153,7 @@ public class ProgressManager : MonoBehaviour
     {
         IsWatched = true;
         //AdsManager._instance.ShowRewardVideo("Progress_item_reward");
-        AdsManager._instance.ShowReward("Progress_item_reward");
+        AdsManager._instance.ShowRewardVideo("Progress_item_reward");
     }
 
     void VideoBonuseRewarded(bool b)

@@ -19,7 +19,7 @@ public class ReseatSkins : MonoBehaviour
             }
             else
             {
-                item.nbWatch = item.price/1000;
+                item.nbWatch = (int)(item.price / 1500);
                 if (item.nbWatch<=1)
                 {
                     item.nbWatch = 2;

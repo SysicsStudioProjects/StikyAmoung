@@ -45,7 +45,7 @@ public class LoosePanelController : MonoBehaviour
     public void OnclickSkipLevel()
     {
         //AdsManager._instance.ShowRewardVideo("Endlevel_fail_skiplevel_reward");
-        AdsManager._instance.ShowReward("Endlevel_fail_skiplevel_reward");
+        AdsManager._instance.ShowRewardVideo("Endlevel_fail_skiplevel_reward");
         IsBonuseReward = true;
     }
     private void Update()
