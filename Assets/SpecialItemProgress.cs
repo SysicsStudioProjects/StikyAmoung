@@ -72,29 +72,29 @@ public class SpecialItemProgress : MonoBehaviour
         BarItem.sprite = skin.icon;
         switch (skin.nbWatch)
         {
-            case 24:
-                skin.nbWatch = 23;
+            case 9:
+                skin.nbWatch = 8;
                 BarItem.fillAmount = 0.0f;
                 StartCoroutine(animeBar(0.25f));
                 //BarItem.fillAmount = 0.25f;
                 Singleton._instance.save();
                 break;
-            case 23:
-                skin.nbWatch = 22;
+            case 8:
+                skin.nbWatch = 7;
                 BarItem.fillAmount = 0.25f;
                 StartCoroutine(animeBar(0.25f));
                // BarItem.fillAmount = 0.5f;
                 Singleton._instance.save();
                 break;
-            case 22:
-                skin.nbWatch = 21;
+            case 7:
+                skin.nbWatch = 6;
                 BarItem.fillAmount = 0.5f;
                 StartCoroutine(animeBar(0.25f));
                 // BarItem.fillAmount = 0.75f;
                 Singleton._instance.save();
                 break;
-            case 21:
-                skin.nbWatch = 20;
+            case 6:
+                skin.nbWatch = 5;
                 BarItem.fillAmount = 0.75f;
                 StartCoroutine(animeBar(0.25f));
                 // BarItem.fillAmount = 1.0f;

@@ -13,16 +13,16 @@ public class ReseatSkins : MonoBehaviour
             if (item.type==SkinType.special)
             {
                 item.state = SkinState.Lock;
-                item.nbWatch = 24;
+                item.nbWatch = 9;
                 item.toWatch = false;
                 item.inProgress = false;
             }
             else
             {
-                item.nbWatch = (int)(item.price / 1500);
+                item.nbWatch = (int)(item.price / 3000);
                 if (item.nbWatch<=1)
                 {
-                    item.nbWatch = 2;
+                    item.nbWatch = 1;
                 }
                 item.toWatch = true;
                 item.state = SkinState.none;
