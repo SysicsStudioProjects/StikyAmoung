@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using UnityEngine.Playables;
+using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     public PlayerEvents playerEvents;
@@ -18,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public Joystick js;
 
     public static bool isNotInput;
+    public EnnemiePatrol[] allennemies;
     private void OnEnable()
     {
         playerSpeed = 8;
@@ -40,7 +42,34 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-      
+        allennemies = GameObject.FindObjectsOfType<EnnemiePatrol>();
+        StartCoroutine(CHangeEnnemieState());
+    }
+
+    IEnumerator CHangeEnnemieState()
+    {
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < allennemies.Length; i++)
+        {
+            if (allennemies[i]!=null)
+            {
+                EnnemiePatrol e = allennemies[i];
+                if (Vector3.Distance(transform.position,e.transform.position)>22)
+                {
+                    e.GetComponent<Animator>().enabled = false;
+                    e.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                    e.GetComponentInChildren<Animator>().enabled = false;
+                }
+                else
+                {
+                    e.GetComponent<Animator>().enabled = true;
+                    e.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+                    e.GetComponentInChildren<Animator>().enabled = true;
+                }
+            }
+            
+        }
+        StartCoroutine(CHangeEnnemieState());
     }
 
     void Update()

@@ -293,6 +293,8 @@ public class AdsManager : MonoBehaviour
         else
         {
             Debug.Log("unity-script: IronSource.Agent.isInterstitialReady - False");
+            IronSource.Agent.loadInterstitial();
+
         }
     }
     #endregion

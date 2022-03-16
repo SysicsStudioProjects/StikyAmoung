@@ -28,16 +28,7 @@ apply plugin: 'com.android.library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
-    implementation 'com.android.support:appcompat-v7:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
-    implementation 'com.android.support:cardview-v7:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
-    implementation 'com.android.support:customtabs:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
-    implementation 'com.android.support:support-v4:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
     implementation 'com.facebook.android:audience-network-sdk:6.5.1' // Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:8
-    implementation 'com.facebook.android:facebook-applinks:[9.0, 10)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:6
-    implementation 'com.facebook.android:facebook-core:[9.0, 10)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:5
-    implementation 'com.facebook.android:facebook-gamingservices:[9.0, 10)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:9
-    implementation 'com.facebook.android:facebook-login:[9.0, 10)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:7
-    implementation 'com.facebook.android:facebook-share:[9.0, 10)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:8
     implementation 'com.google.android.gms:play-services-ads:20.2.0' // Assets/IronSource/Editor/ISAdMobAdapterDependencies.xml:8
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:17
     implementation 'com.google.android.gms:play-services-base:17.6.0' // Assets/Firebase/Editor/AppDependencies.xml:17
@@ -50,7 +41,6 @@ dependencies {
     implementation 'com.ironsource.adapters:facebookadapter:4.3.28' // Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:16
     implementation 'com.ironsource.adapters:unityadsadapter:4.3.12' // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:8
     implementation 'com.ironsource.sdk:mediationsdk:7.1.8' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:9
-    implementation 'com.parse.bolts:bolts-android:1.4.0' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:4
     implementation 'com.unity3d.ads:unity-ads:3.7.5' // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:15
 // Android Resolver Dependencies End
 **DEPS**}
