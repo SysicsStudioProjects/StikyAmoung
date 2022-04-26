@@ -289,6 +289,7 @@ public class AdsManager : MonoBehaviour
         if (IronSource.Agent.isInterstitialReady())
         {
             IronSource.Agent.showInterstitial(s);
+            StartCoroutine(loadInter());
         }
         else
         {
@@ -296,6 +297,12 @@ public class AdsManager : MonoBehaviour
             IronSource.Agent.loadInterstitial();
 
         }
+    }
+    IEnumerator loadInter()
+    {
+        yield return new WaitForSeconds(5);
+        IronSource.Agent.loadInterstitial();
+
     }
     #endregion
 
