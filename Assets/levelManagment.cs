@@ -2,17 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class levelManagment : MonoBehaviour
 {
-
+    public GameObject TermsOf;
+    public GameObject Animation;
+    bool isAccepted;
+    public string url;
 
     private void OnEnable()
     {
-        
+        isAccepted = PlayerPrefs.HasKey("terms");
     }
     
     void Start(){
         print(Singleton._instance.level);
+        if (isAccepted)
+        {
+            Animation.gameObject.SetActive(true);
+            StartCoroutine(StartScene());
+        }
+        else
+        {
+            if (TermsOf != null)
+            {
+                TermsOf.SetActive(true);
+            }
+        }
+
+    }
+
+    public void OpenUrl()
+    {
+        Application.OpenURL(url);
+    }
+
+    public void AcceptTerms()
+    {
+        PlayerPrefs.SetInt("terms", 1);
+        Animation.gameObject.SetActive(true);
+        TermsOf.SetActive(false);
         StartCoroutine(StartScene());
     }
 

@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Firebase;
-using Firebase.Analytics;
+//using Firebase;
+//using Firebase.Analytics;
 public class FireBaseInit : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    /*void Start()
     {
    FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
   var dependencyStatus = task.Result;
@@ -23,7 +23,7 @@ public class FireBaseInit : MonoBehaviour
     // Firebase Unity SDK is not safe to use here.
   }
 });
-    }
+    }*/
 
     // Update is called once per frame
     void Update()

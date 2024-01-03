@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Firebase.Analytics;
+//using Firebase.Analytics;
 public class GameControl : MonoBehaviour
 {
 
@@ -136,7 +136,7 @@ public class GameControl : MonoBehaviour
     IEnumerator YielTowin()
     {
         Singleton._instance.state = GameState.win;
-        FirebaseAnalytics.LogEvent("Win_Level_", new Parameter("Win_Level_", levelManager.Level.ToString()));
+        //FirebaseAnalytics.LogEvent("Win_Level_", new Parameter("Win_Level_", levelManager.Level.ToString()));
         yield return new WaitForSeconds(0.4f);
         if (EventController.gameWin != null)
         {
@@ -234,7 +234,7 @@ public class GameControl : MonoBehaviour
     void GameLoose()
     {
         // AdsManager._instance.DestroyBanner();
-        FirebaseAnalytics.LogEvent("Lose_Level_", new Parameter("Lose_Level_", levelManager.Level.ToString()));
+        //FirebaseAnalytics.LogEvent("Lose_Level_", new Parameter("Lose_Level_", levelManager.Level.ToString()));
         Time.timeScale = 0;
         LoosePanel.SetActive(true);
         //StartCoroutine(LevelLoose());

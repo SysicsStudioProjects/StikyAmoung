@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase.Analytics;
+//using Firebase.Analytics;
 public class BGSpecialController : MonoBehaviour
 {
     public List<SpecialCharacter> specialCharacters;
@@ -40,7 +40,7 @@ public class BGSpecialController : MonoBehaviour
             if (specialSkin.name==specialCharacters[i].name)
             {
                 CharacterImage.texture = specialCharacters[i].texture;
-                FirebaseAnalytics.LogEvent("_tryitem_popup_show", new Parameter("_tryitem_popup_show", CharacterImage.texture.name));
+                //FirebaseAnalytics.LogEvent("_tryitem_popup_show", new Parameter("_tryitem_popup_show", CharacterImage.texture.name));
                 return;
             }
         }
@@ -60,7 +60,7 @@ public class BGSpecialController : MonoBehaviour
     
     public void NoThanksButton(string s)
     {
-        FirebaseAnalytics.LogEvent("_tryitem_popup_decline", new Parameter("_tryitem_popup_decline", CharacterImage.texture.name));
+        //FirebaseAnalytics.LogEvent("_tryitem_popup_decline", new Parameter("_tryitem_popup_decline", CharacterImage.texture.name));
         if (GameControl.IsRewardedAfterWin==false)
         {
             // AdsManager._instance.ShowIntertiate(s);
@@ -77,7 +77,7 @@ public class BGSpecialController : MonoBehaviour
     {
 
         //this.gameObject.SetActive(false);
-        FirebaseAnalytics.LogEvent("_tryitem_popup_watch", new Parameter("_tryitem_popup_watch", CharacterImage.texture.name));
+        //FirebaseAnalytics.LogEvent("_tryitem_popup_watch", new Parameter("_tryitem_popup_watch", CharacterImage.texture.name));
         IsBonuseReward = true;
         //AdsManager._instance.ShowRewardVideo("Startlevel_Special_Try_reward");
         AdsManager._instance.ShowRewardVideo("Startlevel_Special_Try_reward");

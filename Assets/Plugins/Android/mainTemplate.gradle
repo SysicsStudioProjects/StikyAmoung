@@ -8,9 +8,6 @@
             url "https://maven.google.com"
         }
         maven {
-            url (unityProjectPath + "/Assets/GeneratedLocalRepo/Firebase/m2repository") // Assets/Firebase/Editor/AnalyticsDependencies.xml:18, Assets/Firebase/Editor/AppDependencies.xml:22
-        }
-        maven {
             url "https://android-sdk.is.com/" // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:9, Assets/IronSource/Editor/ISAdMobAdapterDependencies.xml:16, Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:16, Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:8
         }
         maven {
@@ -31,12 +28,7 @@ dependencies {
     implementation 'com.facebook.android:audience-network-sdk:6.5.1' // Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:8
     implementation 'com.google.android.gms:play-services-ads:20.2.0' // Assets/IronSource/Editor/ISAdMobAdapterDependencies.xml:8
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:17
-    implementation 'com.google.android.gms:play-services-base:17.6.0' // Assets/Firebase/Editor/AppDependencies.xml:17
     implementation 'com.google.android.gms:play-services-basement:17.2.1' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:25
-    implementation 'com.google.firebase:firebase-analytics:18.0.2' // Assets/Firebase/Editor/AppDependencies.xml:15
-    implementation 'com.google.firebase:firebase-analytics-unity:7.1.0' // Assets/Firebase/Editor/AnalyticsDependencies.xml:18
-    implementation 'com.google.firebase:firebase-app-unity:7.1.0' // Assets/Firebase/Editor/AppDependencies.xml:22
-    implementation 'com.google.firebase:firebase-common:19.5.0' // Assets/Firebase/Editor/AppDependencies.xml:13
     implementation 'com.ironsource.adapters:admobadapter:4.3.21' // Assets/IronSource/Editor/ISAdMobAdapterDependencies.xml:16
     implementation 'com.ironsource.adapters:facebookadapter:4.3.28' // Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:16
     implementation 'com.ironsource.adapters:unityadsadapter:4.3.12' // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:8
