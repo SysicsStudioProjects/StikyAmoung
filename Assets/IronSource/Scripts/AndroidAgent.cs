@@ -14,7 +14,7 @@ public class AndroidAgent : IronSourceIAgent
 
 	public AndroidAgent ()
 	{
-		Debug.Log ("AndroidAgent ctr");
+		initEventsDispatcher();
 	}
 	
 #region IronSourceIAgent implementation
@@ -25,6 +25,11 @@ public class AndroidAgent : IronSourceIAgent
 				_androidBridge = pluginClass.CallStatic<AndroidJavaObject> ("getInstance");
 		
 		return _androidBridge;
+	}
+
+	private void initEventsDispatcher()
+	{
+		IronSourceEventsDispatcher.initialize();
 	}
 
 	//******************* Base API *******************//
@@ -39,11 +44,6 @@ public class AndroidAgent : IronSourceIAgent
 		{                   
 			getBridge ().Call ("onResume");
 		}
-	}
-
-	public void setMediationSegment (string segment)
-	{
-		getBridge ().Call ("setMediationSegment", segment);
 	}
 
 	public string getAdvertiserId ()
@@ -83,8 +83,22 @@ public class AndroidAgent : IronSourceIAgent
 
 	public int? getConversionValue()
     {
-		Debug.Log("Unsupported Platform");
 		return null;
+	}
+
+	public void setManualLoadRewardedVideo(bool isOn)
+	{
+		getBridge().Call("setManualLoadRewardedVideo", isOn);
+	}
+
+	public void setNetworkData(string networkKey, string networkData)
+    {
+		getBridge().Call("setNetworkData", networkKey, networkData);
+    }
+
+	public void SetPauseGame (bool pause)
+	{
+		
 	}
 
 	//******************* SDK Init *******************//
@@ -115,6 +129,11 @@ public class AndroidAgent : IronSourceIAgent
 	}
 
 	//******************* RewardedVideo API *******************//
+
+	public void loadRewardedVideo()
+	{
+		getBridge().Call("loadRewardedVideo");
+	}
 
 	public void showRewardedVideo ()
 	{
@@ -252,7 +271,7 @@ public class AndroidAgent : IronSourceIAgent
 	
 	public void loadBanner (IronSourceBannerSize size, IronSourceBannerPosition position, string placementName)
 	{
-        getBridge().Call("loadBanner", size.Description, (int)size.Width, (int)size.Height, (int)position, placementName);
+        getBridge().Call("loadBanner", size.Description, (int)size.Width, (int)size.Height, (int)position, placementName, (bool)size.IsAdaptiveEnabled());
     }
 	
 	public void destroyBanner()
@@ -291,12 +310,10 @@ public class AndroidAgent : IronSourceIAgent
 
 	public void loadConsentViewWithType(string consentViewType)
 	{
-		Debug.Log("Unsupported Platform");
 	}
 
 	public void showConsentViewWithType(string consentViewType)
 	{
-		Debug.Log("Unsupported Platform");
 	}
 
 	//******************* ILRD API *******************//
@@ -307,7 +324,15 @@ public class AndroidAgent : IronSourceIAgent
 		getBridge().Call("setAdRevenueData", dataSource, json);
 	}
 
-	#endregion
+	//******************* TestSuite API *******************//
+
+	public void launchTestSuite()
+	{
+		Debug.Log("AndroidAgent: launching TestSuite");
+		getBridge().Call("launchTestSuite");
+	}
+
+#endregion
 }
 
 #endif

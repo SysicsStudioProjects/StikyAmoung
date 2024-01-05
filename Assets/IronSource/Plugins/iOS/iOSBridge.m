@@ -9,6 +9,7 @@
 #import "iOSBridge.h"
 #import <UIKit/UIKit.h>
 
+
 // Converts NSString to C style string by way of copy (Mono will free it)
 #define MakeStringCopy( _x_ ) ( _x_ != NULL && [_x_ isKindOfClass:[NSString class]] ) ? strdup( [_x_ UTF8String] ) : NULL
 
@@ -21,7 +22,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+    void UnityPause(int pause);
     extern void UnitySendMessage( const char *className, const char *methodName, const char *param );
     
 #ifdef __cplusplus
@@ -33,27 +34,44 @@ extern "C" {
     ISBannerView* _bannerView;
     NSInteger _position;
     UIViewController* _bannerViewController;
+    BOOL _shouldHideBanner;
 }
+
+@property (nonatomic, strong) RewardedVideoLevelPlayCallbacksWrapper *rewardedVideoLevelPlayDelegate;
+@property (nonatomic, strong) InterstitialLevelPlayCallbacksWrapper  *interstitialLevelPlayDelegate;
+@property (nonatomic, strong) BannerLevelPlayCallbacksWrapper        *bannerLevelPlayDelegate;
 
 @end
 
+static NSString * const EMPTY_STRING = @"";
+
 @implementation iOSBridge
+static ISUnityBackgroundCallback backgroundCallback;
+static bool pauseGame;
+
 
 char *const IRONSOURCE_EVENTS = "IronSourceEvents";
+char *const IRONSOURCE_REWARDED_VIDEO_EVENTS = "IronSourceRewardedVideoEvents";
+char *const IRONSOURCE_INTERSTITIAL_EVENTS = "IronSourceInterstitialEvents";
+char *const IRONSOURCE_BANNER_EVENTS = "IronSourceBannerEvents";
 
 + (iOSBridge *)start {
     static iOSBridge *instance;
     static dispatch_once_t onceToken;
     dispatch_once( &onceToken,
                   ^{
-                      instance = [iOSBridge new];
-                  });
+        instance = [iOSBridge new];
+    });
     
     return instance;
 }
 
 - (instancetype)init {
     if(self = [super init]){
+        self.rewardedVideoLevelPlayDelegate = [[RewardedVideoLevelPlayCallbacksWrapper alloc]initWithDelegate:(id)self];
+        self.interstitialLevelPlayDelegate = [[InterstitialLevelPlayCallbacksWrapper alloc]initWithDelegate:(id)self];
+        self.bannerLevelPlayDelegate = [[BannerLevelPlayCallbacksWrapper alloc]initWithDelegate:(id)self];
+        
         [IronSource setRewardedVideoDelegate:self];
         [IronSource setInterstitialDelegate:self];
         [IronSource setISDemandOnlyInterstitialDelegate:self];
@@ -63,9 +81,16 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
         [IronSource addImpressionDataDelegate:self];
         [IronSource setConsentViewWithDelegate:self];
         
+        //set level play listeneres
+        [IronSource setLevelPlayBannerDelegate:self.bannerLevelPlayDelegate];
+        [IronSource setLevelPlayInterstitialDelegate:self.interstitialLevelPlayDelegate];
+        [IronSource setLevelPlayRewardedVideoDelegate:self.rewardedVideoLevelPlayDelegate];
+        
+        
         _bannerView = nil;
         _bannerViewController = nil;
         _position = BANNER_POSITION_BOTTOM;
+        _shouldHideBanner = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:)
                                                      name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -81,10 +106,6 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 }
 
 #pragma mark Base API
-
-- (void)setMediationSegment:(NSString *)segment {
-    [IronSource setMediationSegment:segment];
-}
 
 - (const char *)getAdvertiserId {
     NSString *advertiserId = [IronSource advertiserId];
@@ -120,6 +141,36 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
     [IronSource setMetaDataWithKey:key values:valuesArray];
 }
 
+- (void)setManualLoadRewardedVideo:(BOOL) isOn {
+    if (isOn) {
+        [IronSource setRewardedVideoManualDelegate:self];
+        [IronSource setLevelPlayRewardedVideoManualDelegate:self.rewardedVideoLevelPlayDelegate];
+    }
+    else {
+        NSLog(@"Manual load false is the defualt value");
+
+    }
+}
+
+- (void)setNetworkData:(NSString *)networkKey data:(NSString *)networkData {
+    NSError* error;
+    if (!networkData) {
+        return;
+    }
+    
+    NSData *data = [networkData dataUsingEncoding:NSUTF8StringEncoding];
+    if (!data) {
+        return;
+    }
+    
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    if (!dict) {
+        return;
+    }
+    
+    [IronSource setNetworkDataWithNetworkKey:networkKey andNetworkData:dict];
+}
+
 #pragma mark Init SDK
 
 - (void)setUserId:(NSString *)userId {
@@ -127,11 +178,11 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 }
 
 - (void)initWithAppKey:(NSString *)appKey {
-    [IronSource initWithAppKey:appKey];
+    [IronSource initWithAppKey:appKey delegate:self];
 }
 
 - (void)initWithAppKey:(NSString *)appKey adUnits:(NSArray<NSString *> *)adUnits {
-    [IronSource initWithAppKey:appKey adUnits:adUnits];
+    [IronSource initWithAppKey:appKey adUnits:adUnits delegate:self];
 }
 
 - (void)initISDemandOnly:(NSString *)appKey adUnits:(NSArray<NSString *> *)adUnits {
@@ -181,6 +232,12 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
     [IronSource clearRewardedVideoServerParameters];
 }
 
+#pragma mark Rewarded Video Manual Load API
+
+- (void)loadRewardedVideo {
+    [IronSource loadRewardedVideo];
+}
+
 #pragma mark Rewarded Video DemanOnly API
 
 - (void)showISDemandOnlyRewardedVideo:(NSString *)instanceId {
@@ -193,6 +250,12 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 
 - (BOOL)isDemandOnlyRewardedVideoAvailable:(NSString *)instanceId {
     return [IronSource hasISDemandOnlyRewardedVideo:instanceId];
+}
+
+#pragma mark Init Delegate
+
+- (void)initializationDidComplete {
+    UnitySendMessage(IRONSOURCE_EVENTS, "onSdkInitializationCompleted", "");
 }
 
 #pragma mark Rewarded Video Delegate
@@ -218,9 +281,15 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 
 - (void)rewardedVideoDidOpen {
     UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdOpened", "");
+    if (pauseGame) {
+        UnityPause(1);
+    }
 }
 
 - (void)rewardedVideoDidClose {
+    if (pauseGame) {
+        UnityPause(0);
+    }
     [self centerBanner];
     UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdClosed", "");
 }
@@ -239,6 +308,60 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
                            @"placement_name": placementInfo.placementName};
     
     UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdClicked", MakeStringCopy([self getJsonFromObj:dict]));
+}
+
+#pragma mark Rewarded Video Level Play Delegate
+
+- (void)rewardedVideoLevelPlayDidClick:(nonnull ISPlacementInfo *)placementInfo withAdInfo:(nonnull ISAdInfo *)adInfo {
+    NSDictionary *dict = @{@"placement_reward_amount": placementInfo.rewardAmount,
+                           @"placement_reward_name": placementInfo.rewardName,
+                           @"placement_name": placementInfo.placementName};
+    NSArray *params = @[dict, [self getAdInfoData:adInfo]];
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdClicked", MakeStringCopy([self getJsonFromObj:params]));
+}
+
+- (void)rewardedVideoLevelPlayDidCloseWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    if (pauseGame) {
+        UnityPause(0);
+    }
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdClosed",[self getAdInfoData:adInfo].UTF8String);
+}
+
+- (void)rewardedVideoLevelPlayDidFailToLoadWithError:(nonnull NSError *)error {
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdLoadFailed", MakeStringCopy([self parseErrorToEvent:error]));
+}
+
+- (void)rewardedVideoLevelPlayDidFailToShowWithError:(nonnull NSError *)error andAdInfo:(nonnull ISAdInfo *)adInfo {
+    NSArray *params = @[(error) ? [self parseErrorToEvent:error] : @"" , [self getAdInfoData:adInfo]];
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdShowFailed", MakeStringCopy([self getJsonFromObj:params]));
+}
+
+- (void)rewardedVideoLevelPlayDidLoadWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdReady", [self getAdInfoData:adInfo].UTF8String);
+}
+
+- (void)rewardedVideoLevelPlayDidOpenWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdOpened", [self getAdInfoData:adInfo].UTF8String);
+    if (pauseGame) {
+        UnityPause(1);
+    }
+}
+
+- (void)rewardedVideoLevelPlayDidReceiveRewardForPlacement:(nonnull ISPlacementInfo *)placementInfo withAdInfo:(nonnull ISAdInfo *)adInfo {
+    NSDictionary *dict = @{@"placement_reward_amount": placementInfo.rewardAmount,
+                           @"placement_reward_name": placementInfo.rewardName,
+                           @"placement_name": placementInfo.placementName};
+    NSArray *params = @[dict, [self getAdInfoData:adInfo]];
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdRewarded", MakeStringCopy([self getJsonFromObj:params]));
+}
+
+- (void)hasAvailableAdWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdAvailable", [self getAdInfoData:adInfo].UTF8String);
+}
+
+- (void)hasNoAvailableAd {
+    UnitySendMessage(IRONSOURCE_REWARDED_VIDEO_EVENTS, "onAdUnavailable","");
+    
 }
 
 #pragma mark Rewarded Video DemandOnly Delegate
@@ -276,10 +399,15 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 
 - (void)rewardedVideoDidOpen:(NSString *)instanceId {
     UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdOpenedDemandOnly", MakeStringCopy(instanceId));
-    
+    if (pauseGame) {
+        UnityPause(1);
+    }
 }
 
 - (void)rewardedVideoDidClose:(NSString *)instanceId {
+    if (pauseGame) {
+        UnityPause(0);
+    }
     [self centerBanner];
     UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdClosedDemandOnly", MakeStringCopy(instanceId));
 }
@@ -340,9 +468,15 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 
 - (void)interstitialDidOpen {
     UnitySendMessage(IRONSOURCE_EVENTS, "onInterstitialAdOpened", "");
+    if (pauseGame) {
+        UnityPause(1);
+    }
 }
 
 - (void)interstitialDidClose {
+    if (pauseGame) {
+        UnityPause(0);
+    }
     [self centerBanner];
     UnitySendMessage(IRONSOURCE_EVENTS, "onInterstitialAdClosed", "");
 }
@@ -362,6 +496,43 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
     UnitySendMessage(IRONSOURCE_EVENTS, "onInterstitialAdClicked", "");
 }
 
+#pragma mark Interstitial Level Play Delegate
+
+- (void)interstitialLevelPlayDidClickWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_INTERSTITIAL_EVENTS, "onAdClicked", [self getAdInfoData:adInfo].UTF8String);
+}
+
+- (void)interstitialLevelPlayDidCloseWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    if (pauseGame) {
+        UnityPause(0);
+    }
+    UnitySendMessage(IRONSOURCE_INTERSTITIAL_EVENTS, "onAdClosed", [self getAdInfoData:adInfo].UTF8String);
+}
+
+- (void)interstitialLevelPlayDidFailToLoadWithError:(nonnull NSError *)error {
+    UnitySendMessage(IRONSOURCE_INTERSTITIAL_EVENTS, "onAdLoadFailed", MakeStringCopy([self parseErrorToEvent:error]));
+}
+
+- (void)interstitialLevelPlayDidFailToShowWithError:(nonnull NSError *)error andAdInfo:(nonnull ISAdInfo *)adInfo {
+    NSArray *params = @[(error) ? [self parseErrorToEvent:error] : @"" , [self getAdInfoData:adInfo]];
+    UnitySendMessage(IRONSOURCE_INTERSTITIAL_EVENTS, "onAdShowFailed", MakeStringCopy([self getJsonFromObj:params]));
+}
+
+- (void)interstitialLevelPlayDidLoadWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_INTERSTITIAL_EVENTS, "onAdReady", [self getAdInfoData:adInfo].UTF8String);
+}
+
+- (void)interstitialLevelPlayDidOpenWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_INTERSTITIAL_EVENTS, "onAdOpened", [self getAdInfoData:adInfo].UTF8String);
+    if (pauseGame) {
+        UnityPause(1);
+    }
+}
+
+- (void)interstitialLevelPlayDidShowWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_INTERSTITIAL_EVENTS, "onAdShowSucceeded", [self getAdInfoData:adInfo].UTF8String);
+}
+
 #pragma mark Interstitial DemandOnly Delegate
 
 - (void)interstitialDidLoad:(NSString *)instanceId {
@@ -379,9 +550,15 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 
 - (void)interstitialDidOpen:(NSString *)instanceId {
     UnitySendMessage(IRONSOURCE_EVENTS, "onInterstitialAdOpenedDemandOnly", MakeStringCopy(instanceId));
+    if (pauseGame) {
+        UnityPause(1);
+    }
 }
 
 - (void)interstitialDidClose:(NSString *)instanceId {
+    if (pauseGame) {
+        UnityPause(0);
+    }
     [self centerBanner];
     UnitySendMessage(IRONSOURCE_EVENTS, "onInterstitialAdClosedDemandOnly", MakeStringCopy(instanceId));
 }
@@ -473,10 +650,11 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 
 #pragma mark Banner API
 
-- (void)loadBanner:(NSString *)description width:(NSInteger)width height:(NSInteger)height position:(NSInteger)position placement:(NSString *)placement {
+- (void)loadBanner:(NSString *)description width:(NSInteger)width height:(NSInteger)height position:(NSInteger)position placement:(NSString *)placement adaptive:(bool) isAdaptive {
     @synchronized(self) {
         _position = position;
         ISBannerSize* size = [self getBannerSize:description width:width height:height];
+        size.adaptive = isAdaptive;
         
         _bannerViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
         [IronSource loadBannerWithViewController:_bannerViewController size:size placement:placement];
@@ -490,26 +668,29 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
                 [IronSource destroyBanner:_bannerView];
                 _bannerView = nil;
                 _bannerViewController = nil;
+                _shouldHideBanner = NO;
             }
         }
     });
 }
 
 - (void)displayBanner {
+    _shouldHideBanner = NO;
     dispatch_async(dispatch_get_main_queue(), ^{
         @synchronized(self) {
             if (_bannerView != nil) {
-                [_bannerView setHidden:NO];
+                [_bannerView setHidden:_shouldHideBanner];
             }
         }
     });
 }
 
 - (void)hideBanner {
+    _shouldHideBanner = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
         @synchronized(self) {
             if (_bannerView != nil) {
-                [_bannerView setHidden:YES];
+                [_bannerView setHidden:_shouldHideBanner];
             }
         }
     });
@@ -562,6 +743,7 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
         @synchronized(self) {
             _bannerView = bannerView;
             [_bannerView setAccessibilityLabel:@"bannerContainer"];
+            [_bannerView setHidden:_shouldHideBanner];
             
             _bannerView.center = [self getBannerCenter:_position rootView:_bannerViewController.view];
             [_bannerViewController.view addSubview:_bannerView];
@@ -594,6 +776,7 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
     UnitySendMessage(IRONSOURCE_EVENTS, "onBannerAdLeftApplication", "");
 }
 
+
 - (void)centerBanner {
     dispatch_async(dispatch_get_main_queue(), ^{
         @synchronized(self) {
@@ -606,6 +789,46 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
 
 - (void)orientationChanged:(NSNotification *)notification {
     [self centerBanner];
+}
+
+#pragma mark Banner Level Play Delegate
+
+
+- (void)bannerLevelPlayDidClickWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_BANNER_EVENTS, "onAdClicked", [self getAdInfoData:adInfo].UTF8String);
+    
+}
+
+- (void)bannerLevelPlayDidDismissScreenWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_BANNER_EVENTS, "onAdScreenDismissed", [self getAdInfoData:adInfo].UTF8String);
+    
+}
+
+- (void)bannerLevelPlayDidFailToLoadWithError:(nonnull NSError *)error {
+    UnitySendMessage(IRONSOURCE_BANNER_EVENTS, "onAdLoadFailed", (error) ? MakeStringCopy([self parseErrorToEvent:error]):"");
+}
+
+- (void)bannerLevelPlayDidLeaveApplicationWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_BANNER_EVENTS, "onAdLeftApplication", [self getAdInfoData:adInfo].UTF8String);
+}
+
+- (void)bannerLevelPlayDidLoad:(nonnull ISBannerView *)bannerView withAdInfo:(nonnull ISAdInfo *)adInfo {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        @synchronized(self) {
+            _bannerView = bannerView;
+            [_bannerView setAccessibilityLabel:@"bannerContainer"];
+            [_bannerView setHidden:_shouldHideBanner];
+            
+            _bannerView.center = [self getBannerCenter:_position rootView:_bannerViewController.view];
+            [_bannerViewController.view addSubview:_bannerView];
+            
+            UnitySendMessage(IRONSOURCE_BANNER_EVENTS, "onAdLoaded", [self getAdInfoData:adInfo].UTF8String);
+        }
+    });
+}
+
+- (void)bannerLevelPlayDidPresentScreenWithAdInfo:(nonnull ISAdInfo *)adInfo {
+    UnitySendMessage(IRONSOURCE_BANNER_EVENTS, "onAdScreenPresented", [self getAdInfoData:adInfo].UTF8String);
 }
 
 #pragma mark Helper methods
@@ -680,28 +903,38 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
         
         return [self getJsonFromObj:dict];
     }
-    
     return nil;
 }
 
 - (NSString *)getJsonFromObj:(id)obj {
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
-    
-    if (!jsonData) {
-        NSLog(@"Got an error: %@", error);
-        return @"";
-    } else {
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        return jsonString;
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
+        if (!jsonData) {
+            NSLog(@"Got an error: %@", error);
+            return @"";
+        } else {
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            return jsonString;
+        }
+}
+
+- (NSString *) getAdInfoData:(ISAdInfo *) adinfo{
+    if (adinfo!=nil) {
+        NSString *adInfoString = [NSString stringWithFormat:@"%@", adinfo];
+        return adInfoString;
     }
+    return EMPTY_STRING;
 }
 
 #pragma mark ImpressionData Delegate
 
 - (void)impressionDataDidSucceed:(ISImpressionData *)impressionData {
+    if (backgroundCallback!=nil) {
+             const char * serializedParameters = [self getJsonFromObj:[impressionData all_data]].UTF8String;
+             backgroundCallback(serializedParameters);
+         }
     UnitySendMessage(IRONSOURCE_EVENTS, "onImpressionSuccess", [self getJsonFromObj:[impressionData all_data]].UTF8String);
-
+    
 }
 
 #pragma mark ConsentView Delegate
@@ -755,19 +988,26 @@ char *const IRONSOURCE_EVENTS = "IronSourceEvents";
     [IronSource setAdRevenueDataWithDataSource:dataSource impressionData:impressionData];
 }
 
+#pragma mark TestSuite API
+- (void)launchTestSuite {
+    [IronSource launchTestSuite:[UIApplication sharedApplication].keyWindow.rootViewController];
+}
+
 #pragma mark - C Section
 
 #ifdef __cplusplus
 extern "C" {
 #endif
     
-    void CFSetPluginData(const char *pluginType, const char *pluginVersion, const char *pluginFrameworkVersion){
-        [[iOSBridge start] setPluginDataWithType:GetStringParam(pluginType) pluginVersion:GetStringParam(pluginVersion) pluginFrameworkVersion:GetStringParam(pluginFrameworkVersion)];
+    void RegisterCallback(ISUnityBackgroundCallback func){
+            backgroundCallback=func;
+        }
+    void RegisterPauseGameFunction(bool func){
+        pauseGame=func;
     }
     
-    
-    void CFSetMediationSegment(const char *segment){
-        [[iOSBridge start] setMediationSegment:GetStringParam(segment)];
+    void CFSetPluginData(const char *pluginType, const char *pluginVersion, const char *pluginFrameworkVersion){
+        [[iOSBridge start] setPluginDataWithType:GetStringParam(pluginType) pluginVersion:GetStringParam(pluginVersion) pluginFrameworkVersion:GetStringParam(pluginFrameworkVersion)];
     }
     
     const char *CFGetAdvertiserId(){
@@ -816,6 +1056,14 @@ extern "C" {
         }
     }
     
+    void CFSetManualLoadRewardedVideo(bool isOn) {
+        [[iOSBridge start] setManualLoadRewardedVideo:isOn];
+    }
+    
+    void CFSetNetworkData (char *networkKey, char *networkData) {
+        [[iOSBridge start] setNetworkData:GetStringParam(networkKey) data:GetStringParam(networkData)];
+    }
+    
 #pragma mark Init SDK
     
     void CFInit(const char *appKey){
@@ -852,6 +1100,11 @@ extern "C" {
     }
     
 #pragma mark RewardedVideo API
+    
+    void CFLoadRewardedVideo() {
+        [[iOSBridge start] loadRewardedVideo];
+    }
+    
     void CFShowRewardedVideo(){
         [[iOSBridge start] showRewardedVideo];
     }
@@ -959,8 +1212,8 @@ extern "C" {
     
 #pragma mark Banner API
     
-    void CFLoadBanner(char* description, int width, int height, int position, char* placementName){
-        [[iOSBridge start] loadBanner:GetStringParam(description) width:width height:height position:position placement:GetStringParam(placementName)];
+    void CFLoadBanner(char* description, int width, int height, int position, char* placementName, bool isAdaptive){
+        [[iOSBridge start] loadBanner:GetStringParam(description) width:width height:height position:position placement:GetStringParam(placementName) adaptive:isAdaptive];
     }
     
     void CFDestroyBanner (){
@@ -994,7 +1247,7 @@ extern "C" {
     void CFShowConsentViewWithType (char* consentViewType){
         [[iOSBridge start] showConsentViewWithType:GetStringParam(consentViewType)];
     }
-
+    
 #pragma mark ConversionValue API
     
     const char *CFGetConversionValue(){
@@ -1002,18 +1255,38 @@ extern "C" {
     }
     
 #pragma mark ILRD API
-  void  CFSetAdRevenueData(char* datasource,char* impressiondata){
+    void  CFSetAdRevenueData(char* datasource,char* impressiondata){
         NSData *data=[GetStringParam(impressiondata)dataUsingEncoding:NSUTF8StringEncoding];
         if (!data) {
             return;
         }
-      return [[iOSBridge start] setAdRevenueData:GetStringParam(datasource)impressionData:data];
+        return [[iOSBridge start] setAdRevenueData:GetStringParam(datasource)impressionData:data];
     }
+
+#pragma mark TestSuite API
+    void CFLaunchTestSuite(){
+        [[iOSBridge start] launchTestSuite];
+    }
+
+#pragma mark - ISRewardedVideoManualDelegate methods
+    
+    
+    - (void)rewardedVideoDidLoad {
+        UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdReady", "");
+    }
+    
+    - (void)rewardedVideoDidFailToLoadWithError:(NSError *)error {
+        if (error)
+            UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdLoadFailed", MakeStringCopy([self parseErrorToEvent:error]));
+        else
+            UnitySendMessage(IRONSOURCE_EVENTS, "onRewardedVideoAdLoadFailed","");
+        
+    }
+    
     
 #ifdef __cplusplus
 }
 #endif
 
 @end
-
 
