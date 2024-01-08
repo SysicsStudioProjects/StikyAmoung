@@ -175,7 +175,7 @@ public class IronSourceDependenciesManager : EditorWindow
 #if UNITY_2020_1_OR_NEWER
         if (unityWebRequestLinkJson.result != UnityWebRequest.Result.ProtocolError && unityWebRequesInfoJson.result != UnityWebRequest.Result.ProtocolError)
 #else
-        if (!unityWebRequestLinkJson.isHttpError && !unityWebRequestLinkJson.isNetworkError && !unityWebRequesInfoJson.isNetworkError && !unityWebRequesInfoJson.isHttpError)
+        if (!unityWebRequestLinkJson.isHttpError && !unityWebRequestLinkJson.isNetworkError && !unityWebRequesInfoJson.isError && !unityWebRequesInfoJson.isHttpError)
 #endif
         {
             string linksJson = unityWebRequestLinkJson.downloadHandler.text;
