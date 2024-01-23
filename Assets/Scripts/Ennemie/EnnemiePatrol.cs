@@ -40,6 +40,7 @@ public class EnnemiePatrol : MonoBehaviour
 
     bool isStopping;
     public float speed;
+    public EnemyDiffuclty enemyDiffuclty;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -56,6 +57,45 @@ public class EnnemiePatrol : MonoBehaviour
         EventController.setPlayer += GetPlayer;
         EventController.gameStart += GameStart;
 
+        switch (enemyDiffuclty)
+        {
+            case EnemyDiffuclty.None:
+                timeTodetect = 0.5f;
+                break;
+            case EnemyDiffuclty.Basic:
+                view.enabled = false;
+                break;
+            case EnemyDiffuclty.Meduim:
+                timeTodetect = 0.3f;
+                StartCoroutine(SwitchViewState());
+                break;
+            case EnemyDiffuclty.Hard:
+                timeTodetect = 0.3f;
+                break;
+            case EnemyDiffuclty.VeryHard:
+                timeTodetect = 0.1f;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    IEnumerator SwitchViewState()
+    {
+        view.enabled = false;
+        Field.SetActive(false);
+        yield return new WaitForSeconds(4);
+        Field.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        view.enabled = true;
+        while (startDetect)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(2);
+
+        StartCoroutine(SwitchViewState());
     }
 
     private void OnDisable()
@@ -337,7 +377,7 @@ public class EnnemiePatrol : MonoBehaviour
         print("start die");
         
         yield return new WaitForSeconds(time);
-        if (_DetectPlayer==player&&startDetect==true)
+        if (_DetectPlayer==player&&startDetect==true && Field.activeInHierarchy)
         {
 
             ValidateDetected();
@@ -393,6 +433,8 @@ public class EnnemiePatrol : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
 }
+
+public enum EnemyDiffuclty { None, Basic, Meduim, Hard, VeryHard}
 
 
 /*  if(target==player)

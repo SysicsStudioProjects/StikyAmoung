@@ -9,6 +9,7 @@ public class AdsManager : MonoBehaviour
     public static AdsManager _instance;
     public string AdsState;
     public string key;
+    public bool canShowInter;
 
 
     // Start is called before the first frame update
@@ -176,6 +177,7 @@ public class AdsManager : MonoBehaviour
         if (IronSource.Agent.isRewardedVideoAvailable())
         {
             IronSource.Agent.showRewardedVideo(s);
+            canShowInter = false;
         }
 
     }
@@ -286,7 +288,7 @@ public class AdsManager : MonoBehaviour
 
     public void ShowIntertiate(string s)
     {
-        if (IronSource.Agent.isInterstitialReady())
+        if (IronSource.Agent.isInterstitialReady() && canShowInter)
         {
             IronSource.Agent.showInterstitial(s);
             StartCoroutine(loadInter());
@@ -297,6 +299,7 @@ public class AdsManager : MonoBehaviour
             IronSource.Agent.loadInterstitial();
 
         }
+        canShowInter = !canShowInter;
     }
     IEnumerator loadInter()
     {

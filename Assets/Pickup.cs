@@ -16,7 +16,11 @@ public class Pickup : MonoBehaviour
     }
     private void OnDisable()
     {
-        PowerUp.SetActive(true);
+        if (PowerUp)
+        {
+            PowerUp.SetActive(true);
+        }
+
     }
 
     // Update is called once per frame
