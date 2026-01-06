@@ -66,6 +66,10 @@ public class levelManagment : MonoBehaviour
           }*/
 
         int a = Singleton._instance.level;
+        if (a <1)
+        {
+            a = 1;
+        }
         SceneManager.LoadScene(a);
 
     }

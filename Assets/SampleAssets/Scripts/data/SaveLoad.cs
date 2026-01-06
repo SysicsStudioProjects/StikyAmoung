@@ -8,6 +8,11 @@ public static class SaveLoad
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerV.data";
+        //check if file exist
+        if (!File.Exists(path))
+        {
+            Debug.LogError("We can't find the file to save data");
+        }
         
         FileStream stream = new FileStream(path, FileMode.Create);
         GeneralPlayerData data = new GeneralPlayerData(singleton);
@@ -31,7 +36,7 @@ public static class SaveLoad
         }
         else
         {
-            //Debug.LogError("save file not found");
+            Debug.LogError("save file not found");
             return null;
         }
     }
@@ -45,6 +50,7 @@ public static class SaveLoad
         }
         else
         {
+            Debug.LogError("we are verifing and the save file not found");
             return false;
         }
     }
